@@ -1,5 +1,6 @@
 package com.dashingqi.compiler;
 
+import com.dashingqi.annotation.Test;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -17,6 +18,7 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Types;
@@ -35,10 +37,12 @@ public class HelloWorldCompiler extends AbstractProcessor {
     private Messager mMessager;
     private Filer mFiler;
     private Types mTypeUtils;
+    ProcessingEnvironment mProcessingEnvironment;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
+        mProcessingEnvironment = processingEnvironment;
         mMessager = processingEnv.getMessager();
         mFiler = processingEnv.getFiler();
         mTypeUtils = processingEnv.getTypeUtils();
@@ -46,23 +50,27 @@ public class HelloWorldCompiler extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        mMessager.printMessage(Diagnostic.Kind.ERROR,"processing ....., ");
-        MethodSpec main = MethodSpec.methodBuilder("main")
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .returns(void.class)
-                .addParameter(String[].class, "args")
-                .addStatement("$T.out.println($S)", System.class, "Hello, JavaPoet!")
-                .build();
-        TypeSpec helloWorld = TypeSpec.classBuilder("HelloWorld")
-                .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-                .addMethod(main)
-                .build();
-        JavaFile javaFile = JavaFile.builder("com.dashingqi.master", helloWorld)
-                .build();
-        try {
-            javaFile.writeTo(processingEnv.getFiler());
-        } catch (IOException e) {
-            e.printStackTrace();
+       // mMessager.printMessage(Diagnostic.Kind.WARNING,"processing ....., ");
+        Set<? extends Element> elementsAnnotatedWith = roundEnvironment.getElementsAnnotatedWith(Test.class);
+        for (Element element:elementsAnnotatedWith) {
+            MethodSpec main = MethodSpec.methodBuilder("main")
+                    .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                    .returns(void.class)
+                    .addParameter(String[].class, "args")
+                    .addStatement("$T.out.println($S)", System.class, "Hello, World!")
+                    .build();
+            TypeSpec helloWorld = TypeSpec.classBuilder("HelloWorld")
+                    .addModifiers(Modifier.PUBLIC)
+                    .addMethod(main)
+                    .build();
+            JavaFile javaFile = JavaFile.builder("com.dashingqi.master", helloWorld)
+                    .build();
+            try {
+                javaFile.writeTo(System.out);
+                javaFile.writeTo(mProcessingEnvironment.getFiler());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
