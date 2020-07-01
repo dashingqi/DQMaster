@@ -33,6 +33,7 @@ import javax.tools.JavaFileObject;
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.dashingqi.annotation.Route"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
+
 public class RouteCompiler extends AbstractProcessor {
 
     private Messager mMessager;
