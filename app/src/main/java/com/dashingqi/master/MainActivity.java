@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.dashingqi.annotation.BindView;
-import com.dashingqi.annotation.Test;
+import com.dashingqi.annotation.Route;
 
-@Test
+@Route(value = "/test/test_activity")
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.tvText)
