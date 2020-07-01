@@ -1,6 +1,7 @@
 package com.dashingqi.master;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -57,6 +58,14 @@ public class RouteUtils {
         if (maps.size() > 0) {
             Class clz = (Class) maps.get(path);
 
+        }
+    }
+
+    public void getPath(String path) {
+        if (maps.size() > 0) {
+            Log.d("path === ", maps.get(path).toString());
+        } else {
+            Log.d("path === ", "is null");
         }
     }
 }

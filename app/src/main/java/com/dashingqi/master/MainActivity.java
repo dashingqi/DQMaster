@@ -20,5 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mTextView.setText("hei,ha");
+
+        RouteUtils.getInstance().getPath("/test/test_activity");
     }
 }
