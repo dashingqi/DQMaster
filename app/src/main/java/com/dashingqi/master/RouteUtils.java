@@ -1,6 +1,7 @@
 package com.dashingqi.master;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -57,6 +58,8 @@ public class RouteUtils {
     public void jumpToActivity(Context context, String path) {
         if (maps.size() > 0) {
             Class clz = (Class) maps.get(path);
+            Intent intent = new Intent(context, clz);
+            context.startActivity(intent);
 
         }
     }

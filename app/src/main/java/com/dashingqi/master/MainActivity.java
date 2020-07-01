@@ -3,6 +3,7 @@ package com.dashingqi.master;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.dashingqi.annotation.BindView;
@@ -20,7 +21,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         mTextView.setText("hei,ha");
+        mTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RouteUtils.getInstance().jumpToActivity(MainActivity.this, "/test/test_activity");
+            }
+        });
 
-        RouteUtils.getInstance().getPath("/test/test_activity");
     }
 }
