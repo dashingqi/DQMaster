@@ -22,6 +22,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
@@ -29,6 +30,22 @@ import javax.tools.JavaFileObject;
  * @author : zhangqi
  * @time : 2020/7/1
  * desc :
+ *
+ * Elements：操作元素的主要类
+ *      TypeElement：表示类、接口、方法、构造方法的参数元素
+ *      VariableElement：表示字段、enum、方法、构造方法参数、局部变量、异常参数
+ *
+ * Filer：（Filer接口支持通过注解处理器创建新文件）
+ *      createSourceFile 创建源文件
+ *      createClassFile 创建类文件
+ *      createResource 创建辅助源文件
+ *
+ * Messager：（Messager接口提供注解处理器用来报告错误消息、警告和其他通知的方式）
+ *      printMessage() 打印信息
+ *
+ *
+ * Types:
+ *
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({"com.dashingqi.annotation.Route"})
@@ -39,13 +56,19 @@ public class RouteCompiler extends AbstractProcessor {
     private Messager mMessager;
     private Elements mElementUtils;
     private Filer mFiler;
+    private Types mTypeUtils;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
+        //返回实现Messager接口的对象，用于报告错误信息、警告提醒
         mMessager = processingEnvironment.getMessager();
+        //返回实现Elements接口的对象，用于操作元素的工具类
         mElementUtils = processingEnvironment.getElementUtils();
+        //返回实现Filer接口的对象，用于创建文件、类和辅助文件
         mFiler = processingEnvironment.getFiler();
+        //返回实现Types接口的对象，用于操作类型的工具类
+        mTypeUtils = processingEnvironment.getTypeUtils();
     }
 
     @Override
