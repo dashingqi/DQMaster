@@ -1,3 +1,4 @@
+include ':module-gradle'
 include ':compiler'
 include ':annotation'
 include ':app'
