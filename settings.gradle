@@ -1,3 +1,7 @@
+include ':module-spi-impl-two'
+include ':module-spi-interface'
+include ':module-spi-impl-one'
+include ':module-spi'
 include ':class'
 include ':module-gradle'
 include ':compiler'

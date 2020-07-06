@@ -17,6 +17,10 @@
             <option value="$PROJECT_DIR$/class" />
             <option value="$PROJECT_DIR$/compiler" />
             <option value="$PROJECT_DIR$/module-gradle" />
+            <option value="$PROJECT_DIR$/module-spi" />
+            <option value="$PROJECT_DIR$/module-spi-impl-one" />
+            <option value="$PROJECT_DIR$/module-spi-impl-two" />
+            <option value="$PROJECT_DIR$/module-spi-interface" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

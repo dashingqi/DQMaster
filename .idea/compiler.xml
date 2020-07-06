@@ -23,6 +23,9 @@
     <bytecodeTargetLevel>
       <module name="annotation" target="1.7" />
       <module name="compiler" target="1.7" />
+      <module name="module-spi-impl-one" target="1.7" />
+      <module name="module-spi-impl-two" target="1.7" />
+      <module name="module-spi-interface" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
