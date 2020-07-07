@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 
-@Route(path = "/interceptor/test")
+@Route(path = "/interceptor/test", extras = 5)
 public class InterceptorTestActivity extends AppCompatActivity {
 
     @Override
