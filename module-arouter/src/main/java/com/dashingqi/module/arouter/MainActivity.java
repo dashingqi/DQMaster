@@ -3,9 +3,12 @@ package com.dashingqi.module.arouter;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.alibaba.android.arouter.facade.Postcard;
+import com.alibaba.android.arouter.facade.callback.NavigationCallback;
 import com.alibaba.android.arouter.launcher.ARouter;
 
 /**
@@ -16,19 +19,57 @@ import com.alibaba.android.arouter.launcher.ARouter;
  */
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
 
     private Button mBtnJump;
+    private Button mBtnDegrade;
+    private Button mBtnGlobalDegrade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mBtnJump = findViewById(R.id.btnJump);
-        mBtnJump.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ARouter.getInstance().build("/interceptor/test").navigation();
-            }
+        mBtnJump.setOnClickListener(v -> ARouter.getInstance().build("/interceptor/test").navigation());
+
+        mBtnDegrade = findViewById(R.id.btnDegrade);
+        mBtnDegrade.setOnClickListener(view->{
+            ARouter.getInstance().build("/test/test").navigation(this, new NavigationCallback() {
+                @Override
+                public void onFound(Postcard postcard) {
+                    Log.d(TAG, "onFound: ");
+
+                }
+
+                /**
+                 * 出现问题会回调该方法
+                 * 也就是我们降级策略的处理回调
+                 * @param postcard
+                 */
+                @Override
+                public void onLost(Postcard postcard) {
+                    Log.d(TAG, "onLost: ");
+
+                }
+
+                @Override
+                public void onArrival(Postcard postcard) {
+                    Log.d(TAG, "onArrival: ");
+
+                }
+
+                @Override
+                public void onInterrupt(Postcard postcard) {
+                    Log.d(TAG, "onInterrupt: ");
+
+                }
+            });
+
+        });
+
+        mBtnGlobalDegrade = findViewById(R.id.btnGlobalDegrade);
+        mBtnGlobalDegrade.setOnClickListener(view ->{
+            ARouter.getInstance().build("/test1/test1").navigation();
         });
     }
 }

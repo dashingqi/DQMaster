@@ -10,10 +10,28 @@
         android:id="@+id/btnJump"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="jump"
+        android:text="测试拦截器"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnDegrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试降级策略"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnJump" />
+
+    <Button
+        android:id="@+id/btnGlobalDegrade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试全局降级策略"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDegrade" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
