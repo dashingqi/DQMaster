@@ -13,6 +13,7 @@ import com.alibaba.android.arouter.launcher.ARouter;
 
 /**
  * ARouter中的拦截器
+ *
  * @Interceptor(priority = 5)
  * priority值越小说明它的优先级越高，在进行页面跳转的时候，就先被执行到
  * _ARouter.afterInit()
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Button mBtnJump;
     private Button mBtnDegrade;
     private Button mBtnGlobalDegrade;
+    private Button mBtnTestAutoired;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mBtnJump.setOnClickListener(v -> ARouter.getInstance().build("/interceptor/test").navigation());
 
         mBtnDegrade = findViewById(R.id.btnDegrade);
-        mBtnDegrade.setOnClickListener(view->{
+        mBtnDegrade.setOnClickListener(view -> {
             ARouter.getInstance().build("/test/test").navigation(this, new NavigationCallback() {
                 @Override
                 public void onFound(Postcard postcard) {
@@ -68,8 +70,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mBtnGlobalDegrade = findViewById(R.id.btnGlobalDegrade);
-        mBtnGlobalDegrade.setOnClickListener(view ->{
+        mBtnGlobalDegrade.setOnClickListener(view -> {
             ARouter.getInstance().build("/test1/test1").navigation();
+        });
+
+        mBtnTestAutoired = findViewById(R.id.btnTestAutoired);
+        mBtnTestAutoired.setOnClickListener(view -> {
+            ARouter.getInstance().build("/test/test2")
+                    .withString("id", "1922321321")
+                    .withString("name", "dashingqi")
+                    .navigation();
         });
     }
 }

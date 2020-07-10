@@ -20,12 +20,13 @@ public class TestInterceptor implements IInterceptor {
     @Override
     public void process(Postcard postcard, InterceptorCallback callback) {
         Log.d(TAG, "process: ----> perform");
-        if (postcard.getPath().equals("/interceptor/test")) {
-            Log.d(TAG, "TestInterceptor ---> /interceptor/test ");
-            callback.onContinue(postcard);
-        } else {
-            callback.onInterrupt(null);
-        }
+//        if (postcard.getPath().equals("/interceptor/test")) {
+//            Log.d(TAG, "TestInterceptor ---> /interceptor/test ");
+//            callback.onContinue(postcard);
+//        } else {
+//            callback.onInterrupt(null);
+//        }
+        callback.onContinue(postcard);
     }
 
     @Override
