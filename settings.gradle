@@ -1,4 +1,5 @@
 include ':module-zxing'
+include ':module-arithmetic'
 include ':module-arouter'
 include ':module-spi-impl-two'
 include ':module-spi-interface'
