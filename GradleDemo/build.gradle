@@ -7,6 +7,10 @@ dependencies {
     implementation localGroovy()
 }
 
+dependencies {
+    implementation 'com.android.tools.build:gradle:3.5.3'
+}
+
 repositories {
     mavenCentral()
 }
@@ -16,7 +20,7 @@ publish {
     userOrg = 'dashingqi'      // bintray注册的用户名
     groupId = 'com.dashingqi'
     artifactId = 'GradleDemo' // bintray创建的package 仓库下面对应的package名字
-    publishVersion = '0.9.9'
+    publishVersion = '0.9.9.2'
     desc = 'beta version'
     bintrayUser = 'dashingqi'
     bintrayKey = LocalBintrayKey()
