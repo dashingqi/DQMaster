@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/module-arithmetic" />
             <option value="$PROJECT_DIR$/module-arouter" />
             <option value="$PROJECT_DIR$/module-gradle" />
+            <option value="$PROJECT_DIR$/module-paging" />
             <option value="$PROJECT_DIR$/module-spi" />
             <option value="$PROJECT_DIR$/module-spi-impl-one" />
             <option value="$PROJECT_DIR$/module-spi-impl-two" />
