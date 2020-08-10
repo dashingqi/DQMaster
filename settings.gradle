@@ -1,3 +1,4 @@
+include ':GradleDemo'
 include ':module-zxing'
 include ':module-arithmetic'
 include ':module-arouter'

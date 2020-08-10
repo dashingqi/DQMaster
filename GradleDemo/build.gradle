@@ -1,0 +1,24 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+repositories {
+    mavenCentral()
+}
+
+publish {
+    repoName = 'utils' //仓库名字
+    userOrg = 'dashingqi'      // bintray注册的用户名
+    groupId = 'com.dashingqi'
+    artifactId = 'GradleDemo' // bintray创建的package 仓库下面对应的package名字
+    publishVersion = '0.9.9'
+    desc = 'beta version'
+    bintrayUser = 'dashingqi'
+    bintrayKey = LocalBintrayKey()
+    dryRun = false
+}
