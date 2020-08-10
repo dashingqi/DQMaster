@@ -22,6 +22,7 @@
             <option value="$PROJECT_DIR$/module-spi-impl-one" />
             <option value="$PROJECT_DIR$/module-spi-impl-two" />
             <option value="$PROJECT_DIR$/module-spi-interface" />
+            <option value="$PROJECT_DIR$/module-zxing" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

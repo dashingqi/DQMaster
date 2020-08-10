@@ -1,3 +1,4 @@
+include ':module-zxing'
 include ':module-arouter'
 include ':module-spi-impl-two'
 include ':module-spi-interface'
