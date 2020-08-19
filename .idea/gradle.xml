@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/compiler" />
             <option value="$PROJECT_DIR$/module-arithmetic" />
             <option value="$PROJECT_DIR$/module-arouter" />
+            <option value="$PROJECT_DIR$/module-glide" />
             <option value="$PROJECT_DIR$/module-gradle" />
             <option value="$PROJECT_DIR$/module-paging" />
             <option value="$PROJECT_DIR$/module-spi" />
