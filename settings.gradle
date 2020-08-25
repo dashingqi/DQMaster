@@ -1,3 +1,4 @@
+include ':DQCommonToolbar'
 include ':module-3dtouch'
 include ':module-glide'
 include ':module-paging'
