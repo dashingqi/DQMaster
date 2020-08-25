@@ -34,6 +34,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation project(':annotation')
     annotationProcessor project(':compiler')
-    implementation 'com.dashingqi:DQCommonToolbar:0.9.9.1'
+    implementation 'com.dashingqi:DQCommonToolbar:0.9.9.2'
 
 }

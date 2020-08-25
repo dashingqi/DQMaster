@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.dashingqi.dqcommontoolbar.R
+import com.dashingqi.dqcommontoolbar.utils.DQContextUtils
 import com.dashingqi.dqcommontoolbar.utils.DensityUtils
 import kotlinx.android.synthetic.main.common_toolbar_layout.view.*
 
@@ -47,6 +48,10 @@ class CommonToolbar : ConstraintLayout {
             mLeftButtonLayout = getDefaultToolbarItem()
             mLeftButtonLayout?.setPadding(paddingHorizontal, paddingVertical, 0, paddingVertical)
             //添加到布局中
+            mLeftButtonLayout?.setOnClickListener { view ->
+                var activity = DQContextUtils.getActivity(view.context)
+                activity?.finish()
+            }
             mLeftContainer?.addView(mLeftButtonLayout, mLeftContainer!!.childCount)
         }
 
