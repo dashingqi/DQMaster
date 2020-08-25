@@ -2,6 +2,7 @@ package com.dashingqi.master;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.TextViewCompat;
+import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        DataBindingUtil.setContentView(this, R.layout.activity_main);
         ButterKnife.bind(this);
         mTextView.setText("hei,ha");
         mTextView.setOnClickListener(new View.OnClickListener() {
