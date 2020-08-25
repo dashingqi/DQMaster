@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/DQCommonToolbar" />
+            <option value="$PROJECT_DIR$/DQCommonUtils" />
             <option value="$PROJECT_DIR$/GradleDemo" />
             <option value="$PROJECT_DIR$/annotation" />
             <option value="$PROJECT_DIR$/app" />
