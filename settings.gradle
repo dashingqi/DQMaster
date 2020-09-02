@@ -1,3 +1,4 @@
+include ':DQMVVMBase'
 include ':DQCommonUtils'
 include ':DQCommonToolbar'
 include ':module-3dtouch'
