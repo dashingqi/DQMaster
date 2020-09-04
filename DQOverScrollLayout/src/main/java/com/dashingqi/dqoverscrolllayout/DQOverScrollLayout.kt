@@ -58,6 +58,9 @@ class DQOverScrollLayout : RelativeLayout {
      */
     private var isMoved = false
 
+    /**
+     * RecyclerView接受事件
+     */
     private var isRecyclerReceiveEvent = false
 
 
@@ -96,8 +99,6 @@ class DQOverScrollLayout : RelativeLayout {
      * 布局
      */
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        super.onLayout(changed, l, t, r, b)
-
         val rvMeasureWidth = mRvView.measuredWidth
         val rvMeasureHeight = mRvView.measuredHeight
         mRvView.layout(l, t, l + rvMeasureWidth, t + rvMeasureHeight)
