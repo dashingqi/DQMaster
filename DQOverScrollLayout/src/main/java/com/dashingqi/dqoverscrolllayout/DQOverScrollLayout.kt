@@ -1,9 +1,11 @@
 package com.dashingqi.dqoverscrolllayout
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.animation.TranslateAnimation
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +48,20 @@ class DQOverScrollLayout : RelativeLayout {
      */
     private val DAMP = .3f
 
+    /**
+     * 用来保存rv的位置·
+     */
     private var rvOriginRect = Rect()
+
+    /**
+     * 是否移动
+     */
+    private var isMoved = false
+
+    private var isRecyclerReceiveEvent = false
+
+
+    private val ANOTATION_DURATION: Long = 1000
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -108,7 +123,6 @@ class DQOverScrollLayout : RelativeLayout {
                 //按下
                 mDownX = ev.x
             }
-
             /**
              * 在移动的过程中，需要知道什么时候要展示出OverScrollView
              * 这个过程就是获取到Rv当前可见范围的最后一个完整View的position是childCount-1,并且是向左滑动的 （moveX<mDownX ）
@@ -121,24 +135,38 @@ class DQOverScrollLayout : RelativeLayout {
                     val absTempX = abs(tempX)
                     //布局Rv
                     mRvView.layout((rvOriginRect.left - absTempX).toInt(), rvOriginRect.top, (rvOriginRect.right - absTempX).toInt(), rvOriginRect.bottom)
-
                     if (absTempX < mMaxArcWidth) {
-
                         mOverScrollView.drawArc((mMaxArcWidth - absTempX).toInt(), rvOriginRect.top, (mMaxArcWidth + absTempX).toInt(), rvOriginRect.bottom)
                     }
-
+                    isMoved = true
+                    isRecyclerReceiveEvent = false
+                    overScrollViewToOrigin()
                     return true
 
                 } else {
-                    //
+                    mDownX = ev.x
+                    isMoved = false
+                    isRecyclerReceiveEvent = true
+                    overScrollViewToOrigin()
+                    return super.dispatchTouchEvent(ev)
                 }
             }
 
             MotionEvent.ACTION_UP -> {
                 //抬起来
+                if (isMoved) {
+                    overScrollViewToOrigin()
+                }
+                return if (isRecyclerReceiveEvent) {
+                    super.dispatchTouchEvent(ev)
+                } else {
+                    true
+                }
             }
         }
+
         return super.dispatchTouchEvent(ev)
+
     }
 
     /**
@@ -161,6 +189,32 @@ class DQOverScrollLayout : RelativeLayout {
             return true
         }
         return false
+    }
+
+    /**
+     * overScrollView恢复到原位
+     */
+    private fun overScrollViewToOrigin() {
+        if (!isMoved) {
+            return
+        }
+        //移动Rv
+        val rvTranslation = TranslateAnimation((mRvView.left - rvOriginRect.left).toFloat(), 0f, 0f, 0f)
+        rvTranslation.duration = ANOTATION_DURATION
+        mRvView.startAnimation(rvTranslation)
+        mRvView.layout(rvOriginRect.left, rvOriginRect.top, rvOriginRect.right, rvOriginRect.bottom)
+
+        //恢复OverScrollView，更具Duration的事件来更新
+
+        var overScrollViewAnimation = ValueAnimator.ofInt(mMaxArcWidth - mOverScrollView.left, 0)
+        overScrollViewAnimation.duration = ANOTATION_DURATION
+        overScrollViewAnimation.addUpdateListener {
+            var offsetValue = it.animatedValue as Int
+            //更新OverView的位置
+            mOverScrollView.drawArc(mMaxArcWidth - offsetValue, rvOriginRect.top, mMaxArcWidth + offsetValue, rvOriginRect.bottom)
+        }
+
+        overScrollViewAnimation.start()
 
     }
 }
