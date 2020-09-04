@@ -24,7 +24,7 @@ class DQOverScrollView : View {
 
     init {
         mArcPaint.isAntiAlias = true
-        mArcPaint.color = Color.parseColor("#DDDDDD")
+        mArcPaint.color = Color.parseColor("#F5F5F5")
         mArcPaint.style = Paint.Style.FILL_AND_STROKE
     }
 
