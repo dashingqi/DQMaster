@@ -4,12 +4,15 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.animation.TranslateAnimation
+import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.math.abs
+import kotlin.math.max
 
 /**
  * @author : zhangqi
@@ -20,7 +23,7 @@ import kotlin.math.abs
  * 上述的1，2点都是手动加入的 下面的Rv是通过包裹的xml
  * 3. 列表是一个RecyclerView
  */
-class DQOverScrollLayout : RelativeLayout {
+class DQOverScrollLayout : FrameLayout {
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
 
     /**
@@ -69,36 +72,35 @@ class DQOverScrollLayout : RelativeLayout {
     override fun onFinishInflate() {
         super.onFinishInflate()
         mOverScrollView = DQOverScrollView(this.context)
-        addView(mOverScrollView)
+        //添加view
+       // addView(mOverScrollView)
     }
 
     /**
      * 测量
      */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        for (position in 0..childCount) {
+        val parentWidthSize = MeasureSpec.getSize(widthMeasureSpec)
+        //测量子View
+        measureChildren(widthMeasureSpec, heightMeasureSpec)
+        //测量子View
+        for (position in 0 until childCount) {
             if (getChildAt(position) is RecyclerView) {
                 mRvView = getChildAt(position) as RecyclerView
             }
         }
 
-        //测量RecyclerView
-        val rvWidthMeasureSpec = MeasureSpec.makeMeasureSpec(measuredWidth - paddingLeft - paddingRight, MeasureSpec.AT_MOST)
-        val rvHeightMeasureSpec = MeasureSpec.makeMeasureSpec(measuredHeight - paddingTop - paddingBottom, MeasureSpec.AT_MOST)
-        mRvView.measure(rvWidthMeasureSpec, rvHeightMeasureSpec)
+        Log.d("rv measure height ", "${mRvView.measuredHeight}")
+        Log.d("scroll view height ", "${mOverScrollView.measuredHeight}")
 
-        //测量View
-        val scrollViewWidthSpec = MeasureSpec.makeMeasureSpec(mMaxArcWidth, MeasureSpec.AT_MOST)
-        val scrollViewHeightSpec = MeasureSpec.makeMeasureSpec(measuredHeight - paddingTop - paddingBottom, MeasureSpec.AT_MOST)
-        mOverScrollView.measure(scrollViewWidthSpec, scrollViewHeightSpec)
-
+        setMeasuredDimension(parentWidthSize, max(mRvView.measuredHeight, mOverScrollView.measuredHeight))
     }
 
     /**
      * 布局
      */
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
         val rvMeasureWidth = mRvView.measuredWidth
         val rvMeasureHeight = mRvView.measuredHeight
         mRvView.layout(l, t, l + rvMeasureWidth, t + rvMeasureHeight)
@@ -109,8 +111,17 @@ class DQOverScrollLayout : RelativeLayout {
         /**
          * 保存一下Rv初始位置
          */
-        rvOriginRect.set(l, t, l + rvMeasureWidth, t + rvMeasureHeight)
+        rvOriginRect.set(l, t, t + rvMeasureWidth, t + rvMeasureHeight)
 
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        if (ev?.action == MotionEvent.ACTION_MOVE) {
+            if (isMoved) {
+                return true
+            }
+        }
+        return super.onInterceptTouchEvent(ev)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -141,7 +152,7 @@ class DQOverScrollLayout : RelativeLayout {
                     }
                     isMoved = true
                     isRecyclerReceiveEvent = false
-                    overScrollViewToOrigin()
+                    //overScrollViewToOrigin()
                     return true
 
                 } else {
