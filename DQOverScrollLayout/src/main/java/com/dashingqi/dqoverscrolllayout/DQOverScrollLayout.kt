@@ -69,31 +69,60 @@ class DQOverScrollLayout : FrameLayout {
 
     private val ANOTATION_DURATION: Long = 1000
 
+    private var mMaxWidth = 0
+
+    private var mMaxHeight = 0
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         mOverScrollView = DQOverScrollView(this.context)
         //添加view
-       // addView(mOverScrollView)
+        // addView(mOverScrollView)
     }
 
     /**
      * 测量
      */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val parentWidthSize = MeasureSpec.getSize(widthMeasureSpec)
-        //测量子View
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         measureChildren(widthMeasureSpec, heightMeasureSpec)
-        //测量子View
+
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val width = MeasureSpec.getSize(widthMeasureSpec)
+
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+
+        if (widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST) {
+            //当ViewGroup是 width 和 height 都是 wrap_content
+            setMeasuredDimension(getMaxWidth(), getMaxHeight())
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(getMaxWidth(), height)
+
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            setMeasuredDimension(width, getMaxHeight())
+        }
+    }
+
+    /**
+     * 获取到最大的宽度
+     */
+    private fun getMaxWidth(): Int {
         for (position in 0 until childCount) {
             if (getChildAt(position) is RecyclerView) {
-                mRvView = getChildAt(position) as RecyclerView
+                mMaxWidth = getChildAt(position).measuredWidth
             }
         }
+        return mMaxWidth
+    }
 
-        Log.d("rv measure height ", "${mRvView.measuredHeight}")
-        Log.d("scroll view height ", "${mOverScrollView.measuredHeight}")
-
-        setMeasuredDimension(parentWidthSize, max(mRvView.measuredHeight, mOverScrollView.measuredHeight))
+    private fun getMaxHeight(): Int {
+        for (position in 0 until childCount) {
+            if (getChildAt(position) is RecyclerView) {
+                mMaxHeight = getChildAt(position).measuredHeight
+            }
+        }
+        return mMaxHeight
     }
 
     /**
