@@ -1,3 +1,4 @@
+include ':DQGradleDemo'
 include ':module-fragment'
 include ':DQOverScrollLayout'
 include ':DQMVVMBase'

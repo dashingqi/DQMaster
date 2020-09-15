@@ -92,13 +92,11 @@ class DQOverScrollLayout : FrameLayout {
 
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val height = MeasureSpec.getSize(heightMeasureSpec)
-
         if (widthMode == MeasureSpec.AT_MOST && heightMode == MeasureSpec.AT_MOST) {
             //当ViewGroup是 width 和 height 都是 wrap_content
             setMeasuredDimension(getMaxWidth(), getMaxHeight())
         } else if (widthMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(getMaxWidth(), height)
-
         } else if (heightMode == MeasureSpec.AT_MOST) {
             setMeasuredDimension(width, getMaxHeight())
         }
@@ -110,15 +108,20 @@ class DQOverScrollLayout : FrameLayout {
     private fun getMaxWidth(): Int {
         for (position in 0 until childCount) {
             if (getChildAt(position) is RecyclerView) {
+                //  mRvView = getChildAt(position) as RecyclerView
                 mMaxWidth = getChildAt(position).measuredWidth
             }
         }
         return mMaxWidth
     }
 
+    /**
+     * 获取到最大的高度
+     */
     private fun getMaxHeight(): Int {
         for (position in 0 until childCount) {
             if (getChildAt(position) is RecyclerView) {
+                // mRvView = getChildAt(position) as RecyclerView
                 mMaxHeight = getChildAt(position).measuredHeight
             }
         }
@@ -129,133 +132,134 @@ class DQOverScrollLayout : FrameLayout {
      * 布局
      */
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
-        super.onLayout(changed, l, t, r, b)
-        val rvMeasureWidth = mRvView.measuredWidth
-        val rvMeasureHeight = mRvView.measuredHeight
-        mRvView.layout(l, t, l + rvMeasureWidth, t + rvMeasureHeight)
 
-        val mOverScrollViewMeasureWidth = mOverScrollView.measuredWidth
-        mOverScrollView.layout(r - mOverScrollViewMeasureWidth, t, r, b)
-
-        /**
-         * 保存一下Rv初始位置
-         */
-        rvOriginRect.set(l, t, t + rvMeasureWidth, t + rvMeasureHeight)
+        for (position in 0 until childCount) {
+            val view = getChildAt(position)
+            view.layout(l, t, l + view.measuredWidth, t + view.measuredHeight)
+        }
+//
+//        val mOverScrollViewMeasureWidth = mOverScrollView.measuredWidth
+//        mOverScrollView.layout(r - mOverScrollViewMeasureWidth, t, r, b)
+//
+//        /**
+//         * 保存一下Rv初始位置
+//         */
+//        rvOriginRect.set(l, t, t + rvMeasureWidth, t + rvMeasureHeight)
 
     }
 
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev?.action == MotionEvent.ACTION_MOVE) {
-            if (isMoved) {
-                return true
-            }
-        }
-        return super.onInterceptTouchEvent(ev)
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        //不让父控件拦截事件
-        requestDisallowInterceptTouchEvent(true)
-        when (ev?.action) {
-            /**
-             * 记录一下 按下的位置
-             */
-            MotionEvent.ACTION_DOWN -> {
-                //按下
-                mDownX = ev.x
-            }
-            /**
-             * 在移动的过程中，需要知道什么时候要展示出OverScrollView
-             * 这个过程就是获取到Rv当前可见范围的最后一个完整View的position是childCount-1,并且是向左滑动的 （moveX<mDownX ）
-             */
-            MotionEvent.ACTION_MOVE -> {
-                //移动
-                val moveX = ev.x
-                var tempX = (moveX - mDownX) * DAMP
-                if (isCanShowArc() && tempX < 0) {
-                    val absTempX = abs(tempX)
-                    //布局Rv
-                    mRvView.layout((rvOriginRect.left - absTempX).toInt(), rvOriginRect.top, (rvOriginRect.right - absTempX).toInt(), rvOriginRect.bottom)
-                    if (absTempX < mMaxArcWidth) {
-                        mOverScrollView.drawArc((mMaxArcWidth - absTempX).toInt(), rvOriginRect.top, (mMaxArcWidth + absTempX).toInt(), rvOriginRect.bottom)
-                    }
-                    isMoved = true
-                    isRecyclerReceiveEvent = false
-                    //overScrollViewToOrigin()
-                    return true
-
-                } else {
-                    mDownX = ev.x
-                    isMoved = false
-                    isRecyclerReceiveEvent = true
-                    overScrollViewToOrigin()
-                    return super.dispatchTouchEvent(ev)
-                }
-            }
-
-            MotionEvent.ACTION_UP -> {
-                //抬起来
-                if (isMoved) {
-                    overScrollViewToOrigin()
-                }
-                return if (isRecyclerReceiveEvent) {
-                    super.dispatchTouchEvent(ev)
-                } else {
-                    true
-                }
-            }
-        }
-
-        return super.dispatchTouchEvent(ev)
-
-    }
-
-    /**
-     * 用于判断是否要展示右侧的弧度布局
-     */
-    private fun isCanShowArc(): Boolean {
-
-        var adapter = mRvView.adapter as RecyclerView.Adapter
-
-        //获取到最有一个Item的角标
-        val lastItemPosition = adapter.itemCount - 1
-
-        //获取到布局管理器
-        val rvManager = mRvView.layoutManager as LinearLayoutManager
-
-        //获取到可见区域内最后一个完整的Item的position
-        var findLastVisibleItemPosition = rvManager.findLastVisibleItemPosition()
-
-        if (lastItemPosition == findLastVisibleItemPosition) {
-            return true
-        }
-        return false
-    }
-
-    /**
-     * overScrollView恢复到原位
-     */
-    private fun overScrollViewToOrigin() {
-        if (!isMoved) {
-            return
-        }
-        //移动Rv
-        val rvTranslation = TranslateAnimation((mRvView.left - rvOriginRect.left).toFloat(), 0f, 0f, 0f)
-        rvTranslation.duration = ANOTATION_DURATION
-        mRvView.startAnimation(rvTranslation)
-        mRvView.layout(rvOriginRect.left, rvOriginRect.top, rvOriginRect.right, rvOriginRect.bottom)
-
-        //恢复OverScrollView，更具Duration的事件来更新
-
-        var overScrollViewAnimation = ValueAnimator.ofInt(mMaxArcWidth - mOverScrollView.left, 0)
-        overScrollViewAnimation.duration = ANOTATION_DURATION
-        overScrollViewAnimation.addUpdateListener {
-            var offsetValue = it.animatedValue as Int
-            //更新OverView的位置
-            mOverScrollView.drawArc(mMaxArcWidth - offsetValue, rvOriginRect.top, mMaxArcWidth + offsetValue, rvOriginRect.bottom)
-        }
-
-        overScrollViewAnimation.start()
-
-    }
+//    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+//        if (ev?.action == MotionEvent.ACTION_MOVE) {
+//            if (isMoved) {
+//                return true
+//            }
+//        }
+//        return super.onInterceptTouchEvent(ev)
+//    }
+//
+//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+//        //不让父控件拦截事件
+//        requestDisallowInterceptTouchEvent(true)
+//        when (ev?.action) {
+//            /**
+//             * 记录一下 按下的位置
+//             */
+//            MotionEvent.ACTION_DOWN -> {
+//                //按下
+//                mDownX = ev.x
+//            }
+//            /**
+//             * 在移动的过程中，需要知道什么时候要展示出OverScrollView
+//             * 这个过程就是获取到Rv当前可见范围的最后一个完整View的position是childCount-1,并且是向左滑动的 （moveX<mDownX ）
+//             */
+//            MotionEvent.ACTION_MOVE -> {
+//                //移动
+//                val moveX = ev.x
+//                var tempX = (moveX - mDownX) * DAMP
+//                if (isCanShowArc() && tempX < 0) {
+//                    val absTempX = abs(tempX)
+//                    //布局Rv
+//                    mRvView.layout((rvOriginRect.left - absTempX).toInt(), rvOriginRect.top, (rvOriginRect.right - absTempX).toInt(), rvOriginRect.bottom)
+//                    if (absTempX < mMaxArcWidth) {
+//                        mOverScrollView.drawArc((mMaxArcWidth - absTempX).toInt(), rvOriginRect.top, (mMaxArcWidth + absTempX).toInt(), rvOriginRect.bottom)
+//                    }
+//                    isMoved = true
+//                    isRecyclerReceiveEvent = false
+//                    //overScrollViewToOrigin()
+//                    return true
+//
+//                } else {
+//                    mDownX = ev.x
+//                    isMoved = false
+//                    isRecyclerReceiveEvent = true
+//                    overScrollViewToOrigin()
+//                    return super.dispatchTouchEvent(ev)
+//                }
+//            }
+//
+//            MotionEvent.ACTION_UP -> {
+//                //抬起来
+//                if (isMoved) {
+//                    overScrollViewToOrigin()
+//                }
+//                return if (isRecyclerReceiveEvent) {
+//                    super.dispatchTouchEvent(ev)
+//                } else {
+//                    true
+//                }
+//            }
+//        }
+//
+//        return super.dispatchTouchEvent(ev)
+//
+//    }
+//
+//    /**
+//     * 用于判断是否要展示右侧的弧度布局
+//     */
+//    private fun isCanShowArc(): Boolean {
+//
+//        var adapter = mRvView.adapter as RecyclerView.Adapter
+//
+//        //获取到最有一个Item的角标
+//        val lastItemPosition = adapter.itemCount - 1
+//
+//        //获取到布局管理器
+//        val rvManager = mRvView.layoutManager as LinearLayoutManager
+//
+//        //获取到可见区域内最后一个完整的Item的position
+//        var findLastVisibleItemPosition = rvManager.findLastVisibleItemPosition()
+//
+//        if (lastItemPosition == findLastVisibleItemPosition) {
+//            return true
+//        }
+//        return false
+//    }
+//
+//    /**
+//     * overScrollView恢复到原位
+//     */
+//    private fun overScrollViewToOrigin() {
+//        if (!isMoved) {
+//            return
+//        }
+//        //移动Rv
+//        val rvTranslation = TranslateAnimation((mRvView.left - rvOriginRect.left).toFloat(), 0f, 0f, 0f)
+//        rvTranslation.duration = ANOTATION_DURATION
+//        mRvView.startAnimation(rvTranslation)
+//        mRvView.layout(rvOriginRect.left, rvOriginRect.top, rvOriginRect.right, rvOriginRect.bottom)
+//
+//        //恢复OverScrollView，更具Duration的事件来更新
+//
+//        var overScrollViewAnimation = ValueAnimator.ofInt(mMaxArcWidth - mOverScrollView.left, 0)
+//        overScrollViewAnimation.duration = ANOTATION_DURATION
+//        overScrollViewAnimation.addUpdateListener {
+//            var offsetValue = it.animatedValue as Int
+//            //更新OverView的位置
+//            mOverScrollView.drawArc(mMaxArcWidth - offsetValue, rvOriginRect.top, mMaxArcWidth + offsetValue, rvOriginRect.bottom)
+//        }
+//
+//        overScrollViewAnimation.start()
+//
+//    }
 }
