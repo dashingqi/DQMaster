@@ -1,9 +1,11 @@
 # DQMaster
 
 #### DQCommonToolbar
+> implementation 'com.dashingqi:DQCommonToolbar:0.9.9.2'
 - 通用的标题栏
 
 #### DQCommonUtils
+> implementation 'com.dashingqi:DQCommonUtils:0.9.9.1'
 ###### 通用的工具类
 - ContextUtils
 - DateUtils
