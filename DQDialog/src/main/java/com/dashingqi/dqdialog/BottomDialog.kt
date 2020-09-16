@@ -20,6 +20,10 @@ open class BottomDialog : BaseDialog {
 
     }
 
+    /**
+     * 为什么要在setContentView中设置 setDialogWidthPercent？
+     * 应为添加完View之后 才能进行设置View的宽度
+     */
     override fun setContentView(view: View) {
         super.setContentView(view)
         setDialogWidthPercent(1f)
