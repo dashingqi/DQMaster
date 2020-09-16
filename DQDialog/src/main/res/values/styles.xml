@@ -29,4 +29,11 @@
     <style name="base_transparent">
         <item name="android:windowBackground">@color/base_color_transparent</item>
     </style>
+
+    <style name="bottom_dialog_animation">
+        <!--        进入时的动画-->
+        <item name="android:windowEnterAnimation">@anim/bottom_dialog_enter_anim</item>
+        <!--        退出时的动画-->
+        <item name="android:windowExitAnimation">@anim/bottom_dialog_exit_anim</item>
+    </style>
 </resources>
