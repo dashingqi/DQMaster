@@ -16,6 +16,7 @@
 - BaseMVVMActivity
 
 #### DQDialog
+> implementation 'com.dashingqi:DQDialog:0.9.9.1'
 ###### 通用的Dialog
 - LoadingDialog：可直接使用，带有旋转的菊花
 ![loading_dialog.gif](https://upload-images.jianshu.io/upload_images/4997216-40e8dd85cef3a40f.gif?imageMogr2/auto-orient/strip)
