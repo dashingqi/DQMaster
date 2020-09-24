@@ -11,7 +11,7 @@ import android.view.ViewGroup
  * desc :
  */
 open class BottomDialog : BaseDialog {
-    constructor(context: Context) : super(context, R.style.base_loadingDialogTheme)
+    constructor(context: Context) : super(context, R.style.base_dialog_theme_transparent)
 
     init {
         setDialogGravity(Gravity.BOTTOM)

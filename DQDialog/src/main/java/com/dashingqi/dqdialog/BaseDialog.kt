@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
  */
 open class BaseDialog : Dialog {
 
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : super(context,R.style.base_loadingDialogTheme)
 
     constructor(context: Context, resId: Int) : super(context, resId)
 

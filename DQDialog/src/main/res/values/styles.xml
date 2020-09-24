@@ -18,6 +18,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <!--    仅仅是透明色-->
     <style name="base_dialog_theme.transparent">
         <item name="android:windowBackground">@color/base_bg_transparent</item>
     </style>

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.loading_layout.*
  * desc : 加载框 一般用于网络提交数据的等待加载框
  */
 class LoadingDialog : BaseDialog {
-    constructor(context: Context) : super(context, R.style.base_loadingDialogTheme)
+    constructor(context: Context) : super(context, R.style.base_dialog_theme_transparent)
 
     init {
         //设置布局
