@@ -1,1 +1,0 @@
-/Users/zhangqi/material/opensourceandroid/DQMaster/buildSrc/build/classes/kotlin/main/Dependencies$Deps.class:/Users/zhangqi/material/opensourceandroid/DQMaster/buildSrc/build/classes/kotlin/main/Dependencies$Versions.class:/Users/zhangqi/material/opensourceandroid/DQMaster/buildSrc/build/classes/kotlin/main/Dependencies.class
