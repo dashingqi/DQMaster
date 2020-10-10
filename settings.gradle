@@ -1,3 +1,6 @@
+include ':DQLaunchStarter'
+include ':DQDialog'
+include ':DQGradleDemo'
 include ':module-fragment'
 include ':DQOverScrollLayout'
 include ':DQMVVMBase'
