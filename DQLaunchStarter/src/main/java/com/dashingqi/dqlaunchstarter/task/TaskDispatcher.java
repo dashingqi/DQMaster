@@ -120,7 +120,6 @@ public class TaskDispatcher {
         return !task.runOnMainThread() && task.needWait();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     @UiThread
     public void start() {
         mStartTime = System.currentTimeMillis();
