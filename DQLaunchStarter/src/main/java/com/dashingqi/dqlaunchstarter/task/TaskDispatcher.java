@@ -7,9 +7,11 @@ package com.dashingqi.dqlaunchstarter.task;
  */
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.UiThread;
 
 import com.dashingqi.dqlaunchstarter.dispatch.DispatchRunnable;
@@ -118,6 +120,7 @@ public class TaskDispatcher {
         return !task.runOnMainThread() && task.needWait();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @UiThread
     public void start() {
         mStartTime = System.currentTimeMillis();

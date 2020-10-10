@@ -1,8 +1,10 @@
 package com.dashingqi.dqlaunchstarter.sort;
 
+import android.os.Build;
 import android.util.ArraySet;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.dashingqi.dqlaunchstarter.task.Task;
 import com.dashingqi.dqlaunchstarter.utils.DispatcherLog;
@@ -25,6 +27,7 @@ public class TaskSortUtil {
      *
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public static synchronized List<Task> getSortResult(List<Task> originTasks,
                                                         List<Class<? extends Task>> clsLaunchTasks) {
         long makeTime = System.currentTimeMillis();
