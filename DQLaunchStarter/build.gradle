@@ -8,11 +8,7 @@ publish {
     userOrg = 'dashingqi'      // bintray注册的用户名
     groupId = 'com.dashingqi'
     artifactId = 'DQLaunchStarter' // bintray创建的package
-<<<<<<< HEAD
     publishVersion = '0.9.9.2'
-=======
-    publishVersion = '0.9.9.3'
->>>>>>> 5c306520f72f4c054561a87b287c3e055868f381
     desc = 'update'
     bintrayUser = 'dashingqi'
     bintrayKey = LocalBintrayKey()
