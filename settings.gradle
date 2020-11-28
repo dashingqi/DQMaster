@@ -1,3 +1,4 @@
+include ':module-view'
 include ':DQLaunchStarter'
 include ':DQDialog'
 include ':DQGradleDemo'

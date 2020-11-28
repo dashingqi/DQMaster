@@ -42,6 +42,7 @@
       <module name="DQMaster.module-gradle" target="1.8" />
       <module name="DQMaster.module-paging" target="1.8" />
       <module name="DQMaster.module-spi" target="1.8" />
+      <module name="DQMaster.module-view" target="1.8" />
       <module name="DQMaster.module-zxing" target="1.8" />
       <module name="module-arouter" target="1.7" />
       <module name="module-spi-impl-one" target="1.7" />
