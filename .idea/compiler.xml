@@ -37,6 +37,7 @@
       <module name="DQMaster.module-3dtouch" target="1.8" />
       <module name="DQMaster.module-arithmetic" target="1.8" />
       <module name="DQMaster.module-arouter" target="1.8" />
+      <module name="DQMaster.module-event" target="1.8" />
       <module name="DQMaster.module-fragment" target="1.8" />
       <module name="DQMaster.module-glide" target="1.8" />
       <module name="DQMaster.module-gradle" target="1.8" />

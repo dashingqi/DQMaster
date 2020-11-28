@@ -1,3 +1,4 @@
+include ':module-event'
 include ':module-view'
 include ':DQLaunchStarter'
 include ':DQDialog'
