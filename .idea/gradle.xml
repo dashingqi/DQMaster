@@ -21,12 +21,12 @@
             <option value="$PROJECT_DIR$/GradleDemo" />
             <option value="$PROJECT_DIR$/annotation" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/class" />
             <option value="$PROJECT_DIR$/compiler" />
             <option value="$PROJECT_DIR$/module-3dtouch" />
             <option value="$PROJECT_DIR$/module-arithmetic" />
             <option value="$PROJECT_DIR$/module-arouter" />
+            <option value="$PROJECT_DIR$/module-event" />
             <option value="$PROJECT_DIR$/module-fragment" />
             <option value="$PROJECT_DIR$/module-glide" />
             <option value="$PROJECT_DIR$/module-gradle" />
@@ -35,10 +35,12 @@
             <option value="$PROJECT_DIR$/module-spi-impl-one" />
             <option value="$PROJECT_DIR$/module-spi-impl-two" />
             <option value="$PROJECT_DIR$/module-spi-interface" />
+            <option value="$PROJECT_DIR$/module-view" />
             <option value="$PROJECT_DIR$/module-zxing" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="useQualifiedModuleNames" value="true" />
       </GradleProjectSettings>
     </option>
   </component>
