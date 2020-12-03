@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.dashingqi.module.event.MyGroupView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</com.dashingqi.module.event.MyGroupView>
+        <TextView
+            android:id="@+id/tv1"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="sjkldfjslakdjklasjdklasdjsakldjlaksdjklasdjaskldjklasdjskladjklasdjaskldjs"
+            android:gravity="center"
+            android:background="@color/cardview_shadow_start_color"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"/>
+
+       <androidx.recyclerview.widget.RecyclerView
+           android:id="@+id/recyclerView"
+           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+           android:orientation="vertical"
+           app:layout_constraintBottom_toTopOf="@+id/tv2"
+           app:layout_constraintTop_toBottomOf="@+id/tv1"
+           android:layout_width="match_parent"
+           android:layout_height="400dp"/>
+
+        <TextView
+            android:id="@+id/tv2"
+            android:text="skldjklasdjklasjdklasdjlaskjdklasdjklasjdklasjdaskldjaskldj"
+            android:gravity="center"
+            android:background="@color/teal_200"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>
