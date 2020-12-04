@@ -14,6 +14,7 @@ publish {
     bintrayUser = 'dashingqi'
     bintrayKey = LocalBintrayKey()
     dryRun = false
+    override = true
 }
 android {
     compileSdkVersion 30
@@ -42,8 +43,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding {
-        enabled true
+    buildFeatures {
+        dataBinding true
     }
 }
 
