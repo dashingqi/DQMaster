@@ -23,3 +23,9 @@
 - BottomDialog：可继承，设置自己的布局
 ![bottom_dialog.gif](https://upload-images.jianshu.io/upload_images/4997216-f30abba8990a5353.gif?imageMogr2/auto-orient/strip)
 - BoxDialog：提示的对话框，可订制性高
+
+#### DQCountDown
+>
+###### 简介
+- 可定制的倒计时控件，对外提供getLayoutId()
+
