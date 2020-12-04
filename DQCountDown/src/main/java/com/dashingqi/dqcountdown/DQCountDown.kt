@@ -89,7 +89,7 @@ open class DQCountDown : RelativeLayout {
                                         mCountDownListener?.countDownStop()
                                         disposable?.dispose()
                                     } else {
-                                        setTime(TimeUtils.formatTimeLong(timeLong,timeBean))
+                                        setTime(TimeUtils.formatTimeLong(tempTimeLong, timeBean))
                                     }
                                 }
 
@@ -104,9 +104,11 @@ open class DQCountDown : RelativeLayout {
      * 处理时间
      */
     private fun setTime(timeBean: TimeBean) {
+        Log.d(TAG, "$timeBean")
         mTvHour.text = timeBean.hour
         mTvMinute.text = timeBean.minute
         mTvSecond.text = timeBean.second
+
     }
 
     /**

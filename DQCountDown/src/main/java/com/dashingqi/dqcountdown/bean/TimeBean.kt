@@ -9,4 +9,8 @@ class TimeBean{
     var hour: String = "00"
     var minute: String = "00"
     var second: String = "00"
+    override fun toString(): String {
+        return "TimeBean(hour='$hour', minute='$minute', second='$second')"
+    }
+
 }
