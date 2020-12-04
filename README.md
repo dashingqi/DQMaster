@@ -27,5 +27,6 @@
 #### DQCountDown
 >
 ###### 简介
-- 可定制的倒计时控件，对外提供getLayoutId()
-> implementation 'com.dashingqi:DQCountDown:0.9.0'
+- 自定义样式的倒计时控件，通过对外提供的getLayoutId()方法，可以设置自己编写的布局文件
+- 唯一注意的点是，布局对应的控件名字要保持一致，（tvHour，tvMinus，tvSecond）
+> implementation 'com.dashingqi:DQCountDown:0.9.9.1'
