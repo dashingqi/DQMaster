@@ -8,39 +8,47 @@ import com.dashingqi.dqcountdown.bean.TimeBean
  * desc :
  */
 object TimeUtils {
-    fun formatTimeLong(millisecond: Long):TimeBean{
+
+    fun formatTimeLong(millisecond: Long,timeBean: TimeBean): TimeBean {
         var hour = (millisecond / 1000 / (60 * 60)).toInt()
         var minute = (millisecond / 1000 / 60 % 60).toInt()
         var second = (millisecond / 1000 % 60).toInt()
         return if (hour < 10) {
             if (minute < 10) {
                 if (second < 10) {
-                    TimeBean("0$hour", "0$minute", "0$second")
+                    handleTime("0$hour", "0$minute", "0$second", timeBean)
                 } else {
-                    TimeBean("0$hour", "0$minute", "$second")
+                    handleTime("0$hour", "0$minute", "$second", timeBean)
                 }
             } else {
                 if (second < 10) {
-                    TimeBean("0$hour", "$minute", "0$second")
+                    handleTime("0$hour", "$minute", "0$second", timeBean)
                 } else {
-                    TimeBean("0$hour", "$minute", "$second")
+                    handleTime("0$hour", "$minute", "$second", timeBean)
                 }
             }
         } else {
             if (minute < 10) {
                 if (second < 10) {
-                    TimeBean("$hour", "0$minute", "0$second")
+                    handleTime("$hour", "0$minute", "0$second", timeBean)
                 } else {
 
-                    TimeBean("0$hour", "0$minute", "$second")
+                    handleTime("0$hour", "0$minute", "$second", timeBean)
                 }
             } else {
                 if (second < 10) {
-                    TimeBean("$hour", "$minute", "0$second")
+                    handleTime("$hour", "$minute", "0$second", timeBean)
                 } else {
-                    TimeBean("$hour", "$minute", "$second")
+                    handleTime("$hour", "$minute", "$second", timeBean)
                 }
             }
         }
+    }
+
+    private fun handleTime(hour: String, minute: String, second: String, timeBean: TimeBean): TimeBean {
+        timeBean.hour = hour
+        timeBean.minute = minute
+        timeBean.second = second
+        return timeBean
     }
 }

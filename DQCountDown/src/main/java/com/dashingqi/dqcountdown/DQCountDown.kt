@@ -31,6 +31,8 @@ open class DQCountDown : RelativeLayout {
 
     private var mRootView: View? = null
 
+    var timeBean = TimeBean()
+
 
     private lateinit var mTvHour: TextView
     private lateinit var mTvMinute: TextView
@@ -83,11 +85,11 @@ open class DQCountDown : RelativeLayout {
                                 override fun onNext(t: Long) {
                                     var tempTimeLong = timeLong - System.currentTimeMillis()
                                     if (tempTimeLong <= 0) {
-                                        handleTime(TimeBean())
+                                        setTime(TimeBean())
                                         mCountDownListener?.countDownStop()
                                         disposable?.dispose()
                                     } else {
-                                        handleTime(TimeUtils.formatTimeLong(timeLong))
+                                        setTime(TimeUtils.formatTimeLong(timeLong,timeBean))
                                     }
                                 }
 
@@ -101,7 +103,7 @@ open class DQCountDown : RelativeLayout {
     /**
      * 处理时间
      */
-    private fun handleTime(timeBean: TimeBean) {
+    private fun setTime(timeBean: TimeBean) {
         mTvHour.text = timeBean.hour
         mTvMinute.text = timeBean.minute
         mTvSecond.text = timeBean.second

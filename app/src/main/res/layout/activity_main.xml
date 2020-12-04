@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.dashingqi.master.MainViewModel" />
+
 
     </data>
 
@@ -14,12 +18,22 @@
         tools:context=".MainActivity">
 
         <com.dashingqi.dqcommontoolbar.widget.CommonToolbar
+            android:id="@+id/toolbar"
             leftText='@{"左标题"}'
             rightText='@{"右标题"}'
             titleText='@{"测试"}'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.dashingqi.dqcountdown.DQCountDown
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            exCountDownTime="@{viewModel.countDownTime}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <TextView
             android:id="@+id/tvText"

@@ -28,4 +28,4 @@
 >
 ###### 简介
 - 可定制的倒计时控件，对外提供getLayoutId()
-
+> implementation 'com.dashingqi:DQCountDown:0.9.0'
