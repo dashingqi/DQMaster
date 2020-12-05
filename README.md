@@ -17,6 +17,10 @@
 #### DQMVVMBase
 ###### MVVM架构抽取的Base基类
 - BaseMVVMActivity
+###### RV
+- OptimizeRecyclerView
+  - 经过优化后的RecyclerView,
+  - 目前使用的场景是：当TabLayout+ViewPager2+RecyclerView中，ViewPager2滑动灵敏，导致TabLayout切换的问题。
 
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
