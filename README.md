@@ -10,6 +10,9 @@
 - ContextUtils
 - DateUtils
 - DensityUtils
+- MotionEventUtils (事件的工具类，目前封装了打印事件的方法)
+- ProcessUtils （获取进程名字的工具类）
+- ToastExt （Toast的扩展类）
 
 #### DQMVVMBase
 ###### MVVM架构抽取的Base基类
