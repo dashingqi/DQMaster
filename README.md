@@ -21,6 +21,14 @@
 - OptimizeRecyclerView
   - 经过优化后的RecyclerView,
   - 目前使用的场景是：当TabLayout+ViewPager2+RecyclerView中，ViewPager2滑动灵敏，导致TabLayout切换的问题。
+###### LiveData
+- InitLiveData
+  - 带有非空默认值的LiveData
+  - 在项目中有时候我们使用MutableLiveData的时候不赋默认值的话，取数据可能会取到null，UI显示上会很难看，有时候涉及到数据的操作坑你会发生crash
+  - InitLiveData就是为了解决上述痛点而设计的。
+- DiffLiveData
+  - 如果当前LiveData中携带的值和将要设置的值是一致的，就不进行设置值的操作了
+  - 减少了一次数据操作
 
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
