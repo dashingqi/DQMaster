@@ -15,12 +15,15 @@
 - ToastExt （Toast的扩展类）
 
 #### DQMVVMBase
+
 ###### MVVM架构抽取的Base基类
 - BaseMVVMActivity
+
 ###### RV
 - OptimizeRecyclerView
   - 经过优化后的RecyclerView,
   - 目前使用的场景是：当TabLayout+ViewPager2+RecyclerView中，ViewPager2滑动灵敏，导致TabLayout切换的问题。
+
 ###### LiveData
 - InitLiveData
   - 带有非空默认值的LiveData
@@ -33,6 +36,7 @@
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
 > implementation 'com.dashingqi:DQDialog:0.9.9.1'
+
 ###### 具体实现例子
 - LoadingDialog：可直接使用，带有旋转的菊花
 - BottomDialog：可继承，设置自己的布局
