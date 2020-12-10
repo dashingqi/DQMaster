@@ -13,6 +13,12 @@
 - MotionEventUtils (事件的工具类，目前封装了打印事件的方法)
 - ProcessUtils （获取进程名字的工具类）
 - ToastExt （Toast的扩展类）
+- SystemServiceUtil 系统服务的工具类 （比如copy）
+- AppUtil
+  - 用于提供获取全局的Application工具类（主线程和子线程都通用）
+  - 采用两种方式获取
+    - 1 通过ContentProvider （初始化在主线程中，主线程中优先使用此种方法）
+    - 2 通过反射获取到ActivityThread中的Application（子线程中，使用此种方法获取到Application）
 
 #### DQMVVMBase
 
