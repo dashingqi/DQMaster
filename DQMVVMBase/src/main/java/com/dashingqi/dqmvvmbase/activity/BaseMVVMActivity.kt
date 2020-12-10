@@ -33,7 +33,7 @@ class BaseMVVMActivity<DB : ViewDataBinding, VM : ViewModel> : AppCompatActivity
         viewModel = createViewModel()
         dataBinding.lifecycleOwner = this
         //绑定ViewModel到布局上
-        dataBinding.setVariable(BR.viewModel,viewModel)
+        dataBinding.setVariable(BR.viewModel, viewModel)
 
     }
 
@@ -53,14 +53,16 @@ class BaseMVVMActivity<DB : ViewDataBinding, VM : ViewModel> : AppCompatActivity
      */
     private fun createViewModel(): VM {
         var vmClass = getVmClass<VM>(this)
-        return ViewModelProvider(this, getViewModelFactory()).get(vmClass)
+        return getViewModelFactory()?.let {
+            ViewModelProvider(this, it).get(vmClass)
+        } ?: ViewModelProvider(this).get(vmClass)
     }
 
     /**
      * 如果你需要传递参数到ViewModel中，可以重写该方法
      */
-    open fun getViewModelFactory(): ViewModelProvider.Factory {
-        return defaultViewModelProviderFactory
+    open fun getViewModelFactory(): ViewModelProvider.Factory? {
+        return null
     }
 
 }
