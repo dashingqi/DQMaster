@@ -24,6 +24,8 @@
 
 ###### MVVM架构抽取的Base基类
 - BaseMVVMActivity
+###### 扩展类
+- LogExt (日志的扩展类)
 
 ###### RV
 - OptimizeRecyclerView
