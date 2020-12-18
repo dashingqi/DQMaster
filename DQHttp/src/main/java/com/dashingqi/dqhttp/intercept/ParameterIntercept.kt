@@ -9,11 +9,12 @@ import java.lang.Exception
  * @time : 12/18/20
  * desc :
  */
-class ParameterIntercept(
+abstract class ParameterIntercept(
         var get: ((RequestWrapper) -> Request)? = null,
         var postFormBody: ((RequestWrapper) -> Request)? = null,
         var postJsonBody: ((RequestWrapper) -> Request)? = null,
-        var multiPartBody: ((RequestWrapper) -> Request)? = null
+        var postMultiPartBody: ((RequestWrapper) -> Request)? = null,
+        var postOtherBody: ((RequestWrapper) -> Request)? = null
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
@@ -21,7 +22,10 @@ class ParameterIntercept(
         val wrapper = RequestWrapper(request)
 
         if (wrapper.isGet()) {
-            return chain.proceed(request)
+            get?.let {
+                return chain.proceed(it.invoke(wrapper))
+            } ?: throw Exception("get not null")
+
         } else {
             return when (request.body) {
                 is FormBody -> {
@@ -30,7 +34,7 @@ class ParameterIntercept(
                     } ?: throw Exception("postFormBody not null")
                 }
                 is MultipartBody -> {
-                    multiPartBody?.let {
+                    postMultiPartBody?.let {
                         chain.proceed(it.invoke(wrapper))
                     } ?: throw Exception("multipartBody not null")
                 }
@@ -40,7 +44,9 @@ class ParameterIntercept(
                             chain.proceed(it.invoke(wrapper))
                         } ?: throw Exception("postJsonBody not null")
                     } else {
-                        chain.proceed(request)
+                        postOtherBody?.let {
+                            chain.proceed(it.invoke(wrapper))
+                        } ?: chain.proceed(request)
                     }
                 }
             }

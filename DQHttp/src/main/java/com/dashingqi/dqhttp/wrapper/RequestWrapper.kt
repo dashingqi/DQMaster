@@ -124,6 +124,16 @@ class RequestWrapper(var request: Request) {
     }
 
     /**
+     * 获取到地址的字符串
+     */
+    fun getUrl(): String = request.url.toString()
+
+    /**
+     * 获取到HttpUrl
+     */
+    fun getHttpUrl(): HttpUrl = request.url
+
+    /**
      * 拿到一个新的request builder
      */
     fun setNewRequestBuilder(): Request.Builder {

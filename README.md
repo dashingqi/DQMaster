@@ -41,6 +41,10 @@
   - 如果当前LiveData中携带的值和将要设置的值是一致的，就不进行设置值的操作了
   - 减少了一次数据操作
 
+#### DQHttp
+- ParameterIntercept
+  - 根据请求方法和Body来做参数的区分，提供拦截的回调方法，可以操作 body，get请求以及multi
+
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
 > implementation 'com.dashingqi:DQDialog:0.9.9.1'
