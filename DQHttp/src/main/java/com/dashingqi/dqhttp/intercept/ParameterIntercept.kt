@@ -9,47 +9,37 @@ import java.lang.Exception
  * @time : 12/18/20
  * desc :
  */
-abstract class ParameterIntercept(
-        var get: ((RequestWrapper) -> Request)? = null,
-        var postFormBody: ((RequestWrapper) -> Request)? = null,
-        var postJsonBody: ((RequestWrapper) -> Request)? = null,
-        var postMultiPartBody: ((RequestWrapper) -> Request)? = null,
-        var postOtherBody: ((RequestWrapper) -> Request)? = null
-) : Interceptor {
+abstract class ParameterIntercept : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
 
         val wrapper = RequestWrapper(request)
 
         if (wrapper.isGet()) {
-            get?.let {
-                return chain.proceed(it.invoke(wrapper))
-            } ?: throw Exception("get not null")
+            return chain.proceed(get(wrapper))
 
         } else {
             return when (request.body) {
                 is FormBody -> {
-                    postFormBody?.let {
-                        chain.proceed(it.invoke(wrapper))
-                    } ?: throw Exception("postFormBody not null")
+                    chain.proceed(postFormBody(wrapper))
                 }
                 is MultipartBody -> {
-                    postMultiPartBody?.let {
-                        chain.proceed(it.invoke(wrapper))
-                    } ?: throw Exception("multipartBody not null")
+                    chain.proceed(postMultiPartBody(wrapper))
                 }
                 else -> {
                     if (wrapper.isJsonBody()) {
-                        postJsonBody?.let {
-                            chain.proceed(it.invoke(wrapper))
-                        } ?: throw Exception("postJsonBody not null")
+                        chain.proceed(postJsonBody(wrapper))
                     } else {
-                        postOtherBody?.let {
-                            chain.proceed(it.invoke(wrapper))
-                        } ?: chain.proceed(request)
+                        chain.proceed(postOtherBody(wrapper))
                     }
                 }
             }
         }
     }
+
+    abstract fun get(requestWrapper: RequestWrapper): Request
+    abstract fun postFormBody(requestWrapper: RequestWrapper): Request
+    abstract fun postJsonBody(requestWrapper: RequestWrapper): Request
+    abstract fun postMultiPartBody(requestWrapper: RequestWrapper): Request
+    abstract fun postOtherBody(requestWrapper: RequestWrapper): Request
 }
