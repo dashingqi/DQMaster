@@ -12,7 +12,7 @@ import okio.BufferedSink
 class RequestWrapper(var request: Request) {
 
     /**
-     * 是否是GET请i去
+     * 是否是GET请求
      */
     fun isGet(): Boolean = request.method.equals("GET", true)
 

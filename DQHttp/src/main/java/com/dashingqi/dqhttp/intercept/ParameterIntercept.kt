@@ -7,7 +7,7 @@ import java.lang.Exception
 /**
  * @author : zhangqi
  * @time : 12/18/20
- * desc :
+ * desc : 根据请求方式和body来做区分，针对不同的请求给予不同的回调方法
  */
 abstract class ParameterIntercept : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
