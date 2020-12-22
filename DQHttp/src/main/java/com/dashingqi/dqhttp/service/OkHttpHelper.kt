@@ -11,7 +11,7 @@ import javax.net.ssl.X509TrustManager
 /**
  * @author : zhangqi
  * @time : 12/22/20
- * desc :
+ * desc : 证书忽略的配置
  */
 object OkHttpHelper {
     fun createIgnoreSSLSocketFactory(x509TrustManager: X509TrustManager): SSLSocketFactory {

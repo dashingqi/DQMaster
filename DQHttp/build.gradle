@@ -9,11 +9,12 @@ publish {
     userOrg = 'dashingqi'      // bintray注册的用户名
     groupId = 'com.dashingqi'
     artifactId = 'DQHttp' // bintray创建的package
-    publishVersion = '0.9.9.0'
+    publishVersion = '0.9.9.1'
     desc = 'update'
     bintrayUser = 'dashingqi'
     bintrayKey = LocalBintrayKey()
     dryRun = false
+    override = true
 }
 
 android {
