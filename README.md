@@ -42,8 +42,14 @@
   - 减少了一次数据操作
 
 #### DQHttp
-- ParameterIntercept
-  - 根据请求方法和Body来做区分，提供拦截的回调方法，可以操作 body，get请求以及multi
+###### ParameterIntercept
+- 根据请求方法和Body来做区分，提供拦截的回调方法，可以操作 body，get请求以及multi
+###### NetService和NetServcieBuilder
+- 采用建造者模式来构建NetService类（网络请求的服务类）
+- NetServiceBuilder 用于构建NetService请求网络所需要的参数
+- 对于OkHttp，可灵活配置拦截器 包括数据的转换器（response---> bean ）和数据的适配器(请求的返回值可自定义)
+- 对于OkHttpClient和Retrofit的配置 采用了高阶函数的方式 在内部采用建造者模式，构建出OkHttpClient.Builder() 和Retrofit.Builder()，
+通过高阶函数的特性将构建好的Builder回调，然后配置响应的参数
 
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
