@@ -56,6 +56,11 @@
 - ResponseCallAdapter的adapt方法中我们拿到了Call对象后 我们执行exexute()得到了Response
 - 通过BaseCallback 将结果回调到 onSuccess()或者onFailure()中
 
+###### BaseCallBack
+- BaseCallBack extends retrofit.CallBack
+- 在BaseCallBack中 根据 response.code，body，以及服务器接口的定义（code，token，）来做不同的回调
+- 这个回调是采用的高阶函数的特性，每一个请求都可以添加对应的action（高阶函数），在回调中根据不同的状态去执行的action （action.invoke()）
+
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
 > implementation 'com.dashingqi:DQDialog:0.9.9.1'
