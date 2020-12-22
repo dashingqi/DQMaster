@@ -51,6 +51,11 @@
 - 对于OkHttpClient和Retrofit的配置 采用了高阶函数的方式 在内部采用建造者模式，构建出OkHttpClient.Builder() 和Retrofit.Builder()，
 通过高阶函数的特性将构建好的Builder回调，然后配置响应的参数
 
+###### BaseCallAdapterFactory
+- 采用工厂模式生产出了一个 CallAdapter （ResposneCallAdapter）
+- ResponseCallAdapter的adapt方法中我们拿到了Call对象后 我们执行exexute()得到了Response
+- 通过BaseCallback 将结果回调到 onSuccess()或者onFailure()中
+
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
 > implementation 'com.dashingqi:DQDialog:0.9.9.1'
