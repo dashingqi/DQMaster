@@ -8,5 +8,6 @@ package com.dashingqi.dqhttp.response
 interface IResponse {
     fun isTokenError(): Boolean
     fun isSuccess(): Boolean
+    fun isCodeError():Boolean
     fun getMessage(): String
 }
