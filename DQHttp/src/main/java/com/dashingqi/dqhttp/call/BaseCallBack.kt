@@ -13,7 +13,7 @@ import java.lang.Exception
  * desc : 对CallBack的一个预处理
  * 这里仅仅做请求的分发，业务的分发在LiveDataCallBack中做
  */
-class BaseCallBack<T : IResponse> : Callback<T> {
+open class BaseCallBack<T : IResponse> : Callback<T> {
     override fun onResponse(call: Call<T>, response: Response<T>) {
         Log.d("TAG", "onResponse")
         try {
