@@ -40,7 +40,10 @@
 - DiffLiveData
   - 如果当前LiveData中携带的值和将要设置的值是一致的，就不进行设置值的操作了
   - 减少了一次数据操作
-
+- LostMutableLiveData
+    - 防止LiveData数据倒灌现象问题，就是解除粘性的效果
+    - 正常我们先post或者set的然后在注册监听者监听LiveData的状态变换是能收到为注册之前最新一次的post或者set
+    - 而我们的LostMutableLiveData就是为了解决这个问题而出现的
 #### DQHttp
 ###### ParameterIntercept
 - 根据请求方法和Body来做区分，提供拦截的回调方法，可以操作 body，get请求以及multi
