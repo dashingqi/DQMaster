@@ -14,6 +14,7 @@
 - ProcessUtils （获取进程名字的工具类）
 - ToastExt （Toast的扩展类）
 - SystemServiceUtil 系统服务的工具类 （比如copy）
+- UIThreadUtils 在UI线程执行任务的工具类
 - AppUtil
   - 用于提供获取全局的Application工具类（主线程和子线程都通用）
   - 采用两种方式获取
