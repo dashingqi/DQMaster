@@ -1,19 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.novoda.bintray-release'
 
-publish {
-    repoName = 'utils'
-    userOrg = 'dashingqi'      // bintray注册的用户名
-    groupId = 'com.dashingqi'
-    artifactId = 'DQOverScrollLayout' // bintray创建的package
-    publishVersion = '0.9.9.4'
-    desc = 'update'
-    bintrayUser = 'dashingqi'
-    bintrayKey = LocalBintrayKey()
-    dryRun = false
-}
 
 android {
     compileSdkVersion 29
