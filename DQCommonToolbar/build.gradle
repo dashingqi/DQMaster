@@ -2,19 +2,15 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.novoda.bintray-release'
+// 上传到maven仓库的配置
+ext
+        {
+            PUBLISH_GROUP_ID = "io.github.dashingqi"        //项目包名
+            PUBLISH_ARTIFACT_ID = 'common-toolbar'            //项目名
+            PUBLISH_VERSION = '0.0.1'
+        }
+apply from: '../publish-mavencentral.gradle'
 
-publish {
-    repoName = 'utils'
-    userOrg = 'dashingqi'      // bintray注册的用户名
-    groupId = 'com.dashingqi'
-    artifactId = 'DQCommonToolbar' // bintray创建的package
-    publishVersion = '0.9.9.2'
-    desc = 'update'
-    bintrayUser = 'dashingqi'
-    bintrayKey = LocalBintrayKey()
-    dryRun = false
-}
 
 android {
     compileSdkVersion 29
@@ -37,7 +33,7 @@ android {
         }
     }
 
-    dataBinding{
+    dataBinding {
         enabled true
     }
 }
@@ -51,5 +47,4 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
 }
