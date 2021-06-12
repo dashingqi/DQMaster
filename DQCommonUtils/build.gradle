@@ -1,19 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.novoda.bintray-release'
 
-publish {
-    repoName = 'utils'
-    userOrg = 'dashingqi'      // bintray注册的用户名
-    groupId = 'com.dashingqi'
-    artifactId = 'DQCommonUtils' // bintray创建的package
-    publishVersion = '0.9.9.4'
-    desc = 'update'
-    bintrayUser = 'dashingqi'
-    bintrayKey = LocalBintrayKey()
-    dryRun = false
-}
+ext
+        {
+            PUBLISH_GROUP_ID = "io.github.dashingqi"        //项目包名
+            PUBLISH_ARTIFACT_ID = 'common-utils'            //项目名
+            PUBLISH_VERSION = '0.0.1'
+        }
+apply from: "publish-mavencentral.gradle"
+
 
 android {
     compileSdkVersion 29

@@ -40,15 +40,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'com.dashingqi:DQCommonToolbar:0.9.9.2'
     implementation 'io.github.dashingqi:common-toolbar:0.0.1'
+    implementation 'io.github.dashingqi:common-utils:0.0.1'
 
     implementation 'com.dashingqi:DQCountDown:0.9.9.1'
     implementation "androidx.core:core-ktx:1.3.2"
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-}
-repositories {
-    mavenCentral()
 }

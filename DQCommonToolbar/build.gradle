@@ -9,7 +9,7 @@ ext
             PUBLISH_ARTIFACT_ID = 'common-toolbar'            //项目名
             PUBLISH_VERSION = '0.0.1'
         }
-apply from: '../publish-mavencentral.gradle'
+apply from: 'publish-mavencentral.gradle'
 
 
 android {
