@@ -33,7 +33,7 @@ class BaseMVVMActivity<DB : ViewDataBinding, VM : ViewModel> : AppCompatActivity
         viewModel = createViewModel()
         dataBinding.lifecycleOwner = this
         //绑定ViewModel到布局上
-        dataBinding.setVariable(BR.viewModel, viewModel)
+        dataBinding.setVariable(getVariabledId(), viewModel)
 
     }
 
@@ -64,5 +64,7 @@ class BaseMVVMActivity<DB : ViewDataBinding, VM : ViewModel> : AppCompatActivity
     open fun getViewModelFactory(): ViewModelProvider.Factory? {
         return null
     }
+
+    open fun getVariabledId() = BR.viewModel
 
 }

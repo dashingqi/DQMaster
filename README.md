@@ -31,7 +31,7 @@ allprojects {
     - 2 通过反射获取到ActivityThread中的Application（子线程中，使用此种方法获取到Application）
 
 #### DQMVVMBase
-
+> implementation 'io.github.dashingqi:mvvm-basic:0.0.1'
 ###### MVVM架构抽取的Base基类
 - BaseMVVMActivity
 ###### 扩展类
