@@ -1,11 +1,20 @@
 # DQMaster
 
+```gradle
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}
+```
+
 #### DQCommonToolbar
-> implementation 'com.dashingqi:DQCommonToolbar:0.9.9.2'
+> implementation 'io.github.dashingqi:common-toolbar:0.0.1'
 - 通用的标题栏，可设置左右标题和主标题（中间），以及返回按钮
 
 #### DQCommonUtils
-> implementation 'com.dashingqi:DQCommonUtils:0.9.9.1'
+> implementation 'io.github.dashingqi:common-utils:0.0.1'
 ###### 通用的工具类
 - ContextUtils
 - DateUtils
@@ -46,6 +55,7 @@
     - 正常我们先post或者set的然后在注册监听者监听LiveData的状态变换是能收到为注册之前最新一次的post或者set
     - 而我们的LostMutableLiveData就是为了解决这个问题而出现的
 #### DQHttp
+> implementation 'io.github.dashingqi:network:0.0.1'
 ###### ParameterIntercept
 - 根据请求方法和Body来做区分，提供拦截的回调方法，可以操作 body，get请求以及multi
 ###### NetService和NetServcieBuilder
@@ -67,7 +77,7 @@
 
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
-> implementation 'com.dashingqi:DQDialog:0.9.9.1'
+> implementation 'io.github.dashingqi:dialog:0.0.1'
 
 ###### 具体实现例子
 - LoadingDialog：可直接使用，带有旋转的菊花
@@ -76,7 +86,7 @@
 
 #### DQCountDown
 - 自定义倒计时控件，采用RxJava实现倒计时功能
-> implementation 'com.dashingqi:DQCountDown:0.9.9.1'
+> implementation 'io.github.dashingqi:countdown:0.0.1'
 ###### 简介
 - 自定义样式的倒计时控件，通过对外提供的getLayoutId()方法，可以设置自己编写的布局文件
 - 唯一注意的点是，布局对应的控件名字要保持一致，（tvHour，tvMinus，tvSecond）
