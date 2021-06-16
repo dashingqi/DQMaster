@@ -1,7 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
+ext
+        {
+            PUBLISH_GROUP_ID = "io.github.dashingqi"        //项目包名
+            PUBLISH_ARTIFACT_ID = 'overscrolllayout'            //项目名
+            PUBLISH_VERSION = '0.0.1'
+        }
+apply from: "publish-mavencentral.gradle"
 
 android {
     compileSdkVersion 29
