@@ -10,11 +10,11 @@ allprojects {
 ```
 
 #### DQCommonToolbar
-> implementation 'io.github.dashingqi:common-toolbar:0.0.1'
+> implementation 'io.github.dashingqi:common-toolbar:0.0.2'
 - 通用的标题栏，可设置左右标题和主标题（中间），以及返回按钮
 
 #### DQCommonUtils
-> implementation 'io.github.dashingqi:common-utils:0.0.1'
+> implementation 'io.github.dashingqi:common-utils:0.0.2'
 ###### 通用的工具类
 - ContextUtils
 - DateUtils
@@ -31,7 +31,7 @@ allprojects {
     - 2 通过反射获取到ActivityThread中的Application（子线程中，使用此种方法获取到Application）
 
 #### DQMVVMBase
-> implementation 'io.github.dashingqi:mvvm-basic:0.0.1'
+> implementation 'io.github.dashingqi:mvvm-basic:0.0.2'
 ###### MVVM架构抽取的Base基类
 - BaseMVVMActivity
 ###### 扩展类
@@ -55,7 +55,7 @@ allprojects {
     - 正常我们先post或者set的然后在注册监听者监听LiveData的状态变换是能收到为注册之前最新一次的post或者set
     - 而我们的LostMutableLiveData就是为了解决这个问题而出现的
 #### DQHttp
-> implementation 'io.github.dashingqi:network:0.0.1'
+> implementation 'io.github.dashingqi:network:0.0.2'
 ###### ParameterIntercept
 - 根据请求方法和Body来做区分，提供拦截的回调方法，可以操作 body，get请求以及multi
 ###### NetService和NetServcieBuilder
@@ -77,7 +77,7 @@ allprojects {
 
 #### DQDialog
 - 通用的Dialog，主要封装了通用性
-> implementation 'io.github.dashingqi:dialog:0.0.1'
+> implementation 'io.github.dashingqi:dialog:0.0.3'
 
 ###### 具体实现例子
 - LoadingDialog：可直接使用，带有旋转的菊花
@@ -86,7 +86,7 @@ allprojects {
 
 #### DQCountDown
 - 自定义倒计时控件，采用RxJava实现倒计时功能
-> implementation 'io.github.dashingqi:countdown:0.0.1'
+> implementation 'io.github.dashingqi:countdown:0.0.2'
 ###### 简介
 - 自定义样式的倒计时控件，通过对外提供的getLayoutId()方法，可以设置自己编写的布局文件
 - 唯一注意的点是，布局对应的控件名字要保持一致，（tvHour，tvMinus，tvSecond）

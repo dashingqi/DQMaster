@@ -43,9 +43,8 @@ object DateUtils {
      * 取得系统时间，格式为yyyy-MM-dd HH:mm:ss
      */
     fun getSystemTime(): String {
-        var strTime = ""
         val df: DateFormat = SimpleDateFormat(defaultTimeFormatStr)
-        strTime = df.format(Date())
+        var strTime = df.format(Date())
         return strTime
     }
 
@@ -53,9 +52,8 @@ object DateUtils {
      * 取得系统日期，格式为yyyy-MM-dd
      */
     fun getSystemDate(): String {
-        var strDate = ""
         val df = SimpleDateFormat(defaultDateFormatStr)
-        strDate = df.format(Date())
+        val strDate = df.format(Date())
         return strDate
     }
 
@@ -63,9 +61,8 @@ object DateUtils {
      * 取得系统时间，日期格式为yyyyMMddHHmmss
      */
     fun getShortSystemTime(): String {
-        var strTime = ""
         val df: DateFormat = SimpleDateFormat("yyyyMMddHHmmss")
-        strTime = df.format(Date())
+        val strTime = df.format(Date())
         return strTime
     }
 

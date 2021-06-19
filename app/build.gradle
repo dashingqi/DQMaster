@@ -1,5 +1,8 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
 
 android {
     compileSdkVersion 29
@@ -36,19 +39,16 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'io.github.dashingqi:common-toolbar:0.0.1'
-    implementation 'io.github.dashingqi:common-utils:0.0.1'
-    implementation 'io.github.dashingqi:countdown:0.0.1'
-    implementation 'io.github.dashingqi:dialog:0.0.1'
-    implementation 'io.github.dashingqi:network:0.0.1'
-    implementation 'io.github.dashingqi:launch-starter:0.0.1'
-    implementation 'io.github.dashingqi:mvvm-basic:0.0.1'
+    implementation 'io.github.dashingqi:common-toolbar:0.0.2'
+    implementation 'io.github.dashingqi:common-utils:0.0.2'
+    implementation 'io.github.dashingqi:countdown:0.0.2'
+    implementation 'io.github.dashingqi:dialog:0.0.3'
+    implementation 'io.github.dashingqi:network:0.0.2'
+    implementation 'io.github.dashingqi:launch-starter:0.0.3'
+    implementation 'io.github.dashingqi:mvvm-basic:0.0.2'
 
-    implementation "androidx.core:core-ktx:1.3.2"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
