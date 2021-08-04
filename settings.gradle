@@ -9,4 +9,6 @@ include ':DQCommonUtils'
 include ':DQCommonToolbar'
 include ':GradleDemo'
 include ':app'
+include ':DQImageSelector'
 rootProject.name = "DQMaster"
+
