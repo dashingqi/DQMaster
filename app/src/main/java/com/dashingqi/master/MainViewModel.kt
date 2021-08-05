@@ -11,4 +11,8 @@ import androidx.lifecycle.ViewModel
 class MainViewModel:ViewModel() {
 
     var countDownTime = MutableLiveData("10000")
+
+    init {
+
+    }
 }

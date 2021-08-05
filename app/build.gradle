@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -51,5 +52,6 @@ dependencies {
     implementation "androidx.core:core-ktx:$core_ktx_version"
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(":DQImageSelector")
 
 }
