@@ -1,16 +1,27 @@
 package com.dashingqi.dqimageselector.activity
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.loader.app.LoaderManager
+import androidx.loader.content.CursorLoader
+import androidx.loader.content.Loader
+import androidx.recyclerview.widget.RecyclerView
 import com.dashingqi.dqimageselector.R
+import com.dashingqi.dqimageselector.adapter.ImageSelectorAdapter
 import com.dashingqi.dqimageselector.model.ConfigData
+import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
  * 图片选择页面
@@ -19,10 +30,28 @@ class ImageSelectorActivity : AppCompatActivity() {
 
     /** 配置的数据项*/
     private var mConfigData: ConfigData? = null
+
+    /** LoaderManager Instance */
+    private val mLoaderManager by lazy {
+        LoaderManager.getInstance(this)
+    }
+
+    /** adapter */
+    private var adapter: ImageSelectorAdapter? = null
+
+    /**
+     * 数据源
+     */
+    private val mData: MutableList<PhotoItemModel> = mutableListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_selector)
         mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
+        var recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        adapter = ImageSelectorAdapter()
+
+        recyclerView.adapter = adapter
         handlePermission()
     }
 
@@ -51,6 +80,8 @@ class ImageSelectorActivity : AppCompatActivity() {
                             WRITE_PERMISSION_REQUEST_CODE
                         )
                 }
+            } else {
+                fetchData()
             }
         } else {
             fetchData()
@@ -61,6 +92,40 @@ class ImageSelectorActivity : AppCompatActivity() {
      * 获取数据
      */
     private fun fetchData() {
+        mLoaderManager.initLoader(LOADER_ALL, null, object : LoaderManager.LoaderCallbacks<Cursor> {
+            override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+                return CursorLoader(
+                    this@ImageSelectorActivity,
+                    MEDIA_STORE_IMAGE_URI, IMAGE_PROJECTION,
+                    null, null,
+                    IMAGE_PROJECTION[2] + " DESC"
+                )
+            }
+
+            @SuppressLint("Range")
+            override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
+                data?.let { cursor ->
+                    if (mData.isNotEmpty()) {
+                        mData.clear()
+                    }
+                    while (cursor.moveToNext()) {
+                        val path = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[0]))
+                        val name = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[1]))
+                        var date = cursor.getLong(cursor.getColumnIndex(IMAGE_PROJECTION[2]))
+                        Log.d(TAG, "path = $path name = $name date = $date")
+                        var photoItemModel = PhotoItemModel(path, name, date)
+                        mData.add(photoItemModel)
+                    }
+                    runOnUiThread {
+                        adapter?.setData(mData)
+                    }
+                }
+            }
+
+            override fun onLoaderReset(loader: Loader<Cursor>) {
+            }
+
+        })
 
     }
 
@@ -75,12 +140,11 @@ class ImageSelectorActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             WRITE_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty()){
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.isNotEmpty()) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // 申请成功
                         fetchData()
                     }
-
                 }
             }
         }
@@ -103,6 +167,20 @@ class ImageSelectorActivity : AppCompatActivity() {
          * key 配置的数据项
          */
         const val KEY_CONFIG_DATA = "key_config_data"
+
+        /** 查询手机内部图片对应的URI */
+        val MEDIA_STORE_IMAGE_URI: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+
+        /** 查询数据库中的字段*/
+        val IMAGE_PROJECTION = arrayOf(
+            MediaStore.Images.Media.DATA,
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.DATE_ADDED,
+            MediaStore.Images.Media._ID
+        )
+
+        const val LOADER_ALL = 10000
+
 
         /**
          * 跳转Activity
