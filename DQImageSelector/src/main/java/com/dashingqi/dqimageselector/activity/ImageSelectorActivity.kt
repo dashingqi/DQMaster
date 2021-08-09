@@ -20,13 +20,14 @@ import androidx.loader.content.Loader
 import androidx.recyclerview.widget.RecyclerView
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.adapter.ImageSelectorAdapter
+import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
  * 图片选择页面
  */
-class ImageSelectorActivity : AppCompatActivity() {
+class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
 
     /** 配置的数据项*/
     private var mConfigData: ConfigData? = null
@@ -50,7 +51,7 @@ class ImageSelectorActivity : AppCompatActivity() {
         mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
         var recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         adapter = ImageSelectorAdapter()
-
+        adapter?.setItemListener(this)
         recyclerView.adapter = adapter
         handlePermission()
     }
@@ -191,5 +192,19 @@ class ImageSelectorActivity : AppCompatActivity() {
                 activity.startActivityForResult(this, requestCode)
             }
         }
+    }
+
+    /**
+     * Item点击事件的回调
+     */
+    override fun onItemClick(position: Int, photoItem: PhotoItemModel) {
+
+    }
+
+    /**
+     * 选择按钮点击事件的回调
+     */
+    override fun onSelectClick(position: Int, photoItem: PhotoItemModel) {
+        adapter?.notifyItemChanged(position,ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
     }
 }
