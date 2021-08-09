@@ -5,13 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.PhotoItemModel
-import kotlin.math.log
 
 /**
  * @author : zhangqi
@@ -39,11 +37,12 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
         mData?.get(position)?.let { data ->
             holder.img?.let { imageView -> Glide.with(holder.itemView).load(data.path).into(imageView) }
-            holder.tvNumber?.isSelected = data.isSelected
+            holder.ivSelect?.isSelected = data.isSelected
+            holder.selectView?.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
             holder.itemView.setOnClickListener {
                 mPhotoItemClickListener?.onItemClick(position, data)
             }
-            holder.tvNumber?.let {
+            holder.ivSelect?.let {
                 it.setOnClickListener {
                     mPhotoItemClickListener?.onSelectClick(position, data)
                 }
@@ -61,7 +60,8 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                 NOTIFY_REFRESH_SELECT_CODE -> {
                     mData?.get(position)?.let {
                         it.isSelected = !it.isSelected
-                        holder.tvNumber?.isSelected = it.isSelected
+                        holder.ivSelect?.isSelected = it.isSelected
+                        holder.selectView?.visibility = if (it.isSelected) View.VISIBLE else View.INVISIBLE
                     }
                 }
             }
@@ -101,12 +101,19 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      * ViewHolder
      */
     class ImgSelectorViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        /** 图片*/
         var img: ImageView? = null
-        var tvNumber: TextView? = null
+
+        /** 选中*/
+        var ivSelect: ImageView? = null
+
+        /** 选中的蒙层*/
+        var selectView: View? = null
 
         init {
             img = view.findViewById(R.id.image)
-            tvNumber = view.findViewById(R.id.number)
+            ivSelect = view.findViewById(R.id.number)
+            selectView = view.findViewById(R.id.selectView)
         }
     }
 }

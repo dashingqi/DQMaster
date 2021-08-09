@@ -112,9 +112,10 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
                     while (cursor.moveToNext()) {
                         val path = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[0]))
                         val name = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[1]))
-                        var date = cursor.getLong(cursor.getColumnIndex(IMAGE_PROJECTION[2]))
-                        Log.d(TAG, "path = $path name = $name date = $date")
-                        var photoItemModel = PhotoItemModel(path, name, date)
+                        val date = cursor.getLong(cursor.getColumnIndex(IMAGE_PROJECTION[2]))
+                        val id = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[3]))
+                        Log.d(TAG, "path = $path name = $name date = $date id = $id")
+                        val photoItemModel = PhotoItemModel(id,path, name, date)
                         mData.add(photoItemModel)
                     }
                     runOnUiThread {
