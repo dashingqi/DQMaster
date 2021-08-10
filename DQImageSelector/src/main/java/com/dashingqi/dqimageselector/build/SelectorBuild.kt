@@ -1,6 +1,7 @@
 package com.dashingqi.dqimageselector.build
 
 import android.app.Activity
+import android.util.Log
 import com.dashingqi.dqimageselector.activity.ImageSelectorActivity
 import com.dashingqi.dqimageselector.model.ConfigData
 
@@ -26,10 +27,7 @@ object SelectorBuild {
     class Builder {
 
         /** 配置数据项*/
-
-        private val mConfigData by lazy {
-            ConfigData()
-        }
+        private var mConfigData: ConfigData = ConfigData()
 
         /**
          * 是否展示拍照
@@ -52,6 +50,7 @@ object SelectorBuild {
          * 从Activity跳转到目标Activity
          */
         fun start(activity: Activity, requestCode: Int) {
+            Log.d("TAG", "size = ${mConfigData.maxSelectSize}: ")
             ImageSelectorActivity.start(activity, requestCode, mConfigData)
         }
     }

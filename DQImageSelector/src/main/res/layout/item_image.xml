@@ -23,8 +23,8 @@
 
     <ImageView
         android:id="@+id/number"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="@dimen/selector_icon_width"
+        android:layout_height="@dimen/selector_icon_height"
         android:layout_marginTop="@dimen/selector_margin"
         android:layout_marginEnd="@dimen/selector_margin"
         android:background="@drawable/shape_number_bg"

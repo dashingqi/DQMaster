@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="selector_image_height">80dp</dimen>
+    <dimen name="selector_image_height">100dp</dimen>
     <dimen name="selector_margin">6dp</dimen>
+    <dimen name="selector_icon_height">25dp</dimen>
+    <dimen name="selector_icon_width">25dp</dimen>
 </resources>

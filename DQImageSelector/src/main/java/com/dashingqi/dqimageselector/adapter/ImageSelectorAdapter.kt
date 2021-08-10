@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
+import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
@@ -24,9 +26,19 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     private var mData: MutableList<PhotoItemModel>? = null
 
     /**
+     * 配置数据
+     */
+    private var mConfigData: ConfigData? = null
+
+    /**
      * item的点击事件
      */
     private var mPhotoItemClickListener: IPhotoItemListener? = null
+
+    /**
+     * 用于存储选择的条目数据
+     */
+    private val mSelectedKeys: MutableMap<String, PhotoItemModel> = mutableMapOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -59,9 +71,27 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
             when (code) {
                 NOTIFY_REFRESH_SELECT_CODE -> {
                     mData?.get(position)?.let {
-                        it.isSelected = !it.isSelected
-                        holder.ivSelect?.isSelected = it.isSelected
-                        holder.selectView?.visibility = if (it.isSelected) View.VISIBLE else View.INVISIBLE
+                        when {
+                            // 之前状态是选中的
+                            it.isSelected -> {
+                                it.isSelected = !it.isSelected
+                                holder.ivSelect?.isSelected = false
+                                holder.selectView?.visibility = View.INVISIBLE
+                                handleSelect(it.isSelected, it)
+                            }
+                            // 之前状态是未选中的
+                            !it.isSelected && isCanSelect() -> {
+                                it.isSelected = !it.isSelected
+                                holder.ivSelect?.isSelected = true
+                                holder.selectView?.visibility = View.VISIBLE
+                                handleSelect(it.isSelected, it)
+                            }
+                            !it.isSelected && !isCanSelect() ->{
+                                // 不能在选择了
+                                Toast.makeText(holder.itemView.context,"不能在选择了",Toast.LENGTH_LONG).show()
+                            }
+                        }
+
                     }
                 }
             }
@@ -85,6 +115,38 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      */
     fun setItemListener(itemClickListener: IPhotoItemListener) {
         mPhotoItemClickListener = itemClickListener
+    }
+
+    /**
+     * 设置配置数据
+     */
+    fun setConfigData(configData: ConfigData?) {
+        mConfigData = configData
+    }
+
+    /**
+     * 用于判断是否能够选中
+     */
+    private fun isCanSelect(): Boolean {
+        return mSelectedKeys.size < mConfigData?.maxSelectSize ?: 9
+    }
+
+    /**
+     * 处理选择的业务
+     */
+    private fun handleSelect(isSelect: Boolean, item: PhotoItemModel) {
+        when (isSelect) {
+            true -> {
+                if (!mSelectedKeys.containsKey(item.id)) {
+                    mSelectedKeys[item.id] = item
+                }
+            }
+            false -> {
+                if (mSelectedKeys.containsKey(item.id)) {
+                    mSelectedKeys.remove(item.id)
+                }
+            }
+        }
     }
 
     companion object {

@@ -49,9 +49,11 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_selector)
         mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
-        var recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        Log.d(TAG, "isShowCamera = ${mConfigData?.isShowCamera} maxSize = ${mConfigData?.maxSelectSize}")
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
         adapter = ImageSelectorAdapter()
         adapter?.setItemListener(this)
+        adapter?.setConfigData(mConfigData)
         recyclerView.adapter = adapter
         handlePermission()
     }
@@ -115,7 +117,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
                         val date = cursor.getLong(cursor.getColumnIndex(IMAGE_PROJECTION[2]))
                         val id = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[3]))
                         Log.d(TAG, "path = $path name = $name date = $date id = $id")
-                        val photoItemModel = PhotoItemModel(id,path, name, date)
+                        val photoItemModel = PhotoItemModel(id, path, name, date)
                         mData.add(photoItemModel)
                     }
                     runOnUiThread {
@@ -206,6 +208,6 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
      * 选择按钮点击事件的回调
      */
     override fun onSelectClick(position: Int, photoItem: PhotoItemModel) {
-        adapter?.notifyItemChanged(position,ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
+        adapter?.notifyItemChanged(position, ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
     }
 }

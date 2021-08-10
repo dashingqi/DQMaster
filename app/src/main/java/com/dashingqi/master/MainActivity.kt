@@ -19,7 +19,11 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.lifecycleOwner = this
         viewModel.countDownTime.value = "1232938293"
         tvText.setOnClickListener {
-            SelectorBuild.builder().start(this, IMAGE_SELECT_REQUEST_CODE)
+            SelectorBuild
+                .builder()
+                .setMaxSelectSize(6)
+                .isShowCamera(true)
+                .start(this, IMAGE_SELECT_REQUEST_CODE)
         }
 
     }
