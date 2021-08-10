@@ -88,7 +88,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                             }
                             !it.isSelected && !isCanSelect() ->{
                                 // 不能在选择了
-                                Toast.makeText(holder.itemView.context,"不能在选择了",Toast.LENGTH_LONG).show()
+                                Toast.makeText(holder.itemView.context,"不能在选择了!",Toast.LENGTH_LONG).show()
                             }
                         }
 
