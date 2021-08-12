@@ -15,5 +15,7 @@ class PhotoItemModel(
     // 图片创建的日期
     var date: Long,
     // 图片是否被选中
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    // 选择的序号
+    var selectNumber: Int = -1
 )
