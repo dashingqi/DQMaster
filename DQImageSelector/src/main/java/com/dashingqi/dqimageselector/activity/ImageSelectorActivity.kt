@@ -206,14 +206,20 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
     /**
      * Item点击事件的回调
      */
-    override fun onItemClick(position: Int, photoItem: PhotoItemModel) {
-
+    override fun onItemClick(position: Int, photoItem: PhotoItemModel?) {
+        photoItem?.let {
+            ImagePreviewActivity.startPreviewActivity(
+                this,
+                it,
+                ImagePreviewActivity.PREVIEW_VIEW_REQUEST_CODE
+            )
+        }
     }
 
     /**
      * 选择按钮点击事件的回调
      */
-    override fun onSelectClick(position: Int, photoItem: PhotoItemModel) {
+    override fun onSelectClick(position: Int, photoItem: PhotoItemModel?) {
         adapter?.notifyItemChanged(position, ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
     }
 }

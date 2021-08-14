@@ -1,10 +1,14 @@
 package com.dashingqi.dqimageselector.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * @author : zhangqi
  * @time : 2021/8/7
  * desc : 照片数据模型
  */
+@Parcelize
 class PhotoItemModel(
     //  图片ID
     var id: String,
@@ -18,4 +22,4 @@ class PhotoItemModel(
     var isSelected: Boolean = false,
     // 选择的序号
     var selectNumber: Int = -1
-)
+): Parcelable

@@ -7,6 +7,7 @@ buildscript {
     repositories {
         mavenCentral()
         google()
+        maven { url "https://www.jitpack.io" }
 
 
     }
@@ -24,6 +25,7 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        maven { url "https://www.jitpack.io" }
     }
 }
 

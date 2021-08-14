@@ -18,19 +18,24 @@ class SelectorItemDecoration(var lintCount: Int) : RecyclerView.ItemDecoration()
         // 获取到子View所存在的位置
         val childAdapterPosition = parent.getChildAdapterPosition(view)
         // 子View的个数
-        val itemCount = parent.adapter?.itemCount
+        val itemCount = parent.adapter?.itemCount ?: 0
         outRect.left = MARGIN_OFFSET
         outRect.top = MARGIN_OFFSET
+        // 设置右边距
         if ((childAdapterPosition + 1) % lintCount == 0) {
             Log.d(TAG, "childAdapterPosition == $childAdapterPosition  ")
             outRect.right = MARGIN_OFFSET
+        }
+
+        // 设置底边距
+        if ((childAdapterPosition + 1) > (itemCount.minus(4))) {
+            outRect.bottom = MARGIN_OFFSET
         }
     }
 
     override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
-        var adapter = parent.adapter
-        adapter?.let {
+        parent.adapter?.let {
             val itemCount = it.itemCount
             for (index in 0 until itemCount) {
                 if (index % (lintCount - 1) == 0) {
@@ -39,6 +44,7 @@ class SelectorItemDecoration(var lintCount: Int) : RecyclerView.ItemDecoration()
             }
         }
     }
+
     companion object {
         /**
          * 间隔

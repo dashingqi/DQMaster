@@ -10,8 +10,8 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
 interface IPhotoItemListener {
 
     /** 图片Item的点击事件*/
-    fun onItemClick(position: Int, photoItem: PhotoItemModel)
+    fun onItemClick(position: Int, photoItem: PhotoItemModel?)
 
     /** 选择按钮的点击*/
-    fun onSelectClick(position: Int, photoItem: PhotoItemModel)
+    fun onSelectClick(position: Int, photoItem: PhotoItemModel?)
 }
