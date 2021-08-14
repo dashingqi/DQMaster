@@ -20,6 +20,7 @@ import androidx.loader.content.Loader
 import androidx.recyclerview.widget.RecyclerView
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.adapter.ImageSelectorAdapter
+import com.dashingqi.dqimageselector.adapter.SelectorItemDecoration
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
@@ -54,6 +55,8 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
         adapter = ImageSelectorAdapter()
         adapter?.setItemListener(this)
         adapter?.setConfigData(mConfigData)
+        // 设置分割线
+        recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         recyclerView.adapter = adapter
         handlePermission()
     }
@@ -161,6 +164,9 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
 
         /** 权限请求的code*/
         const val WRITE_PERMISSION_REQUEST_CODE = 10000
+
+        /** RecyclerView每一行展示的子View的个数*/
+        const val LINE_COUNT = 4
 
         /**
          * TAG

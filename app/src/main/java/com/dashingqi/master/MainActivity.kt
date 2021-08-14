@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         tvText.setOnClickListener {
             SelectorBuild
                 .builder()
-                .setMaxSelectSize(6)
+                .setMaxSelectSize(12)
                 .isShowCamera(true)
                 .start(this, IMAGE_SELECT_REQUEST_CODE)
         }
