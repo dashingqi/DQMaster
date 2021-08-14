@@ -17,6 +17,7 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
 import kotlin.collections.ArrayList
 
 /**
+ * 图片选择器的适配器
  * @author : zhangqi
  * @time : 2021/8/7
  * desc :
