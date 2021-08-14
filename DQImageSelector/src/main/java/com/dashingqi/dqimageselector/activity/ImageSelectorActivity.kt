@@ -44,7 +44,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
     /**
      * 数据源
      */
-    private val mData: MutableList<PhotoItemModel> = mutableListOf()
+     val mData: MutableList<PhotoItemModel> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,9 +111,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
             @SuppressLint("Range")
             override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
                 data?.let { cursor ->
-                    if (mData.isNotEmpty()) {
-                        mData.clear()
-                    }
+                    val tempData = mutableListOf<PhotoItemModel>()
                     while (cursor.moveToNext()) {
                         val path = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[0]))
                         val name = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[1]))
@@ -121,10 +119,15 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
                         val id = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[3]))
                         Log.d(TAG, "path = $path name = $name date = $date id = $id")
                         val photoItemModel = PhotoItemModel(id, path, name, date)
-                        mData.add(photoItemModel)
+                        tempData.add(photoItemModel)
                     }
                     runOnUiThread {
-                        adapter?.setData(mData)
+                        if (tempData.isNotEmpty()) {
+                            adapter?.let {
+                                it.mData.addAll(tempData)
+                                it.notifyDataSetChanged()
+                            }
+                        }
                     }
                 }
             }

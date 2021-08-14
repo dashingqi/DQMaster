@@ -27,7 +27,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     /**
      * 数据源
      */
-    private var mData: MutableList<PhotoItemModel>? = null
+    val mData: MutableList<PhotoItemModel?> = mutableListOf()
 
     /**
      * 配置数据
@@ -51,7 +51,8 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     }
 
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
-        mData?.get(position)?.let { data ->
+        Log.d(TAG, "onBindViewHolder --> position size =  ${mData.size}")
+        mData[position]?.let { data ->
             holder.img?.let { imageView -> Glide.with(holder.itemView).load(data.path).into(imageView) }
             holder.ivSelect?.isSelected = data.isSelected
             holder.mCountGroup?.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
@@ -69,31 +70,33 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
 
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isNullOrEmpty()) {
+            Log.d(TAG, "onBindViewHolder --> isNullOrEmpty ")
             super.onBindViewHolder(holder, position, payloads)
         } else {
             Log.d(TAG, "size is ${payloads.size}")
             var code = payloads[0] as Int
             when (code) {
                 NOTIFY_REFRESH_SELECT_CODE -> {
-                    mData?.get(position)?.let {
+                    mData[position]?.let {
                         when {
                             // 之前状态是选中的
                             it.isSelected -> {
                                 it.isSelected = !it.isSelected
                                 holder.ivSelect?.isSelected = false
-                                holder.mCountGroup?.visibility = View.INVISIBLE
-                                val tempSelectItems = mSelectedItems
                                 if (handleSelect(it.isSelected, it)) {
-                                    orderNumber(holder, false, tempSelectItems, it)
+                                    holder.mCountGroup?.visibility = View.INVISIBLE
+                                    orderNumber(holder, false, null, it)
                                 }
                             }
                             // 之前状态是未选中的
                             !it.isSelected && isCanSelect() -> {
                                 it.isSelected = !it.isSelected
                                 holder.ivSelect?.isSelected = true
-                                holder.mCountGroup?.visibility = View.VISIBLE
+                                val preSelectItems = mSelectedItems
                                 if (handleSelect(it.isSelected, it)) {
-                                    orderNumber(holder, true)
+                                    holder.mCountGroup?.visibility = View.VISIBLE
+                                    it.selectNumber = mSelectedItems.size
+                                    orderNumber(holder, true, preSelectItems, it)
                                 }
                             }
                             !it.isSelected && !isCanSelect() -> {
@@ -108,16 +111,11 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         }
     }
 
-    override fun getItemCount(): Int {
-        return mData?.size ?: 0
-    }
-
     /**
-     * 设置数据源
+     * 返回AdapterItem的size
      */
-    fun setData(data: MutableList<PhotoItemModel>) {
-        mData = data
-        notifyDataSetChanged()
+    override fun getItemCount(): Int {
+        return mData.size
     }
 
     /**
@@ -169,21 +167,20 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     private fun orderNumber(
         holder: ImgSelectorViewHolder,
         isSelected: Boolean,
-        selectIds: ArrayList<PhotoItemModel>? = null,
+        preSelectIds: ArrayList<PhotoItemModel>? = null,
         currentItem: PhotoItemModel? = null
     ) {
         when (isSelected) {
             true -> {
                 holder.tvNumber?.apply {
-                    currentItem?.selectNumber = mSelectedItems.size
-                    text = "${mSelectedItems.size}"
+                    text = "${currentItem?.selectNumber}"
                 }
             }
             false -> {
                 // 当前由选中变成未选中 需要刷新选中的数目,需要把之后选中的序号进行减一的操作
 
-                selectIds?.takeIf { currentItem != null }?.apply {
-                    var indexOf = selectIds.indexOf(currentItem)
+                preSelectIds?.takeIf { currentItem != null }?.apply {
+                    val indexOf = preSelectIds.indexOf(currentItem)
 
                     if (indexOf >= 0) {
                         for (index in indexOf until size) {
