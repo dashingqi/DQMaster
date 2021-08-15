@@ -1,26 +1,44 @@
 package com.dashingqi.dqimageselector.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
-import com.dashingqi.dqimageselector.R
+import com.dashingqi.dqimageselector.databinding.ActivityImagePreviewBinding
 import com.dashingqi.dqimageselector.model.PhotoItemModel
-import com.github.chrisbanes.photoview.PhotoView
 
 /**
  * 图片预览界面
  */
 class ImagePreviewActivity : AppCompatActivity() {
-    private var mPhotoView: PhotoView? = null
+
+    /** ActivityImagePreviewBinding */
+    private val binding by lazy {
+        ActivityImagePreviewBinding.inflate(layoutInflater)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_preview)
-        mPhotoView = findViewById(R.id.photoView)
+        setContentView(binding.root)
         val model: PhotoItemModel? = intent?.getParcelableExtra(KEY_PREVIEW_PHOTO_MODEL)
         show(model)
+    }
+
+    /**
+     * 重写返回键事件
+     */
+    override fun onBackPressed() {
+        finish()
+    }
+
+    /**
+     * 展示逻辑
+     * @param model PhotoItemModel? 展示的数据
+     */
+    private fun show(model: PhotoItemModel?) {
+        model?.let { photoModel ->
+            Glide.with(this).load(photoModel.path).into(binding.photoView)
+        }
     }
 
     companion object {
@@ -41,25 +59,6 @@ class ImagePreviewActivity : AppCompatActivity() {
             Intent(context, ImagePreviewActivity::class.java).apply {
                 putExtra(KEY_PREVIEW_PHOTO_MODEL, model)
                 context.startActivityForResult(this, requestCode)
-            }
-        }
-    }
-
-    /**
-     * 重写返回键事件
-     */
-    override fun onBackPressed() {
-        finish()
-    }
-
-    /**
-     * 展示逻辑
-     * @param model PhotoItemModel? 展示的数据
-     */
-    private fun show(model: PhotoItemModel?) {
-        model?.let { photoModel ->
-            mPhotoView?.let {
-                Glide.with(this).load(photoModel.path).into(it)
             }
         }
     }

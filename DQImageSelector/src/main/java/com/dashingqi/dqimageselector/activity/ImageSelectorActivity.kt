@@ -39,7 +39,9 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
     private var mSelectorControl :SelectorControl?=null
 
     /** adapter */
-    private var adapter: ImageSelectorAdapter? = null
+    private val adapter: ImageSelectorAdapter by lazy {
+        ImageSelectorAdapter()
+    }
 
     /** ActivityImageSelectorBinding */
     private val binding by lazy {
@@ -50,9 +52,8 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
-        adapter = ImageSelectorAdapter()
-        adapter?.setItemListener(this)
-        adapter?.setConfigData(mConfigData)
+        adapter.setItemListener(this)
+        adapter.setConfigData(mConfigData)
         // 设置分割线
         binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         binding.recyclerView.adapter = adapter
@@ -113,38 +114,6 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
         }
     }
 
-    companion object {
-
-        /** 写权限*/
-        const val WRITE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
-
-        /** 权限请求的code*/
-        const val WRITE_PERMISSION_REQUEST_CODE = 10000
-
-        /** RecyclerView每一行展示的子View的个数*/
-        const val LINE_COUNT = 4
-
-        /**
-         * TAG
-         */
-        const val TAG = "ImageSelectorActivity"
-
-        /**
-         * key 配置的数据项
-         */
-        const val KEY_CONFIG_DATA = "key_config_data"
-
-        /**
-         * 跳转Activity
-         */
-        fun start(activity: Activity, requestCode: Int, configDataData: ConfigData) {
-            Intent(activity, ImageSelectorActivity::class.java).apply {
-                putExtra(KEY_CONFIG_DATA, configDataData)
-                activity.startActivityForResult(this, requestCode)
-            }
-        }
-    }
-
     /**
      * Item点击事件的回调
      */
@@ -162,14 +131,14 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
      * 选择按钮点击事件的回调
      */
     override fun onSelectClick(position: Int, photoItem: PhotoItemModel?) {
-        adapter?.notifyItemChanged(position, ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
+        adapter.notifyItemChanged(position, ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
     }
 
     /**
      * 更新编辑按钮
      */
     override fun updateEditView() {
-        updateViewState(adapter?.mSelectedItems?.size ?: 0)
+        updateViewState(adapter.mSelectedItems.size)
     }
 
     /**
@@ -201,7 +170,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
     override fun onLoadFinish(data: MutableList<PhotoItemModel>) {
        if (data.isNotEmpty()){
            runOnUiThread {
-               adapter?.let {
+               adapter.let {
                    it.mData.addAll(data)
                    it.notifyDataSetChanged()
                }
@@ -210,5 +179,38 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
+    }
+
+
+    companion object {
+
+        /** 写权限*/
+        const val WRITE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
+
+        /** 权限请求的code*/
+        const val WRITE_PERMISSION_REQUEST_CODE = 10000
+
+        /** RecyclerView每一行展示的子View的个数*/
+        const val LINE_COUNT = 4
+
+        /**
+         * TAG
+         */
+        const val TAG = "ImageSelectorActivity"
+
+        /**
+         * key 配置的数据项
+         */
+        const val KEY_CONFIG_DATA = "key_config_data"
+
+        /**
+         * 跳转Activity
+         */
+        fun start(activity: Activity, requestCode: Int, configDataData: ConfigData) {
+            Intent(activity, ImageSelectorActivity::class.java).apply {
+                putExtra(KEY_CONFIG_DATA, configDataData)
+                activity.startActivityForResult(this, requestCode)
+            }
+        }
     }
 }

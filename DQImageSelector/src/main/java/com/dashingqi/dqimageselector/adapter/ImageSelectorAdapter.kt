@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.R
+import com.dashingqi.dqimageselector.databinding.ItemImageBinding
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
@@ -45,25 +46,22 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     val mSelectedItems: ArrayList<PhotoItemModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_image, parent, false)
-        return ImgSelectorViewHolder(view)
+        var itemBinding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ImgSelectorViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder --> position size =  ${mData.size}")
         mData[position]?.let { data ->
-            holder.img?.let { imageView -> Glide.with(holder.itemView).load(data.path).into(imageView) }
-            holder.ivSelect?.isSelected = data.isSelected
-            holder.mCountGroup?.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
-            holder.tvNumber?.text = "${data.selectNumber}"
+            Glide.with(holder.itemView).load(data.path).into(holder.binding.image)
+            holder.binding.ivSelect.isSelected = data.isSelected
+            holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
+            holder.binding.tvNumber.text = "${data.selectNumber}"
             holder.itemView.setOnClickListener {
                 mPhotoItemClickListener?.onItemClick(position, data)
             }
-            holder.ivSelect?.let {
-                it.setOnClickListener {
-                    mPhotoItemClickListener?.onSelectClick(position, data)
-                }
+            holder.binding.ivSelect.setOnClickListener {
+                mPhotoItemClickListener?.onSelectClick(position, data)
             }
         }
     }
@@ -82,21 +80,21 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                             // 之前状态是选中的
                             it.isSelected -> {
                                 it.isSelected = !it.isSelected
-                                holder.ivSelect?.isSelected = false
+                                holder.binding.ivSelect.isSelected = false
                                 if (handleSelect(it.isSelected, it)) {
                                     mPhotoItemClickListener?.updateEditView()
-                                    holder.mCountGroup?.visibility = View.INVISIBLE
+                                    holder.binding.countGroup.visibility = View.INVISIBLE
                                     orderNumber(holder, false, null, it)
                                 }
                             }
                             // 之前状态是未选中的
                             !it.isSelected && isCanSelect() -> {
                                 it.isSelected = !it.isSelected
-                                holder.ivSelect?.isSelected = true
+                                holder.binding.ivSelect.isSelected = true
                                 val preSelectItems = mSelectedItems
                                 if (handleSelect(it.isSelected, it)) {
                                     mPhotoItemClickListener?.updateEditView()
-                                    holder.mCountGroup?.visibility = View.VISIBLE
+                                    holder.binding.countGroup.visibility = View.VISIBLE
                                     it.selectNumber = mSelectedItems.size
                                     orderNumber(holder, true, preSelectItems, it)
                                 }
@@ -173,9 +171,8 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     ) {
         when (isSelected) {
             true -> {
-                holder.tvNumber?.apply {
-                    text = "${currentItem?.selectNumber}"
-                }
+                holder.binding.tvNumber.text = "${currentItem?.selectNumber}"
+
             }
             false -> {
                 // 当前由选中变成未选中 需要刷新选中的数目,需要把之后选中的序号进行减一的操作
@@ -201,32 +198,8 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         const val TAG = "ImageSelectorAdapter"
     }
 
-
     /**
      * ViewHolder
      */
-    class ImgSelectorViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        /** 图片*/
-        var img: ImageView? = null
-
-        /** 选中*/
-        var ivSelect: ImageView? = null
-
-        /** 选中的蒙层*/
-        var selectView: View? = null
-
-        /** 选中的序号*/
-        var tvNumber: TextView? = null
-
-        /** group */
-        var mCountGroup: Group? = null
-
-        init {
-            img = view.findViewById(R.id.image)
-            ivSelect = view.findViewById(R.id.ivSelect)
-            selectView = view.findViewById(R.id.selectView)
-            tvNumber = view.findViewById(R.id.tvNumber)
-            mCountGroup = view.findViewById(R.id.countGroup)
-        }
-    }
+    class ImgSelectorViewHolder(var binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root)
 }
