@@ -91,3 +91,9 @@ allprojects {
 - 自定义样式的倒计时控件，通过对外提供的getLayoutId()方法，可以设置自己编写的布局文件
 - 唯一注意的点是，布局对应的控件名字要保持一致，（tvHour，tvMinus，tvSecond）
 
+#### DQImageSelector
+- 图片选择器，仿微信图片选择器
+###### 技术要点
+- ViewBinding，MVP，LoaderManager
+- 后期会加入协程
+
