@@ -84,6 +84,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                                 it.isSelected = !it.isSelected
                                 holder.ivSelect?.isSelected = false
                                 if (handleSelect(it.isSelected, it)) {
+                                    mPhotoItemClickListener?.updateEditView()
                                     holder.mCountGroup?.visibility = View.INVISIBLE
                                     orderNumber(holder, false, null, it)
                                 }
@@ -94,6 +95,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                                 holder.ivSelect?.isSelected = true
                                 val preSelectItems = mSelectedItems
                                 if (handleSelect(it.isSelected, it)) {
+                                    mPhotoItemClickListener?.updateEditView()
                                     holder.mCountGroup?.visibility = View.VISIBLE
                                     it.selectNumber = mSelectedItems.size
                                     orderNumber(holder, true, preSelectItems, it)
@@ -104,7 +106,6 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                                 Toast.makeText(holder.itemView.context, "不能在选择了!", Toast.LENGTH_LONG).show()
                             }
                         }
-
                     }
                 }
             }

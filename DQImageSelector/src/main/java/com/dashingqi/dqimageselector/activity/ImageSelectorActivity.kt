@@ -229,6 +229,12 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
      */
     override fun onSelectClick(position: Int, photoItem: PhotoItemModel?) {
         adapter?.notifyItemChanged(position, ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
+    }
+
+    /**
+     * 更新编辑按钮
+     */
+    override fun updateEditView() {
         updateViewState(adapter?.mSelectedItems?.size ?: 0)
     }
 
@@ -237,7 +243,23 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
      */
     private fun updateViewState(selectorSize: Int) {
         val viewState = selectorSize > 0
-        mTvPreview?.isSelected = viewState
-        mBtnFinish?.isSelected = viewState
+
+        // 预览按钮
+        mTvPreview?.apply {
+            isSelected = viewState
+            isEnabled = viewState
+        }
+
+        // 完成按钮
+        mBtnFinish?.apply {
+            isSelected = viewState
+            isEnabled = viewState
+            text = if (viewState) {
+                resources.getString(R.string.finish_text) +
+                        resources.getString(R.string.finish_number, selectorSize)
+            } else {
+                resources.getString(R.string.finish_text)
+            }
+        }
     }
 }

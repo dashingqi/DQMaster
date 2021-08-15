@@ -14,4 +14,7 @@ interface IPhotoItemListener {
 
     /** 选择按钮的点击*/
     fun onSelectClick(position: Int, photoItem: PhotoItemModel?)
+
+    /** 更新编辑布局 */
+    fun updateEditView()
 }
