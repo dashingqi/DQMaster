@@ -172,15 +172,20 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         when (isSelected) {
             true -> {
                 holder.binding.tvNumber.text = "${currentItem?.selectNumber}"
-
             }
             false -> {
                 // 当前由选中变成未选中 需要刷新选中的数目,需要把之后选中的序号进行减一的操作
                 preSelectIds?.takeIf { currentItem != null }?.apply {
-                    val indexOf = preSelectIds.indexOf(currentItem)
+                    val indexOf = this.indexOf(currentItem)
                     if (indexOf >= 0) {
                         for (index in indexOf until size) {
-                            this[index].selectNumber = --this[index].selectNumber
+                            val data = mData.filter { photoItemModel ->
+                                photoItemModel?.id == this[index].id
+                            }
+                            data[0]?.let {
+                                it.selectNumber = --it.selectNumber
+                            }
+
                         }
                     }
                     notifyDataSetChanged()
