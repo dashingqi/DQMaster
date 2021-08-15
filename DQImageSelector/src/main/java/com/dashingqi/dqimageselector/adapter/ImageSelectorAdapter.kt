@@ -42,7 +42,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     /**
      * 用于存储选择的条目数据
      */
-    private val mSelectedItems: ArrayList<PhotoItemModel> = ArrayList()
+     val mSelectedItems: ArrayList<PhotoItemModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
         val view = LayoutInflater.from(parent.context)

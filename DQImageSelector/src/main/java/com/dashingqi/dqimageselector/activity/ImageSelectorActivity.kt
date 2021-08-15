@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
@@ -33,6 +35,12 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
     /** 配置的数据项*/
     private var mConfigData: ConfigData? = null
 
+    /** 预览*/
+    private var mTvPreview: TextView? = null
+
+    /** 完成*/
+    private var mBtnFinish: Button? = null
+
     /** LoaderManager Instance */
     private val mLoaderManager by lazy {
         LoaderManager.getInstance(this)
@@ -41,17 +49,14 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
     /** adapter */
     private var adapter: ImageSelectorAdapter? = null
 
-    /**
-     * 数据源
-     */
-     val mData: MutableList<PhotoItemModel> = mutableListOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_selector)
         mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
         Log.d(TAG, "isShowCamera = ${mConfigData?.isShowCamera} maxSize = ${mConfigData?.maxSelectSize}")
         val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        mTvPreview = findViewById(R.id.tvPreview)
+        mBtnFinish = findViewById(R.id.btnFinish)
         adapter = ImageSelectorAdapter()
         adapter?.setItemListener(this)
         adapter?.setConfigData(mConfigData)
@@ -224,5 +229,15 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
      */
     override fun onSelectClick(position: Int, photoItem: PhotoItemModel?) {
         adapter?.notifyItemChanged(position, ImageSelectorAdapter.NOTIFY_REFRESH_SELECT_CODE)
+        updateViewState(adapter?.mSelectedItems?.size ?: 0)
+    }
+
+    /**
+     * 用于更新预览和完成按钮的状态
+     */
+    private fun updateViewState(selectorSize: Int) {
+        val viewState = selectorSize > 0
+        mTvPreview?.isSelected = viewState
+        mBtnFinish?.isSelected = viewState
     }
 }

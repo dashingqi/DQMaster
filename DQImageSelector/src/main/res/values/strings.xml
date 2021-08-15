@@ -1,1 +1,4 @@
-<resources></resources>
+<resources>
+    <string name="preview_text">预览</string>
+    <string name="finish_text">完成</string>
+</resources>

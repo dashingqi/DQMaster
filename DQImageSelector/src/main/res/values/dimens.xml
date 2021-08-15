@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="selector_image_height">100dp</dimen>
+    <!--    item的高度-->
+    <dimen name="selector_item_height">100dp</dimen>
+    <!--    选择按钮的margin-->
     <dimen name="selector_margin">6dp</dimen>
-    <dimen name="number_margin">8dp</dimen>
+    <!--    item上序号的margin-->
+    <dimen name="selector_number_margin">8dp</dimen>
+    <!--    选择按钮的高度-->
     <dimen name="selector_icon_height">25dp</dimen>
+    <!--    选择按钮的宽度-->
     <dimen name="selector_icon_width">25dp</dimen>
+    <!--    底部布局的内边距-->
+    <dimen name="selector_bottom_layout_padding">16dp</dimen>
+    <!--    选择图片页面 底部布局中文件的大小（预览和完成）-->
+    <dimen name="selector_bottom_layout_text_size">16dp</dimen>
+    <!--    完成按钮的宽度-->
+    <dimen name="selector_finish_btn_width">64dp</dimen>
+    <!--    完成按钮的高度-->
+    <dimen name="selector_finish_btn_height">32dp</dimen>
 </resources>

@@ -49,7 +49,7 @@ class SelectorItemDecoration(var lintCount: Int) : RecyclerView.ItemDecoration()
         /**
          * 间隔
          */
-        const val MARGIN_OFFSET = 16
+        const val MARGIN_OFFSET = 4
 
         /**
          * TAG
