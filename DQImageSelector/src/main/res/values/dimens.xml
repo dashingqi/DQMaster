@@ -18,4 +18,8 @@
     <dimen name="selector_finish_btn_width">64dp</dimen>
     <!--    完成按钮的高度-->
     <dimen name="selector_finish_btn_height">32dp</dimen>
+    <!--    完成按钮水平方向的内边距-->
+    <dimen name="selector_finish_btn_padding_horizontal">6dp</dimen>
+    <!--    完成按钮垂直方向的内边距-->
+    <dimen name="selector_finish_btn_padding_vertical">4dp</dimen>
 </resources>

@@ -42,7 +42,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     /**
      * 用于存储选择的条目数据
      */
-     val mSelectedItems: ArrayList<PhotoItemModel> = ArrayList()
+    val mSelectedItems: ArrayList<PhotoItemModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -179,16 +179,14 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
             }
             false -> {
                 // 当前由选中变成未选中 需要刷新选中的数目,需要把之后选中的序号进行减一的操作
-
                 preSelectIds?.takeIf { currentItem != null }?.apply {
                     val indexOf = preSelectIds.indexOf(currentItem)
-
                     if (indexOf >= 0) {
                         for (index in indexOf until size) {
                             this[index].selectNumber = --this[index].selectNumber
                         }
                     }
-                    //notifyDataSetChanged()
+                    notifyDataSetChanged()
                 }
             }
         }

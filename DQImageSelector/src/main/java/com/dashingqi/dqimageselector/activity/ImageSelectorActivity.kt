@@ -1,28 +1,23 @@
 package com.dashingqi.dqimageselector.activity
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
-import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import androidx.recyclerview.widget.RecyclerView
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.adapter.ImageSelectorAdapter
 import com.dashingqi.dqimageselector.adapter.SelectorItemDecoration
+import com.dashingqi.dqimageselector.control.SelectorControl
+import com.dashingqi.dqimageselector.databinding.ActivityImageSelectorBinding
+import com.dashingqi.dqimageselector.listeenr.IControllerView
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
@@ -30,39 +25,38 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
 /**
  * 图片选择页面
  */
-class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
+class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControllerView {
 
     /** 配置的数据项*/
     private var mConfigData: ConfigData? = null
-
-    /** 预览*/
-    private var mTvPreview: TextView? = null
-
-    /** 完成*/
-    private var mBtnFinish: Button? = null
 
     /** LoaderManager Instance */
     private val mLoaderManager by lazy {
         LoaderManager.getInstance(this)
     }
 
+    /** SelectorControl */
+    private var mSelectorControl :SelectorControl?=null
+
     /** adapter */
     private var adapter: ImageSelectorAdapter? = null
 
+    /** ActivityImageSelectorBinding */
+    private val binding by lazy {
+        ActivityImageSelectorBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_selector)
+        setContentView(binding.root)
         mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
-        Log.d(TAG, "isShowCamera = ${mConfigData?.isShowCamera} maxSize = ${mConfigData?.maxSelectSize}")
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
-        mTvPreview = findViewById(R.id.tvPreview)
-        mBtnFinish = findViewById(R.id.btnFinish)
         adapter = ImageSelectorAdapter()
         adapter?.setItemListener(this)
         adapter?.setConfigData(mConfigData)
         // 设置分割线
-        recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
-        recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
+        binding.recyclerView.adapter = adapter
+        mSelectorControl = SelectorControl(this, mLoaderManager,this)
         handlePermission()
     }
 
@@ -92,58 +86,12 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
                         )
                 }
             } else {
-                fetchData()
+                mSelectorControl?.fetchData()
             }
         } else {
-            fetchData()
+            mSelectorControl?.fetchData()
         }
     }
-
-    /**
-     * 获取数据
-     */
-    private fun fetchData() {
-        mLoaderManager.initLoader(LOADER_ALL, null, object : LoaderManager.LoaderCallbacks<Cursor> {
-            override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
-                return CursorLoader(
-                    this@ImageSelectorActivity,
-                    MEDIA_STORE_IMAGE_URI, IMAGE_PROJECTION,
-                    null, null,
-                    IMAGE_PROJECTION[2] + " DESC"
-                )
-            }
-
-            @SuppressLint("Range")
-            override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-                data?.let { cursor ->
-                    val tempData = mutableListOf<PhotoItemModel>()
-                    while (cursor.moveToNext()) {
-                        val path = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[0]))
-                        val name = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[1]))
-                        val date = cursor.getLong(cursor.getColumnIndex(IMAGE_PROJECTION[2]))
-                        val id = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[3]))
-                        Log.d(TAG, "path = $path name = $name date = $date id = $id")
-                        val photoItemModel = PhotoItemModel(id, path, name, date)
-                        tempData.add(photoItemModel)
-                    }
-                    runOnUiThread {
-                        if (tempData.isNotEmpty()) {
-                            adapter?.let {
-                                it.mData.addAll(tempData)
-                                it.notifyDataSetChanged()
-                            }
-                        }
-                    }
-                }
-            }
-
-            override fun onLoaderReset(loader: Loader<Cursor>) {
-            }
-
-        })
-
-    }
-
     /**
      * 权限申请结果处理
      */
@@ -158,7 +106,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // 申请成功
-                        fetchData()
+                        mSelectorControl?.fetchData()
                     }
                 }
             }
@@ -185,20 +133,6 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
          * key 配置的数据项
          */
         const val KEY_CONFIG_DATA = "key_config_data"
-
-        /** 查询手机内部图片对应的URI */
-        val MEDIA_STORE_IMAGE_URI: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
-        /** 查询数据库中的字段*/
-        val IMAGE_PROJECTION = arrayOf(
-            MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_ADDED,
-            MediaStore.Images.Media._ID
-        )
-
-        const val LOADER_ALL = 10000
-
 
         /**
          * 跳转Activity
@@ -243,15 +177,13 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
      */
     private fun updateViewState(selectorSize: Int) {
         val viewState = selectorSize > 0
-
         // 预览按钮
-        mTvPreview?.apply {
+        binding.tvPreview.apply {
             isSelected = viewState
             isEnabled = viewState
         }
-
         // 完成按钮
-        mBtnFinish?.apply {
+        binding.btnFinish.apply {
             isSelected = viewState
             isEnabled = viewState
             text = if (viewState) {
@@ -261,5 +193,22 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener {
                 resources.getString(R.string.finish_text)
             }
         }
+    }
+
+    override fun onPreCreateLoader(id: Int) {
+    }
+
+    override fun onLoadFinish(data: MutableList<PhotoItemModel>) {
+       if (data.isNotEmpty()){
+           runOnUiThread {
+               adapter?.let {
+                   it.mData.addAll(data)
+                   it.notifyDataSetChanged()
+               }
+           }
+       }
+    }
+
+    override fun onLoaderReset(loader: Loader<Cursor>) {
     }
 }
