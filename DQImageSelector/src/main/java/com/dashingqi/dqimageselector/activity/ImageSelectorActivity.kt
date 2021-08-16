@@ -25,7 +25,7 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
 /**
  * 图片选择页面
  */
-class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControllerView {
+class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControllerView {
 
     /** 配置的数据项*/
     private var mConfigData: ConfigData? = null
@@ -36,7 +36,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
     }
 
     /** SelectorControl */
-    private var mSelectorController :SelectorController?=null
+    private var mSelectorController: SelectorController? = null
 
     /** adapter */
     private val adapter: ImageSelectorAdapter by lazy {
@@ -57,7 +57,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
         // 设置分割线
         binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         binding.recyclerView.adapter = adapter
-        mSelectorController = SelectorController(this, mLoaderManager,this)
+        mSelectorController = SelectorController(this, mLoaderManager, this)
         handlePermission()
     }
 
@@ -93,6 +93,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
             mSelectorController?.fetchData()
         }
     }
+
     /**
      * 权限申请结果处理
      */
@@ -104,11 +105,8 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             WRITE_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty()) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        // 申请成功
-                        mSelectorController?.fetchData()
-                    }
+                takeIf { grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED }.apply {
+                    mSelectorController?.fetchData()
                 }
             }
         }
@@ -168,14 +166,14 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
     }
 
     override fun onLoadFinish(data: MutableList<PhotoItemModel>) {
-       if (data.isNotEmpty()){
-           runOnUiThread {
-               adapter.let {
-                   it.mData.addAll(data)
-                   it.notifyDataSetChanged()
-               }
-           }
-       }
+        if (data.isNotEmpty()) {
+            runOnUiThread {
+                adapter.let {
+                    it.mData.addAll(data)
+                    it.notifyDataSetChanged()
+                }
+            }
+        }
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
