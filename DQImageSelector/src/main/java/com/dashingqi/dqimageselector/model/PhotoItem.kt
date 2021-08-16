@@ -1,5 +1,6 @@
 package com.dashingqi.dqimageselector.model
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
@@ -21,5 +22,7 @@ class PhotoItemModel(
     // 图片是否被选中
     var isSelected: Boolean = false,
     // 选择的序号
-    var selectNumber: Int = -1
-): Parcelable
+    var selectNumber: Int = -1,
+    // 图片的Uri
+    var uri: Uri? = null
+) : Parcelable

@@ -4,17 +4,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.widget.Group
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.databinding.ItemImageBinding
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
+import com.dashingqi.dqimageselector.utils.MediaStoreUtil
+import com.dashingqi.dqimageselector.utils.VersionUtil
 import kotlin.collections.ArrayList
 
 /**
@@ -53,7 +51,10 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder --> position size =  ${mData.size}")
         mData[position]?.let { data ->
-            Glide.with(holder.itemView).load(data.path).into(holder.binding.image)
+            // 适配Android Q
+            Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
+                holder.binding.image
+            )
             holder.binding.ivSelect.isSelected = data.isSelected
             holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
             holder.binding.tvNumber.text = "${data.selectNumber}"

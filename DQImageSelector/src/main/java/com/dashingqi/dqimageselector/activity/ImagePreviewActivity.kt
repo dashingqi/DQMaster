@@ -7,6 +7,8 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.databinding.ActivityImagePreviewBinding
 import com.dashingqi.dqimageselector.model.PhotoItemModel
+import com.dashingqi.dqimageselector.utils.MediaStoreUtil
+import com.dashingqi.dqimageselector.utils.VersionUtil
 
 /**
  * 图片预览界面
@@ -17,6 +19,7 @@ class ImagePreviewActivity : AppCompatActivity() {
     private val binding by lazy {
         ActivityImagePreviewBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -37,7 +40,9 @@ class ImagePreviewActivity : AppCompatActivity() {
      */
     private fun show(model: PhotoItemModel?) {
         model?.let { photoModel ->
-            Glide.with(this).load(photoModel.path).into(binding.photoView)
+            // 适配Android Q
+            Glide.with(this).load(if (VersionUtil.isAndroidQ()) photoModel.uri else photoModel.path)
+                .into(binding.photoView)
         }
     }
 
