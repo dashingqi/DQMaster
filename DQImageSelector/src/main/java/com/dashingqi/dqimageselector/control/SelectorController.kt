@@ -20,7 +20,7 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
  * @time : 2021/8/15
  * desc :
  */
-class SelectorControl(
+class SelectorController(
     var controller: IControllerView,
     var loaderManager: LoaderManager,
     var context: Context

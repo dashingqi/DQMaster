@@ -15,7 +15,7 @@ import androidx.loader.content.Loader
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.adapter.ImageSelectorAdapter
 import com.dashingqi.dqimageselector.adapter.SelectorItemDecoration
-import com.dashingqi.dqimageselector.control.SelectorControl
+import com.dashingqi.dqimageselector.control.SelectorController
 import com.dashingqi.dqimageselector.databinding.ActivityImageSelectorBinding
 import com.dashingqi.dqimageselector.listeenr.IControllerView
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
@@ -36,7 +36,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
     }
 
     /** SelectorControl */
-    private var mSelectorControl :SelectorControl?=null
+    private var mSelectorController :SelectorController?=null
 
     /** adapter */
     private val adapter: ImageSelectorAdapter by lazy {
@@ -57,7 +57,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
         // 设置分割线
         binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         binding.recyclerView.adapter = adapter
-        mSelectorControl = SelectorControl(this, mLoaderManager,this)
+        mSelectorController = SelectorController(this, mLoaderManager,this)
         handlePermission()
     }
 
@@ -87,10 +87,10 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
                         )
                 }
             } else {
-                mSelectorControl?.fetchData()
+                mSelectorController?.fetchData()
             }
         } else {
-            mSelectorControl?.fetchData()
+            mSelectorController?.fetchData()
         }
     }
     /**
@@ -107,7 +107,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener,IControlle
                 if (grantResults.isNotEmpty()) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // 申请成功
-                        mSelectorControl?.fetchData()
+                        mSelectorController?.fetchData()
                     }
                 }
             }
