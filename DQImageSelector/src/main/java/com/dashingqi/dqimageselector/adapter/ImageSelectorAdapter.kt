@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.databinding.ItemImageBinding
+import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
@@ -26,7 +28,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     /**
      * 数据源
      */
-    val mData: MutableList<PhotoItemModel?> = mutableListOf()
+    var mData: MutableList<PhotoItemModel> = mutableListOf()
 
     /**
      * 配置数据
@@ -75,18 +77,29 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
             Log.d(TAG, "size is ${payloads.size}")
             when (payloads[0] as Int) {
                 NOTIFY_REFRESH_SELECT_CODE -> {
-                    mData[position]?.let {
+                    mData[position].let {
                         when {
                             // 之前状态是选中的
                             it.isSelected -> {
                                 it.isSelected = !it.isSelected
                                 holder.binding.ivSelect.isSelected = false
-                                val preSelectItems = mSelectedItems
+                                val preSelectItems = mutableListOf<PhotoItemModel>()
+                                preSelectItems.addAll(mSelectedItems)
+                                Log.d(TAG, "onBindViewHolder: preSize = ${preSelectItems.size}")
                                 if (handleSelect(it.isSelected, it)) {
                                     mPhotoItemClickListener?.updateEditView()
                                     holder.binding.countGroup.visibility = View.INVISIBLE
-                                    val oldData = mData
-                                    orderNumber(holder, false, preSelectItems, it,oldData)
+                                    val oldData = mutableListOf<PhotoItemModel>()
+                                    mData.forEach { data ->
+                                        oldData.add(
+                                            PhotoItemModel(
+                                                data.id, data.path, data.name, data.date, data.isSelected, data
+                                                    .selectNumber, data.uri
+                                            )
+                                        )
+                                    }
+                                    Log.d(TAG, "onBindViewHolder: preSize = ${preSelectItems.size}")
+                                    orderNumber(holder, false, preSelectItems, it, oldData)
                                 }
                             }
                             // 之前状态是未选中的
@@ -97,7 +110,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                                     mPhotoItemClickListener?.updateEditView()
                                     holder.binding.countGroup.visibility = View.VISIBLE
                                     it.selectNumber = mSelectedItems.size
-                                    orderNumber(holder, true, null, it)
+                                    orderNumber(holder, true,null , it)
                                 }
                             }
                             !it.isSelected && !isCanSelect() -> {
@@ -167,9 +180,9 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     private fun orderNumber(
         holder: ImgSelectorViewHolder,
         isSelected: Boolean,
-        preSelectIds: ArrayList<PhotoItemModel>? = null,
+        preSelectIds: MutableList<PhotoItemModel>? = null,
         currentItem: PhotoItemModel? = null,
-        oldData: MutableList<PhotoItemModel?>? = null
+        oldData: MutableList<PhotoItemModel> = mutableListOf()
     ) {
         when (isSelected) {
             true -> {
@@ -182,11 +195,16 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                     if (indexOf >= 0) {
                         for (index in indexOf + 1 until size) {
                             val data = mData.filter { photoItemModel ->
-                                photoItemModel?.id == this[index].id
+                                photoItemModel.id == this[index].id
                             }
-                            data[0]?.let {
+                            data[0].let {
                                 it.selectNumber = --it.selectNumber
                             }
+                        }
+                        // 这个地方使用DiffUtil
+                        holder.itemView.post {
+                            val calculateDiff = DiffUtil.calculateDiff(DiffCallback(oldData, mData), true)
+                            calculateDiff.dispatchUpdatesTo(this@ImageSelectorAdapter)
                         }
                     }
                 }
