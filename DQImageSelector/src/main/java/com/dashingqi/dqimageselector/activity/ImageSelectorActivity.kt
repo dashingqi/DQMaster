@@ -166,14 +166,16 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
     }
 
     override fun onLoadFinish(data: MutableList<PhotoItemModel>) {
-        if (data.isNotEmpty()) {
-            runOnUiThread {
-                adapter.let {
-                    it.mData.addAll(data)
-                    it.notifyDataSetChanged()
-                }
-            }
-        }
+       if (data.isNotEmpty()){
+           runOnUiThread {
+               adapter.let {
+                   it.mData.addAll(data)
+                   binding.recyclerView.post {
+                       it.notifyDataSetChanged()
+                   }
+               }
+           }
+       }
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {

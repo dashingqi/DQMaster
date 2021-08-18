@@ -73,8 +73,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
             super.onBindViewHolder(holder, position, payloads)
         } else {
             Log.d(TAG, "size is ${payloads.size}")
-            var code = payloads[0] as Int
-            when (code) {
+            when (payloads[0] as Int) {
                 NOTIFY_REFRESH_SELECT_CODE -> {
                     mData[position]?.let {
                         when {
@@ -82,22 +81,23 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                             it.isSelected -> {
                                 it.isSelected = !it.isSelected
                                 holder.binding.ivSelect.isSelected = false
+                                val preSelectItems = mSelectedItems
                                 if (handleSelect(it.isSelected, it)) {
                                     mPhotoItemClickListener?.updateEditView()
                                     holder.binding.countGroup.visibility = View.INVISIBLE
-                                    orderNumber(holder, false, null, it)
+                                    val oldData = mData
+                                    orderNumber(holder, false, preSelectItems, it,oldData)
                                 }
                             }
                             // 之前状态是未选中的
                             !it.isSelected && isCanSelect() -> {
                                 it.isSelected = !it.isSelected
                                 holder.binding.ivSelect.isSelected = true
-                                val preSelectItems = mSelectedItems
                                 if (handleSelect(it.isSelected, it)) {
                                     mPhotoItemClickListener?.updateEditView()
                                     holder.binding.countGroup.visibility = View.VISIBLE
                                     it.selectNumber = mSelectedItems.size
-                                    orderNumber(holder, true, preSelectItems, it)
+                                    orderNumber(holder, true, null, it)
                                 }
                             }
                             !it.isSelected && !isCanSelect() -> {
@@ -168,7 +168,8 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         holder: ImgSelectorViewHolder,
         isSelected: Boolean,
         preSelectIds: ArrayList<PhotoItemModel>? = null,
-        currentItem: PhotoItemModel? = null
+        currentItem: PhotoItemModel? = null,
+        oldData: MutableList<PhotoItemModel?>? = null
     ) {
         when (isSelected) {
             true -> {
@@ -179,17 +180,15 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                 preSelectIds?.takeIf { currentItem != null }?.apply {
                     val indexOf = this.indexOf(currentItem)
                     if (indexOf >= 0) {
-                        for (index in indexOf until size) {
+                        for (index in indexOf + 1 until size) {
                             val data = mData.filter { photoItemModel ->
                                 photoItemModel?.id == this[index].id
                             }
                             data[0]?.let {
                                 it.selectNumber = --it.selectNumber
                             }
-
                         }
                     }
-                    notifyDataSetChanged()
                 }
             }
         }
