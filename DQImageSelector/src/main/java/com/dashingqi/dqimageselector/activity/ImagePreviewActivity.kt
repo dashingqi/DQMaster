@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.adapter.ImagePreviewAllAdapter
+import com.dashingqi.dqimageselector.adapter.ImagePreviewSelectedAdapter
+import com.dashingqi.dqimageselector.adapter.SelectedItemDecoration
 import com.dashingqi.dqimageselector.databinding.ActivityImagePreviewBinding
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 import com.dashingqi.dqimageselector.utils.MediaStoreUtil
@@ -27,15 +29,21 @@ class ImagePreviewActivity : AppCompatActivity() {
         ActivityImagePreviewBinding.inflate(layoutInflater)
     }
 
-    /** 展示所有图片的Adapter*/
+    /** 展示所有图片的Adapter */
     private val previewAllAdapter by lazy {
         ImagePreviewAllAdapter()
+    }
+
+    /** 展示选中图片的Adapter */
+    private val previewSelectedAdapter by lazy {
+        ImagePreviewSelectedAdapter()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initAllDataRVAdapter()
+        initSelectedDataRvAdapter()
         intent?.let {
             val model: PhotoItemModel? = it.getParcelableExtra(KEY_PREVIEW_PHOTO_MODEL)
             val allPhotoModelList =
@@ -44,7 +52,6 @@ class ImagePreviewActivity : AppCompatActivity() {
             val selectedPhotoModelList =
                 it.getParcelableArrayListExtra<PhotoItemModel>(KEY_PREVIEW_SELECTED_PHOTO_MODEL_LIST)
             Log.d(TAG, "selectedPhotoModelList size is ${selectedPhotoModelList?.size ?: 0}")
-            show(model)
             showListData(allPhotoModelList, selectedPhotoModelList)
         }
     }
@@ -62,6 +69,18 @@ class ImagePreviewActivity : AppCompatActivity() {
     }
 
     /**
+     * 初始化展示选中的图片Adapter
+     */
+    private fun initSelectedDataRvAdapter() {
+        val selectedRVLayoutManager = LinearLayoutManager(this)
+        selectedRVLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.selectedRecyclerView.layoutManager = selectedRVLayoutManager
+        binding.selectedRecyclerView.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        binding.selectedRecyclerView.addItemDecoration(SelectedItemDecoration())
+        binding.selectedRecyclerView.adapter = previewSelectedAdapter
+    }
+
+    /**
      * 用于展示全部图片和选中的图片
      * @param allPhotoModel ArrayList<PhotoItemModel> 全部图片
      * @param selectedPhotoModel ArrayList<PhotoItemModel> 选中的图片
@@ -73,15 +92,15 @@ class ImagePreviewActivity : AppCompatActivity() {
 
         // 更新全部图片布局
         allPhotoModel?.takeIf { it.isNotEmpty() }?.apply {
-
             previewAllAdapter.setData(this)
         }
 
         // 更新选中的图片布局
         selectedPhotoModel?.takeIf { it.isNotEmpty() }?.apply {
-
+            // 设置选中布局的显隐
+            binding.selectedRecyclerView.visibility = if (this.isEmpty()) View.GONE else View.VISIBLE
+            previewSelectedAdapter.setData(this)
         }
-
     }
 
     /**
@@ -91,17 +110,6 @@ class ImagePreviewActivity : AppCompatActivity() {
         finish()
     }
 
-    /**
-     * 展示逻辑
-     * @param model PhotoItemModel? 展示的数据
-     */
-    private fun show(model: PhotoItemModel?) {
-        model?.let { photoModel ->
-            // 适配Android Q
-            Glide.with(this).load(if (VersionUtil.isAndroidQ()) photoModel.uri else photoModel.path)
-                .into(binding.photoView)
-        }
-    }
 
     companion object {
 

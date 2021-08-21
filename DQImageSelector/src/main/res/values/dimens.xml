@@ -22,4 +22,16 @@
     <dimen name="selector_finish_btn_padding_horizontal">6dp</dimen>
     <!--    完成按钮垂直方向的内边距-->
     <dimen name="selector_finish_btn_padding_vertical">4dp</dimen>
+    <!--    预览界面 底部布局中RV的垂直方向的内边距-->
+    <dimen name="preview_bottom_layout_rv_vertical_padding">18dp</dimen>
+    <!--    预览界面 底部布局中RV的水平方向的内边距-->
+    <dimen name="preview_bottom_layout_rv_horizontal_padding">16dp</dimen>
+    <!--   ItemDecoration padding 10dp -->
+    <dimen name="preview_selected_item_decoration_padding_10">10dp</dimen>
+    <!--   ItemDecoration padding 16dp -->
+    <dimen name="preview_selected_item_decoration_padding_16">16dp</dimen>
+    <!--  Selected Item width   -->
+    <dimen name="preview_selected_item_width">66dp</dimen>
+    <!--  Selected Item height  -->
+    <dimen name="preview_selected_item_height">66dp</dimen>
 </resources>

@@ -58,6 +58,16 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
         binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         binding.recyclerView.adapter = adapter
         mSelectorController = SelectorController(this, mLoaderManager, this)
+        // 预览设置点击事件
+        binding.tvPreview.setOnClickListener {
+            ImagePreviewActivity.startPreviewActivity(
+                this,
+                ImagePreviewActivity.PREVIEW_VIEW_REQUEST_CODE,
+                null,
+                adapter.mSelectedItems,
+                adapter.mSelectedItems
+            )
+        }
         handlePermission()
     }
 

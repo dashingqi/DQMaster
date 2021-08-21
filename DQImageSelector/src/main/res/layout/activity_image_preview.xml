@@ -9,30 +9,31 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/allRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintBottom_toBottomOf="@+id/allRecyclerView"
-        app:layout_constraintStart_toStartOf="@+id/allRecyclerView"
-        app:layout_constraintEnd_toEndOf="@+id/allRecyclerView"
         android:id="@+id/bottomLayout"
-        android:background="@color/color_222021"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/translucent_black_80"
+        app:layout_constraintBottom_toBottomOf="@+id/allRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/allRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/allRecyclerView">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/selectedRecyclerView"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/preview_bottom_layout_rv_vertical_padding"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photoView"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
