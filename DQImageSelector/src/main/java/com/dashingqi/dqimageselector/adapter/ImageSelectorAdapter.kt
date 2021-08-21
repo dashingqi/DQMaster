@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.databinding.ItemImageBinding
 import com.dashingqi.dqimageselector.diff.DiffCallback
+import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
@@ -109,7 +110,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                                     mPhotoItemClickListener?.updateEditView()
                                     holder.binding.countGroup.visibility = View.VISIBLE
                                     it.selectNumber = mSelectedItems.size
-                                    orderNumber(holder, true,null , it)
+                                    orderNumber(holder, true, null, it)
                                 }
                             }
                             !it.isSelected && !isCanSelect() -> {
@@ -202,7 +203,13 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
                         }
                         // 这个地方使用DiffUtil
                         holder.itemView.post {
-                            val calculateDiff = DiffUtil.calculateDiff(DiffCallback(oldData, mData), true)
+                            val calculateDiff = DiffUtil.calculateDiff(
+                                DiffCallback(
+                                    oldData,
+                                    mData,
+                                    DiffEnum.IMAGE_SELECTOR_UPDATE_NUMBER
+                                ), true
+                            )
                             calculateDiff.dispatchUpdatesTo(this@ImageSelectorAdapter)
                         }
                     }

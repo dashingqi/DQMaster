@@ -2,9 +2,12 @@ package com.dashingqi.dqimageselector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.databinding.ItemPreviewSelectedImgBinding
+import com.dashingqi.dqimageselector.diff.DiffCallback
+import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
@@ -43,10 +46,17 @@ class ImagePreviewSelectedAdapter : RecyclerView.Adapter<ImagePreviewSelectedAda
      * 设置数据，更新列表
      * @param data MutableList<PhotoItemModel> 数据源
      */
-     fun setData(data: MutableList<PhotoItemModel>) {
+    fun setData(data: MutableList<PhotoItemModel>) {
+        // 使用DiffUtil替代notify
+        val calculateDiff = DiffUtil.calculateDiff(
+            DiffCallback(
+                mData,
+                data,
+                DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTED_RV
+            ), true
+        )
+        calculateDiff.dispatchUpdatesTo(this)
         mData = data
-        // 这个地方可以考虑使用DiffUtil
-        notifyDataSetChanged()
     }
 
     /**
