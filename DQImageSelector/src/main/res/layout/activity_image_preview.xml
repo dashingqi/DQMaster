@@ -11,6 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintBottom_toBottomOf="@+id/allRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/allRecyclerView"
+        app:layout_constraintEnd_toEndOf="@+id/allRecyclerView"
+        android:id="@+id/bottomLayout"
+        android:background="@color/color_222021"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/selectedRecyclerView"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photoView"
         android:visibility="gone"
