@@ -185,6 +185,22 @@ class CommonToolbar : ConstraintLayout {
     }
 
     /**
+     * 自定义左布局
+     * @param view View
+     */
+    fun setLeftCustomView(view:View){
+        mLeftContainer?.addView(view)
+    }
+
+    /**
+     * 自定义右布局
+     * @param view View
+     */
+    fun setRightCustomView(view: View) {
+        mRightContainer?.addView(view)
+    }
+
+    /**
      * default
      */
 

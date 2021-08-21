@@ -28,7 +28,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     /**
      * 数据源
      */
-    var mData: MutableList<PhotoItemModel> = mutableListOf()
+    var mData: ArrayList<PhotoItemModel> = ArrayList()
 
     /**
      * 配置数据

@@ -119,8 +119,10 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
         photoItem?.let {
             ImagePreviewActivity.startPreviewActivity(
                 this,
+                ImagePreviewActivity.PREVIEW_VIEW_REQUEST_CODE,
                 it,
-                ImagePreviewActivity.PREVIEW_VIEW_REQUEST_CODE
+                adapter.mData,
+                adapter.mSelectedItems
             )
         }
     }
@@ -165,17 +167,21 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
     override fun onPreCreateLoader(id: Int) {
     }
 
+    /**
+     * 从数据查询数据还通过该方法回调给Activity
+     * @param data MutableList<PhotoItemModel> 手机中图片集合
+     */
     override fun onLoadFinish(data: MutableList<PhotoItemModel>) {
-       if (data.isNotEmpty()){
-           runOnUiThread {
-               adapter.let {
-                   it.mData.addAll(data)
-                   binding.recyclerView.post {
-                       it.notifyDataSetChanged()
-                   }
-               }
-           }
-       }
+        if (data.isNotEmpty()) {
+            runOnUiThread {
+                adapter.let {
+                    it.mData.addAll(data)
+                    binding.recyclerView.post {
+                        it.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {

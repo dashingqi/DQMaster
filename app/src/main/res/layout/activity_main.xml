@@ -20,7 +20,6 @@
         <com.dashingqi.dqcommontoolbar.widget.CommonToolbar
             android:id="@+id/toolbar"
             leftText='@{"左标题"}'
-            rightText='@{"右标题"}'
             titleText='@{"测试"}'
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
