@@ -13,7 +13,6 @@ import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
-import com.dashingqi.dqimageselector.utils.MediaStoreUtil
 import com.dashingqi.dqimageselector.utils.VersionUtil
 import kotlin.collections.ArrayList
 

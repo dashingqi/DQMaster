@@ -57,6 +57,7 @@ class SelectorController(
                             photoItemModel.uri = MediaStoreUtil.convertPathToUri(context, path)
                             tempData.add(photoItemModel)
                         }
+                        Log.d(TAG, "temData size is = ${tempData.size}")
                         controller.onLoadFinish(tempData)
                     }
                 }
@@ -80,5 +81,10 @@ class SelectorController(
         )
 
         const val LOADER_ALL = 10000
+
+        /**
+         * TAG
+         */
+        const val TAG = "SelectorController"
     }
 }
