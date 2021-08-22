@@ -14,10 +14,11 @@ interface IControllerView {
 
     /** 创建Loader之前回调 */
     fun onPreCreateLoader(id: Int)
+
     /**
      * 数据加载完成
      */
-    fun onLoadFinish(data:MutableList<PhotoItemModel>)
+    fun onLoadFinish(data: ArrayList<PhotoItemModel>)
 
     /** Loader 重置*/
     fun onLoaderReset(loader: Loader<Cursor>)

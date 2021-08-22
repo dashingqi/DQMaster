@@ -153,6 +153,16 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
     }
 
     /**
+     * 设置数据源
+     */
+    fun setData(data: ArrayList<PhotoItemModel>) {
+        val diffUtil =
+            DiffUtil.calculateDiff(DiffCallback(mData, data, DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTOR_RV), true)
+        diffUtil.dispatchUpdatesTo(this)
+        mData = data
+    }
+
+    /**
      * 处理选择的业务
      */
     private fun handleSelect(isSelect: Boolean, item: PhotoItemModel): Boolean {

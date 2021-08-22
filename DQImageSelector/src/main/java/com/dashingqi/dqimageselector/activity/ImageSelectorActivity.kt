@@ -181,14 +181,11 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
      * 从数据查询数据还通过该方法回调给Activity
      * @param data MutableList<PhotoItemModel> 手机中图片集合
      */
-    override fun onLoadFinish(data: MutableList<PhotoItemModel>) {
+    override fun onLoadFinish(data: ArrayList<PhotoItemModel>) {
         if (data.isNotEmpty()) {
             runOnUiThread {
                 adapter.let {
-                    it.mData.addAll(data)
-                    binding.recyclerView.post {
-                        it.notifyDataSetChanged()
-                    }
+                    it.setData(data)
                 }
             }
         }

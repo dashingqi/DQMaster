@@ -44,7 +44,7 @@ class SelectorController(
                 @SuppressLint("Range")
                 override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
                     data?.let { cursor ->
-                        val tempData = mutableListOf<PhotoItemModel>()
+                        val tempData = ArrayList<PhotoItemModel>()
                         while (cursor.moveToNext()) {
                             val path =
                                 cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[0]))

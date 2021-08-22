@@ -2,9 +2,12 @@ package com.dashingqi.dqimageselector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.databinding.ItemPreviewAllImgBinding
+import com.dashingqi.dqimageselector.diff.DiffCallback
+import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
@@ -32,8 +35,10 @@ class ImagePreviewAllAdapter : RecyclerView.Adapter<ImagePreviewAllAdapter.Previ
      * @param data MutableList<PhotoItemModel>
      */
     fun setData(data:MutableList<PhotoItemModel>){
+        val diffCallback =
+            DiffUtil.calculateDiff(DiffCallback(mData, data, DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTOR_RV), true)
+        diffCallback.dispatchUpdatesTo(this)
         mData = data
-        notifyDataSetChanged()
     }
 
     /**
