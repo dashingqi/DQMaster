@@ -182,11 +182,10 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
      * @param data MutableList<PhotoItemModel> 手机中图片集合
      */
     override fun onLoadFinish(data: ArrayList<PhotoItemModel>) {
-        if (data.isNotEmpty()) {
+        // 对于新增的图片，暂时不考虑更新到列表中 我看微信是这样搞的！！！这个地方没想好怎么搞
+        if (data.isNotEmpty() && adapter.mData.isEmpty()) {
             runOnUiThread {
-                adapter.let {
-                    it.setData(data)
-                }
+                adapter.setData(data)
             }
         }
     }

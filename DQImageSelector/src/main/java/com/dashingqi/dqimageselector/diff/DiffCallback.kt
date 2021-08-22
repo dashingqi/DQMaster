@@ -9,8 +9,11 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
  * @since 2021/8/19
  */
 class DiffCallback(
+    /** 老的数据集*/
     private val oldData: MutableList<PhotoItemModel>,
+    /** 新的数据集*/
     private val newData: MutableList<PhotoItemModel>,
+    /** 不同类别用于判断Item上的内容是否相同*/
     private val diffEnum: DiffEnum? = null
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {

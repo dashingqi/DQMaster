@@ -45,14 +45,49 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      */
     val mSelectedItems: ArrayList<PhotoItemModel> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
-        var itemBinding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ImgSelectorViewHolder(itemBinding)
+    /**
+     * ItemView的点击事件
+     */
+    private var mOnItemClickListener: View.OnClickListener? = null
+
+    /**
+     * IvSelect 的点击事件
+     */
+    private var mOnSelectClickListener: View.OnClickListener? = null
+
+    init {
+
+        mOnItemClickListener = View.OnClickListener {
+            val viewHolder = it.tag as ImgSelectorViewHolder
+            val position = viewHolder.adapterPosition
+            mPhotoItemClickListener?.onItemClick(position, mData[position])
+        }
+
+        mOnSelectClickListener = View.OnClickListener {
+            val viewHolder = it.tag as ImgSelectorViewHolder
+            val position = viewHolder.adapterPosition
+            mPhotoItemClickListener?.onSelectClick(position, mData[position])
+        }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
+        Log.d(TAG, "onCreateViewHolder")
+        val itemBinding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val viewHolder = ImgSelectorViewHolder(itemBinding)
+        viewHolder.itemView.tag = viewHolder
+        viewHolder.binding.ivSelect.tag = viewHolder
+        viewHolder.itemView.setOnClickListener(mOnItemClickListener)
+        viewHolder.binding.ivSelect.setOnClickListener(mOnSelectClickListener)
+        return viewHolder
+    }
+
+    /**
+     * onBindViewHolder 仅仅做针对UI更新的动作，比如 setText()等 对View的操作
+     *
+     */
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder --> position size =  ${mData.size}")
-        mData[position]?.let { data ->
+        mData[position].let { data ->
             // 适配Android Q
             Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
                 holder.binding.image
@@ -60,12 +95,6 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
             holder.binding.ivSelect.isSelected = data.isSelected
             holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
             holder.binding.tvNumber.text = "${data.selectNumber}"
-            holder.itemView.setOnClickListener {
-                mPhotoItemClickListener?.onItemClick(position, data)
-            }
-            holder.binding.ivSelect.setOnClickListener {
-                mPhotoItemClickListener?.onSelectClick(position, data)
-            }
         }
     }
 
@@ -156,12 +185,11 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      * 设置数据源
      */
     fun setData(data: ArrayList<PhotoItemModel>) {
-        val diffUtil =
+        val diffResult =
             DiffUtil.calculateDiff(DiffCallback(mData, data, DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTOR_RV), true)
-        diffUtil.dispatchUpdatesTo(this)
+        diffResult.dispatchUpdatesTo(this)
         mData = data
     }
-
     /**
      * 处理选择的业务
      */
