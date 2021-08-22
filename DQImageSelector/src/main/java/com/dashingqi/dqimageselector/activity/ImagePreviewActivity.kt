@@ -13,16 +13,19 @@ import androidx.recyclerview.widget.SnapHelper
 import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.adapter.ImagePreviewAllAdapter
 import com.dashingqi.dqimageselector.adapter.ImagePreviewSelectedAdapter
+import com.dashingqi.dqimageselector.adapter.ImagePreviewSelectedAdapter.Companion.NOTIFY_REFRESH_SELECT_LABEL_CODE
 import com.dashingqi.dqimageselector.adapter.SelectedItemDecoration
 import com.dashingqi.dqimageselector.databinding.ActivityImagePreviewBinding
+import com.dashingqi.dqimageselector.listeenr.IPreviewSelectedItemListener
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 import com.dashingqi.dqimageselector.utils.MediaStoreUtil
 import com.dashingqi.dqimageselector.utils.VersionUtil
+import kotlinx.coroutines.Runnable
 
 /**
  * 图片预览界面
  */
-class ImagePreviewActivity : AppCompatActivity() {
+class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
 
     /** ActivityImagePreviewBinding */
     private val binding by lazy {
@@ -39,6 +42,11 @@ class ImagePreviewActivity : AppCompatActivity() {
         ImagePreviewSelectedAdapter()
     }
 
+    /**
+     * 底部当前选中的position
+     */
+    private var mCurrentSelectedPosition = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -52,7 +60,7 @@ class ImagePreviewActivity : AppCompatActivity() {
             val selectedPhotoModelList =
                 it.getParcelableArrayListExtra<PhotoItemModel>(KEY_PREVIEW_SELECTED_PHOTO_MODEL_LIST)
             Log.d(TAG, "selectedPhotoModelList size is ${selectedPhotoModelList?.size ?: 0}")
-            showListData(allPhotoModelList, selectedPhotoModelList)
+            showListData(allPhotoModelList, selectedPhotoModelList, model)
         }
     }
 
@@ -77,6 +85,7 @@ class ImagePreviewActivity : AppCompatActivity() {
         binding.selectedRecyclerView.layoutManager = selectedRVLayoutManager
         binding.selectedRecyclerView.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         binding.selectedRecyclerView.addItemDecoration(SelectedItemDecoration())
+        previewSelectedAdapter.setItemClickListener(this)
         binding.selectedRecyclerView.adapter = previewSelectedAdapter
     }
 
@@ -87,7 +96,7 @@ class ImagePreviewActivity : AppCompatActivity() {
      */
     private fun showListData(
         allPhotoModel: ArrayList<PhotoItemModel>?, selectedPhotoModel:
-        ArrayList<PhotoItemModel>?
+        ArrayList<PhotoItemModel>?, clickModel: PhotoItemModel? = null
     ) {
 
         // 更新全部图片布局
@@ -100,7 +109,20 @@ class ImagePreviewActivity : AppCompatActivity() {
             // 设置选中布局的显隐
             binding.selectedRecyclerView.visibility = if (this.isEmpty()) View.GONE else View.VISIBLE
             previewSelectedAdapter.setData(this)
+            // 当clickModel为空说明是点击预览进入的
+            clickModel?.let {
+
+            }
+            binding.allRecyclerView.postDelayed(Runnable {
+                previewSelectedAdapter.notifyItemChanged(
+                    mCurrentSelectedPosition,
+                    NOTIFY_REFRESH_SELECT_LABEL_CODE
+                )
+            },200)
+
         }
+
+
     }
 
     /**
@@ -150,5 +172,11 @@ class ImagePreviewActivity : AppCompatActivity() {
                 context.startActivityForResult(this, requestCode)
             }
         }
+    }
+
+    override fun onPreSelectedItemClick(position: Int, itemModel: PhotoItemModel) {
+        previewSelectedAdapter.notifyItemChanged(mCurrentSelectedPosition, NOTIFY_REFRESH_SELECT_LABEL_CODE)
+        previewSelectedAdapter.notifyItemChanged(position, NOTIFY_REFRESH_SELECT_LABEL_CODE)
+        mCurrentSelectedPosition = position
     }
 }

@@ -24,5 +24,7 @@ class PhotoItemModel(
     // 选择的序号
     var selectNumber: Int = -1,
     // 图片的Uri
-    var uri: Uri? = null
+    var uri: Uri? = null,
+    // 预览界面被选中
+    var isPreSelected: Boolean = false
 ) : Parcelable

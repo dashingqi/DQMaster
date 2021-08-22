@@ -8,5 +8,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
+    <View
+        android:background="@drawable/shape_selected_img_label_bg"
+        android:id="@+id/selectedLabel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,5 +10,7 @@ enum class DiffEnum {
     // 用于更新预览界面选中ITEM的RV布局
     IMAGE_SELECTOR_UPDATE_SELECTED_RV,
     // 用于更新选择图片列表页面的RV
-    IMAGE_SELECTOR_UPDATE_SELECTOR_RV
+    IMAGE_SELECTOR_UPDATE_SELECTOR_RV,
+    // 用于更新预览界面底部选中图片的标识
+    IMAGE_SELECTOR_UPDATE_SELECTED_LABEL
 }

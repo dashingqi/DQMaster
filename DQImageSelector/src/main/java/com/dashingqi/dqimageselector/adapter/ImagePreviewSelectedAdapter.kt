@@ -1,6 +1,7 @@
 package com.dashingqi.dqimageselector.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.dashingqi.dqimageselector.databinding.ItemPreviewSelectedImgBinding
 import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.diff.DiffEnum
+import com.dashingqi.dqimageselector.listeenr.IPreviewSelectedItemListener
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
@@ -22,9 +24,33 @@ class ImagePreviewSelectedAdapter : RecyclerView.Adapter<ImagePreviewSelectedAda
      */
     private var mData: MutableList<PhotoItemModel> = mutableListOf()
 
+    /**
+     * Item点击的事件
+     */
+    private var mPreSelectedItemClickListener: IPreviewSelectedItemListener? = null
+
+    /**
+     * Item点击事件的具体实现
+     */
+    private var mItemClickListener: View.OnClickListener? = null
+
+    init {
+        // 点击事件的具体实现
+        mItemClickListener = View.OnClickListener {
+            val viewHolder = it.tag as PreviewSelectedViewHolder
+            val position = viewHolder.adapterPosition
+            if (position < mData.size) {
+                mPreSelectedItemClickListener?.onPreSelectedItemClick(position, mData[position])
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreviewSelectedViewHolder {
         val binding = ItemPreviewSelectedImgBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PreviewSelectedViewHolder(binding)
+        val viewHolder = PreviewSelectedViewHolder(binding)
+        viewHolder.itemView.tag = viewHolder
+        viewHolder.itemView.setOnClickListener(mItemClickListener)
+        return viewHolder
     }
 
     /**
@@ -34,8 +60,35 @@ class ImagePreviewSelectedAdapter : RecyclerView.Adapter<ImagePreviewSelectedAda
      */
     override fun onBindViewHolder(holder: PreviewSelectedViewHolder, position: Int) {
         mData.takeIf { mData.size > position }?.apply {
-            Glide.with(holder.itemView).load(this[position].path).into(holder.binding.selectedImg)
+            val photoItemModel = this[position]
+            Glide.with(holder.itemView).load(photoItemModel.path).into(holder.binding.selectedImg)
+            handleSelectedLabelVisibly(holder, photoItemModel)
         }
+    }
+
+    override fun onBindViewHolder(holder: PreviewSelectedViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isNullOrEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            when (payloads[0] as Int) {
+                // 刷新Label
+                NOTIFY_REFRESH_SELECT_LABEL_CODE -> {
+                    mData.takeIf { mData.size > position }?.apply {
+                        val photoItemModel = this[position]
+                        photoItemModel.isPreSelected = !photoItemModel.isPreSelected
+                        handleSelectedLabelVisibly(holder, photoItemModel)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 控制选中标签的显示
+     */
+    private fun handleSelectedLabelVisibly(holder: PreviewSelectedViewHolder, model: PhotoItemModel) {
+        holder.binding.selectedLabel.visibility =
+            if (model.isPreSelected) View.VISIBLE else View.GONE
     }
 
     override fun getItemCount(): Int {
@@ -57,6 +110,18 @@ class ImagePreviewSelectedAdapter : RecyclerView.Adapter<ImagePreviewSelectedAda
         )
         calculateDiff.dispatchUpdatesTo(this)
         mData = data
+    }
+
+    /**
+     * 设置Item点击事件
+     */
+    fun setItemClickListener(itemClickListener: IPreviewSelectedItemListener) {
+        mPreSelectedItemClickListener = itemClickListener
+    }
+
+    companion object {
+        /** 刷新选中状态的Code */
+        const val NOTIFY_REFRESH_SELECT_LABEL_CODE = 1000
     }
 
     /**

@@ -37,6 +37,9 @@ class DiffCallback(
             DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTOR_RV -> {
                 oldData[oldItemPosition].path == newData[newItemPosition].path
             }
+            DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTED_LABEL -> {
+                oldData[oldItemPosition].isPreSelected == newData[newItemPosition].isPreSelected
+            }
             else -> {
                 false
             }
