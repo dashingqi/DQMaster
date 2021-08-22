@@ -47,6 +47,12 @@ class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
      */
     private var mCurrentSelectedPosition = 0
 
+    /** 大布局RV的数据源*/
+    private var mAllPreviewList: ArrayList<PhotoItemModel>? = null
+
+    /** 选中的数据源*/
+    private var mSelectedPreList: ArrayList<PhotoItemModel>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -54,13 +60,13 @@ class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
         initSelectedDataRvAdapter()
         intent?.let {
             val model: PhotoItemModel? = it.getParcelableExtra(KEY_PREVIEW_PHOTO_MODEL)
-            val allPhotoModelList =
-                it.getParcelableArrayListExtra<PhotoItemModel>(KEY_PREVIEW_ALL_PHOTO_MODEL_LIST)
-            Log.d(TAG, "allPhotoModeList size is ${allPhotoModelList?.size ?: 0}")
-            val selectedPhotoModelList =
-                it.getParcelableArrayListExtra<PhotoItemModel>(KEY_PREVIEW_SELECTED_PHOTO_MODEL_LIST)
-            Log.d(TAG, "selectedPhotoModelList size is ${selectedPhotoModelList?.size ?: 0}")
-            showListData(allPhotoModelList, selectedPhotoModelList, model)
+            mAllPreviewList =
+                it.getParcelableArrayListExtra(KEY_PREVIEW_ALL_PHOTO_MODEL_LIST)
+            Log.d(TAG, "allPhotoModeList size is ${mAllPreviewList?.size ?: 0}")
+            mSelectedPreList =
+                it.getParcelableArrayListExtra(KEY_PREVIEW_SELECTED_PHOTO_MODEL_LIST)
+            Log.d(TAG, "selectedPhotoModelList size is ${mSelectedPreList?.size ?: 0}")
+            showListData(mAllPreviewList, mSelectedPreList, model)
         }
     }
 
@@ -102,6 +108,16 @@ class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
         // 更新全部图片布局
         allPhotoModel?.takeIf { it.isNotEmpty() }?.apply {
             previewAllAdapter.setData(this)
+            clickModel?.let {
+                this.forEachIndexed { index, photoItemModel ->
+                    if (it.id == photoItemModel.id) {
+                        binding.allRecyclerView.post {
+                            binding.allRecyclerView.scrollToPosition(index)
+                        }
+                        return@forEachIndexed
+                    }
+                }
+            }
         }
 
         // 更新选中的图片布局
@@ -111,14 +127,19 @@ class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
             previewSelectedAdapter.setData(this)
             // 当clickModel为空说明是点击预览进入的
             clickModel?.let {
-
+                this.forEachIndexed { index, photoItemModel ->
+                    if (it.id == photoItemModel.id) {
+                        mCurrentSelectedPosition = index
+                        return@forEachIndexed
+                    }
+                }
             }
-            binding.allRecyclerView.postDelayed(Runnable {
+            binding.selectedRecyclerView.postDelayed(Runnable {
                 previewSelectedAdapter.notifyItemChanged(
                     mCurrentSelectedPosition,
                     NOTIFY_REFRESH_SELECT_LABEL_CODE
                 )
-            },200)
+            }, 200)
 
         }
 
@@ -178,5 +199,12 @@ class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
         previewSelectedAdapter.notifyItemChanged(mCurrentSelectedPosition, NOTIFY_REFRESH_SELECT_LABEL_CODE)
         previewSelectedAdapter.notifyItemChanged(position, NOTIFY_REFRESH_SELECT_LABEL_CODE)
         mCurrentSelectedPosition = position
+        // 去更新上面RV
+        mAllPreviewList?.forEachIndexed { index, photoItemModel ->
+            if (itemModel.id == photoItemModel.id) {
+                binding.allRecyclerView.scrollToPosition(index)
+                return@forEachIndexed
+            }
+        }
     }
 }
