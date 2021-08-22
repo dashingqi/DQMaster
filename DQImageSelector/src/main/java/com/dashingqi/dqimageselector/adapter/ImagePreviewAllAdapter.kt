@@ -9,6 +9,7 @@ import com.dashingqi.dqimageselector.databinding.ItemPreviewAllImgBinding
 import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.model.PhotoItemModel
+import com.dashingqi.dqimageselector.utils.VersionUtil
 
 /**
  * 用于展示所有图片的适配器
@@ -27,14 +28,17 @@ class ImagePreviewAllAdapter : RecyclerView.Adapter<ImagePreviewAllAdapter.Previ
     }
 
     override fun onBindViewHolder(holder: PreviewAllViewHolder, position: Int) {
-        Glide.with(holder.itemView).load(mData[position].path).into(holder.binding.previewAll)
+
+        Glide.with(holder.itemView)
+            .load(if (VersionUtil.isAndroidQ()) mData[position].uri else mData[position].path)
+            .into(holder.binding.previewAll)
     }
 
     /**
      * 设置数据源，更新列表
      * @param data MutableList<PhotoItemModel>
      */
-    fun setData(data:MutableList<PhotoItemModel>){
+    fun setData(data: MutableList<PhotoItemModel>) {
         val diffCallback =
             DiffUtil.calculateDiff(DiffCallback(mData, data, DiffEnum.IMAGE_SELECTOR_UPDATE_SELECTOR_RV), true)
         diffCallback.dispatchUpdatesTo(this)

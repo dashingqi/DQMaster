@@ -11,6 +11,7 @@ import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.listeenr.IPreviewSelectedItemListener
 import com.dashingqi.dqimageselector.model.PhotoItemModel
+import com.dashingqi.dqimageselector.utils.VersionUtil
 
 /**
  * 预览界面中，选中图片展示的适配器
@@ -61,7 +62,9 @@ class ImagePreviewSelectedAdapter : RecyclerView.Adapter<ImagePreviewSelectedAda
     override fun onBindViewHolder(holder: PreviewSelectedViewHolder, position: Int) {
         mData.takeIf { mData.size > position }?.apply {
             val photoItemModel = this[position]
-            Glide.with(holder.itemView).load(photoItemModel.path).into(holder.binding.selectedImg)
+            Glide.with(holder.itemView)
+                .load(if (VersionUtil.isAndroidQ()) photoItemModel.uri else photoItemModel.path)
+                .into(holder.binding.selectedImg)
             handleSelectedLabelVisibly(holder, photoItemModel)
         }
     }
