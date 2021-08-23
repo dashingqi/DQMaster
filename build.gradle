@@ -5,6 +5,7 @@ buildscript {
         core_ktx_version = '1.5.0'
     }
     repositories {
+        jcenter()
         mavenCentral()
         google()
         maven { url "https://www.jitpack.io" }
@@ -23,6 +24,7 @@ buildscript {
 
 allprojects {
     repositories {
+        jcenter()
         mavenCentral()
         google()
         maven { url "https://www.jitpack.io" }

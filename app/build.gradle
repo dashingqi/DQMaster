@@ -53,5 +53,7 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation project(":DQImageSelector")
+    // 0.5.3-beta3
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
 
 }

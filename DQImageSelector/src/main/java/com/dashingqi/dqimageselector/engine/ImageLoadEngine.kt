@@ -1,0 +1,33 @@
+package com.dashingqi.dqimageselector.engine
+
+import android.content.Context
+import android.net.Uri
+import android.widget.ImageView
+
+/**
+ * 图片加载引擎接口类
+ * @author zhangqi61
+ * @since 2021/8/23
+ */
+interface ImageLoadEngine {
+
+    /**
+     * 加载图片
+     * @param context Context 上下文环境
+     * @param imageView ImageView imageView
+     * @param uri Uri 图片的Uri地址
+     * @param resizeX Int 宽度
+     * @param resizeY Int 高度
+     */
+    fun loadImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+
+    /**
+     * 加载gif
+     * @param context Context 上下文环境
+     * @param imageView ImageView imageView
+     * @param uri Uri 图片的Uri地址
+     * @param resizeX Int 宽度
+     * @param resizeY Int 高度
+     */
+    fun loadGifImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+}

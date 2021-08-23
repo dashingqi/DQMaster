@@ -7,6 +7,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.dashingqi.dqimageselector.build.SelectorBuild
 import com.dashingqi.master.databinding.ActivityMainBinding
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.GlideEngine
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,12 +28,25 @@ class MainActivity : AppCompatActivity() {
                 .isShowCamera(true)
                 .start(this, IMAGE_SELECT_REQUEST_CODE)
         }
+        openMatisse.setOnClickListener {
+            openMatisse()
+        }
 
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun openMatisse(){
+        Matisse.from(this@MainActivity)
+            .choose(MimeType.ofAll())
+            .countable(true)
+            .maxSelectable(9)
+            .thumbnailScale(0.85f)
+            .imageEngine(GlideEngine())
+            .forResult(1000)
     }
 
     companion object {
