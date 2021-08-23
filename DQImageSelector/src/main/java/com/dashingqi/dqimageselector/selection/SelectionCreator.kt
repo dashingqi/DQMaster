@@ -1,5 +1,6 @@
 package com.dashingqi.dqimageselector.selection
 
+import com.dashingqi.dqimageselector.engine.ImageLoadEngine
 import com.dashingqi.dqimageselector.enum.MimeTypeEnum
 import com.dashingqi.dqimageselector.xhy.XHY
 
@@ -28,6 +29,14 @@ class SelectionCreator(var xhy: XHY, var mimeTypes: Set<MimeTypeEnum>) {
      */
     fun capture(capture: Boolean) {
         SelectionIns.mCapture = capture
+    }
+
+    /**
+     * 图片加载的引擎
+     * @param engine ImageLoadEngine 引擎接口类
+     */
+    fun engine(engine: ImageLoadEngine) {
+        SelectionIns.mEngine = engine
     }
 
 }

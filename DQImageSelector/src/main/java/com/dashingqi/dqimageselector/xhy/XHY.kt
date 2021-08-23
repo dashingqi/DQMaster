@@ -2,7 +2,6 @@ package com.dashingqi.dqimageselector.xhy
 
 import android.app.Activity
 import android.net.Uri
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import com.dashingqi.dqimageselector.enum.MimeTypeEnum
 import com.dashingqi.dqimageselector.selection.SelectionCreator

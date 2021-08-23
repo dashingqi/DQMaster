@@ -1,5 +1,7 @@
 package com.dashingqi.dqimageselector.selection
 
+import com.dashingqi.dqimageselector.engine.ImageLoadEngine
+import com.dashingqi.dqimageselector.engine.impl.GlideLoaderEngine
 import com.dashingqi.dqimageselector.enum.MimeTypeEnum
 
 /**
@@ -17,4 +19,7 @@ object SelectionIns {
 
     /** 媒体文件的类别*/
     var mMimeTypeSet: Set<MimeTypeEnum>? = null
+
+    /** 图片加载的引擎*/
+    var mEngine: ImageLoadEngine = GlideLoaderEngine()
 }
