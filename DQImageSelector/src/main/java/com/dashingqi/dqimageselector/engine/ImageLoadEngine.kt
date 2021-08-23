@@ -30,4 +30,24 @@ interface ImageLoadEngine {
      * @param resizeY Int 高度
      */
     fun loadGifImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+
+    /**
+     * 加载裁剪后的图片
+     * @param context Context
+     * @param imageView ImageView
+     * @param uri Uri
+     * @param resizeX Int
+     * @param resizeY Int
+     */
+    fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+
+    /**
+     * 加载裁剪后的Gif动图图片
+     * @param context Context
+     * @param imageView ImageView
+     * @param uri Uri
+     * @param resizeX Int
+     * @param resizeY Int
+     */
+    fun loadCropGifImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
 }

@@ -54,7 +54,6 @@ public class RouteUtils {
             return;
         maps.put(path, clz);
     }
-
     public void jumpToActivity(Context context, String path) {
         if (maps.size() > 0) {
             Class clz = (Class) maps.get(path);
