@@ -21,24 +21,27 @@ class SelectionCreator(var xhy: XHY, var mimeTypes: Set<MimeTypeEnum>) {
      * 设置最大选择数量
      * @param maxSize Int
      */
-    fun setMaxSize(maxSize: Int) {
+    fun setMaxSize(maxSize: Int): SelectionCreator {
         SelectionIns.mMaxSize = maxSize
+        return this
     }
 
     /**
      * 是否提供拍照功能
      * @param capture Boolean true/false
      */
-    fun capture(capture: Boolean) {
+    fun capture(capture: Boolean): SelectionCreator {
         SelectionIns.mCapture = capture
+        return this
     }
 
     /**
      * 图片加载的引擎
      * @param engine ImageLoadEngine 引擎接口类
      */
-    fun engine(engine: ImageLoadEngine) {
+    fun engine(engine: ImageLoadEngine): SelectionCreator {
         SelectionIns.mEngine = engine
+        return this
     }
 
     /**
@@ -56,5 +59,4 @@ class SelectionCreator(var xhy: XHY, var mimeTypes: Set<MimeTypeEnum>) {
             }
         }
     }
-
 }

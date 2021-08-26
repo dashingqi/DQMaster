@@ -33,7 +33,7 @@ class XHY {
      * 设置选择的媒体类别信息
      * @param mimeTypes Set<MimeTypeEnum> 媒体类别
      */
-    fun loadMimeType(mimeTypes: Set<MimeTypeEnum>): SelectionCreator {
+    fun loadMimeType(mimeTypes: Set<MimeTypeEnum> = MimeTypeEnum.ofAll()): SelectionCreator {
         return SelectionCreator(this, mimeTypes)
     }
 

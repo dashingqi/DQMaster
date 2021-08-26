@@ -68,57 +68,12 @@ class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IController
                 adapter.mSelectedItems
             )
         }
-        handlePermission()
-    }
-
-
-    /**
-     * 处理权限
-     * 当获取到权限就去手机中查询数据
-     * 没有获取到权限就去申请权限
-     */
-    private fun handlePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, WRITE_PERMISSION)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                // 没有获取到权限在做出判断
-                if (ActivityCompat
-                        .shouldShowRequestPermissionRationale(this, WRITE_PERMISSION)
-                ) {
-                    // 弹出对话框让用户去设置页面进行开启
-
-                } else {
-                    //做权限的申请
-                    ActivityCompat
-                        .requestPermissions(
-                            this, arrayOf(WRITE_PERMISSION),
-                            WRITE_PERMISSION_REQUEST_CODE
-                        )
-                }
-            } else {
-                mSelectorController?.fetchData()
-            }
+        val checkResult = ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) ==
+                PackageManager.PERMISSION_GRANTED
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkResult) {
+            mSelectorController?.fetchData()
         } else {
             mSelectorController?.fetchData()
-        }
-    }
-
-    /**
-     * 权限申请结果处理
-     */
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            WRITE_PERMISSION_REQUEST_CODE -> {
-                takeIf { grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED }.apply {
-                    mSelectorController?.fetchData()
-                }
-            }
         }
     }
 
