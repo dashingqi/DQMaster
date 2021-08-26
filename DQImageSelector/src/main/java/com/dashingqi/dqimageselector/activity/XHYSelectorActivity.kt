@@ -25,7 +25,7 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
 /**
  * 图片选择页面
  */
-class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControllerView {
+class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControllerView {
 
     /** 配置的数据项*/
     private var mConfigData: ConfigData? = null
@@ -219,7 +219,7 @@ class ImageSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControll
          * 跳转Activity
          */
         fun start(activity: Activity, requestCode: Int, configDataData: ConfigData) {
-            Intent(activity, ImageSelectorActivity::class.java).apply {
+            Intent(activity, XHYSelectorActivity::class.java).apply {
                 putExtra(KEY_CONFIG_DATA, configDataData)
                 activity.startActivityForResult(this, requestCode)
             }

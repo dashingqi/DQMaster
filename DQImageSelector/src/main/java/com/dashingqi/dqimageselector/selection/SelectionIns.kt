@@ -18,7 +18,7 @@ object SelectionIns {
     var mCapture: Boolean = false
 
     /** 媒体文件的类别*/
-    var mMimeTypeSet: Set<MimeTypeEnum>? = null
+    var mMimeTypeSet: Set<MimeTypeEnum> = MimeTypeEnum.ofAll()
 
     /** 图片加载的引擎*/
     var mEngine: ImageLoadEngine = GlideLoaderEngine()

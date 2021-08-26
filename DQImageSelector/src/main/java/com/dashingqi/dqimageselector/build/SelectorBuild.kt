@@ -2,7 +2,7 @@ package com.dashingqi.dqimageselector.build
 
 import android.app.Activity
 import android.util.Log
-import com.dashingqi.dqimageselector.activity.ImageSelectorActivity
+import com.dashingqi.dqimageselector.activity.XHYSelectorActivity
 import com.dashingqi.dqimageselector.model.ConfigData
 
 /**
@@ -51,7 +51,7 @@ object SelectorBuild {
          */
         fun start(activity: Activity, requestCode: Int) {
             Log.d("TAG", "size = ${mConfigData.maxSelectSize}: ")
-            ImageSelectorActivity.start(activity, requestCode, mConfigData)
+            XHYSelectorActivity.start(activity, requestCode, mConfigData)
         }
     }
 }

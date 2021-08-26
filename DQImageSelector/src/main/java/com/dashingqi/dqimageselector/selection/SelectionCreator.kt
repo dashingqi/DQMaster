@@ -1,5 +1,7 @@
 package com.dashingqi.dqimageselector.selection
 
+import android.content.Intent
+import com.dashingqi.dqimageselector.activity.XHYSelectorActivity
 import com.dashingqi.dqimageselector.engine.ImageLoadEngine
 import com.dashingqi.dqimageselector.enum.MimeTypeEnum
 import com.dashingqi.dqimageselector.xhy.XHY
@@ -37,6 +39,22 @@ class SelectionCreator(var xhy: XHY, var mimeTypes: Set<MimeTypeEnum>) {
      */
     fun engine(engine: ImageLoadEngine) {
         SelectionIns.mEngine = engine
+    }
+
+    /**
+     * 开启图片选择界面
+     * @param requestCode Int 请求code
+     */
+    fun startForResult(requestCode: Int) {
+        xhy.getActivity()?.let { activity ->
+            Intent(activity, XHYSelectorActivity::class.java).apply {
+                xhy.getFragment()?.let {
+                    it.startActivityForResult(this, requestCode)
+                    return@apply
+                }
+                activity.startActivityForResult(this, requestCode)
+            }
+        }
     }
 
 }

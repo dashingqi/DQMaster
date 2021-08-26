@@ -10,7 +10,7 @@ import android.util.Log
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import com.dashingqi.dqimageselector.activity.ImageSelectorActivity
+import com.dashingqi.dqimageselector.activity.XHYSelectorActivity
 import com.dashingqi.dqimageselector.listeenr.IControllerView
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 import com.dashingqi.dqimageselector.utils.MediaStoreUtil
@@ -52,7 +52,7 @@ class SelectorController(
                                 cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[1]))
                             val date = cursor.getLong(cursor.getColumnIndex(IMAGE_PROJECTION[2]))
                             val id = cursor.getString(cursor.getColumnIndex(IMAGE_PROJECTION[3]))
-                            Log.d(ImageSelectorActivity.TAG, "path = $path name = $name date = $date id = $id")
+                            Log.d(XHYSelectorActivity.TAG, "path = $path name = $name date = $date id = $id")
                             val photoItemModel = PhotoItemModel(id, path, name, date)
                             photoItemModel.uri = MediaStoreUtil.convertPathToUri(context, path)
                             tempData.add(photoItemModel)

@@ -8,9 +8,9 @@ import com.dashingqi.dqimageselector.selection.SelectionCreator
 import java.lang.ref.WeakReference
 
 /**
+ * xhy
  * @author : zhangqi
  * @time : 2021/8/24 00:51
- * desc :
  */
 class XHY {
 

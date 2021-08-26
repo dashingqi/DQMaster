@@ -11,7 +11,7 @@
             android:name=".activity.ImagePreviewActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.ImageSelectorActivity"
+            android:name=".activity.XHYSelectorActivity"
             android:exported="true" />
     </application>
 
