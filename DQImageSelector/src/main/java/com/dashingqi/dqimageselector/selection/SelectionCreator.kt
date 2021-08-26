@@ -11,7 +11,7 @@ import com.dashingqi.dqimageselector.xhy.XHY
  * @author : zhangqi
  * @time : 2021/8/24 01:23
  */
-class SelectionCreator(var xhy: XHY, var mimeTypes: Set<MimeTypeEnum>) {
+class SelectionCreator(var xhy: XHY, mimeTypes: Set<MimeTypeEnum>) {
 
     init {
         SelectionIns.mMimeTypeSet = mimeTypes
