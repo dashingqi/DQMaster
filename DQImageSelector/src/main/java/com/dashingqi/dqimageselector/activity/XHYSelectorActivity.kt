@@ -27,9 +27,6 @@ import com.dashingqi.dqimageselector.model.PhotoItemModel
  */
 class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IControllerView {
 
-    /** 配置的数据项*/
-    private var mConfigData: ConfigData? = null
-
     /** LoaderManager Instance */
     private val mLoaderManager by lazy {
         LoaderManager.getInstance(this)
@@ -51,9 +48,7 @@ class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        mConfigData = intent?.getParcelableExtra(KEY_CONFIG_DATA)
         adapter.setItemListener(this)
-        adapter.setConfigData(mConfigData)
         // 设置分割线
         binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         binding.recyclerView.adapter = adapter
@@ -154,30 +149,11 @@ class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IController
         /** 写权限*/
         const val WRITE_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
 
-        /** 权限请求的code*/
-        const val WRITE_PERMISSION_REQUEST_CODE = 10000
-
         /** RecyclerView每一行展示的子View的个数*/
         const val LINE_COUNT = 4
 
-        /**
-         * TAG
-         */
+        /** TAG */
         const val TAG = "ImageSelectorActivity"
 
-        /**
-         * key 配置的数据项
-         */
-        const val KEY_CONFIG_DATA = "key_config_data"
-
-        /**
-         * 跳转Activity
-         */
-        fun start(activity: Activity, requestCode: Int, configDataData: ConfigData) {
-            Intent(activity, XHYSelectorActivity::class.java).apply {
-                putExtra(KEY_CONFIG_DATA, configDataData)
-                activity.startActivityForResult(this, requestCode)
-            }
-        }
     }
 }

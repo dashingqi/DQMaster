@@ -14,6 +14,7 @@ import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
 import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
+import com.dashingqi.dqimageselector.selection.SelectionIns
 import com.dashingqi.dqimageselector.utils.VersionUtil
 import kotlin.collections.ArrayList
 
@@ -29,11 +30,6 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      * 数据源
      */
     var mData: ArrayList<PhotoItemModel> = ArrayList()
-
-    /**
-     * 配置数据
-     */
-    private var mConfigData: ConfigData? = null
 
     /**
      * item的点击事件
@@ -87,15 +83,20 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      */
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder --> position size =  ${mData.size}")
-        mData[position].let { data ->
-            // 适配Android Q
-            Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
-                holder.binding.image
-            )
-            holder.binding.ivSelect.isSelected = data.isSelected
-            holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
-            holder.binding.tvNumber.text = "${data.selectNumber}"
+        mData.takeIf { position < mData.size - 1 }?.apply {
+            this[position].let { data ->
+                // 适配Android Q
+                Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
+                    holder.binding.image
+                )
+                // SelectionIns.mEngine.loadImage(holder.itemView.context,holder.binding.image,data.uri!!,)
+
+                holder.binding.ivSelect.isSelected = data.isSelected
+                holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
+                holder.binding.tvNumber.text = "${data.selectNumber}"
+            }
         }
+
     }
 
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -167,18 +168,12 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         mPhotoItemClickListener = itemClickListener
     }
 
-    /**
-     * 设置配置数据
-     */
-    fun setConfigData(configData: ConfigData?) {
-        mConfigData = configData
-    }
 
     /**
      * 用于判断是否能够选中
      */
     private fun isCanSelect(): Boolean {
-        return mSelectedItems.size < mConfigData?.maxSelectSize ?: 9
+        return mSelectedItems.size < SelectionIns.mMaxSize ?: 9
     }
 
     /**
