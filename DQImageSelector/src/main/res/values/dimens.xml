@@ -22,6 +22,8 @@
     <dimen name="selector_finish_btn_padding_horizontal">6dp</dimen>
     <!--    完成按钮垂直方向的内边距-->
     <dimen name="selector_finish_btn_padding_vertical">4dp</dimen>
+    <!--    grid item spacing-->
+    <dimen name="selector_grid_item_spacing">4dp</dimen>
     <!--    预览界面 底部布局中RV的垂直方向的内边距-->
     <dimen name="preview_bottom_layout_rv_vertical_padding">18dp</dimen>
     <!--    预览界面 底部布局中RV的水平方向的内边距-->

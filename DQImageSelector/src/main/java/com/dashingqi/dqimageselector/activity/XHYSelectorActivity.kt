@@ -1,14 +1,11 @@
 package com.dashingqi.dqimageselector.activity
 
 import android.Manifest
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.Loader
@@ -19,7 +16,6 @@ import com.dashingqi.dqimageselector.control.SelectorController
 import com.dashingqi.dqimageselector.databinding.ActivityImageSelectorBinding
 import com.dashingqi.dqimageselector.listeenr.IControllerView
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
-import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 
 /**
@@ -36,9 +32,7 @@ class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IController
     private var mSelectorController: SelectorController? = null
 
     /** adapter */
-    private val adapter: ImageSelectorAdapter by lazy {
-        ImageSelectorAdapter()
-    }
+    private lateinit var adapter: ImageSelectorAdapter
 
     /** ActivityImageSelectorBinding */
     private val binding by lazy {
@@ -48,9 +42,10 @@ class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        adapter = ImageSelectorAdapter(binding.recyclerView)
         adapter.setItemListener(this)
         // 设置分割线
-        binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
+        //binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))
         binding.recyclerView.adapter = adapter
         mSelectorController = SelectorController(this, mLoaderManager, this)
         // 预览设置点击事件

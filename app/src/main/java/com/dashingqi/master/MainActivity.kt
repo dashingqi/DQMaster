@@ -10,8 +10,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.dashingqi.dqimageselector.activity.XHYSelectorActivity
-import com.dashingqi.dqimageselector.build.SelectorBuild
 import com.dashingqi.dqimageselector.xhy.XHY
 import com.dashingqi.master.databinding.ActivityMainBinding
 import com.zhihu.matisse.Matisse
@@ -111,8 +109,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        /** 吊起选择图片页面Activity的请求码*/
-        const val IMAGE_SELECT_REQUEST_CODE = 10001
 
         /** 请求权限的code */
         const val REQUEST_PERMISSION_CODE = 10001

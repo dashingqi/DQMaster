@@ -1,6 +1,7 @@
 package com.dashingqi.dqimageselector.engine
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
 
@@ -36,18 +37,18 @@ interface ImageLoadEngine {
      * @param context Context
      * @param imageView ImageView
      * @param uri Uri
-     * @param resizeX Int
-     * @param resizeY Int
+     * @param placeholder Drawable
+     * @param resize Int
      */
-    fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+    fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resize: Int)
 
     /**
      * 加载裁剪后的Gif动图图片
      * @param context Context
      * @param imageView ImageView
      * @param uri Uri
-     * @param resizeX Int
-     * @param resizeY Int
+     * @param placeholder Drawable
+     * @param resize Int
      */
-    fun loadCropGifImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+    fun loadCropGifImage(context: Context, imageView: ImageView, uri: Uri, placeholder: Drawable, resize: Int)
 }

@@ -1,18 +1,20 @@
 package com.dashingqi.dqimageselector.adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.databinding.ItemImageBinding
 import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.listeenr.IPhotoItemListener
-import com.dashingqi.dqimageselector.model.ConfigData
 import com.dashingqi.dqimageselector.model.PhotoItemModel
 import com.dashingqi.dqimageselector.selection.SelectionIns
 import com.dashingqi.dqimageselector.utils.VersionUtil
@@ -24,7 +26,7 @@ import kotlin.collections.ArrayList
  * @time : 2021/8/7
  * desc :
  */
-class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelectorViewHolder>() {
+class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter<ImageSelectorAdapter.ImgSelectorViewHolder>() {
 
     /**
      * 数据源
@@ -50,6 +52,9 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      * IvSelect 的点击事件
      */
     private var mOnSelectClickListener: View.OnClickListener? = null
+
+    /** 计算后的图片大小*/
+    private var mImageResize: Int = 0
 
     init {
 
@@ -86,10 +91,13 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         mData.takeIf { position < mData.size - 1 }?.apply {
             this[position].let { data ->
                 // 适配Android Q
-                Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
-                    holder.binding.image
+//                Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
+//                    holder.binding.image
+//                )
+                SelectionIns.mEngine.loadCropImage(
+                    holder.itemView.context, holder.binding.image, data.uri!!,
+                    getImageResize(holder.itemView.context)
                 )
-                // SelectionIns.mEngine.loadImage(holder.itemView.context,holder.binding.image,data.uri!!,)
 
                 holder.binding.ivSelect.isSelected = data.isSelected
                 holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
@@ -173,7 +181,7 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
      * 用于判断是否能够选中
      */
     private fun isCanSelect(): Boolean {
-        return mSelectedItems.size < SelectionIns.mMaxSize ?: 9
+        return mSelectedItems.size < SelectionIns.mMaxSize
     }
 
     /**
@@ -251,6 +259,26 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         }
     }
 
+    /**
+     * 获取图片的大小
+     * @return Int
+     */
+    private fun getImageResize(context:Context): Int {
+        if (mImageResize == 0) {
+            val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
+            val spanCount = gridLayoutManager.spanCount
+            val screenWidth  = context.resources.displayMetrics.widthPixels
+            val availableWidth = screenWidth - (context.resources.getDimensionPixelSize(
+                R.dimen
+                    .selector_grid_item_spacing
+            ) * (spanCount - 1))
+
+            mImageResize = availableWidth / spanCount
+        }
+        return mImageResize
+    }
+
+
     companion object {
 
         /** 刷新选中状态的Code */
@@ -260,8 +288,6 @@ class ImageSelectorAdapter : RecyclerView.Adapter<ImageSelectorAdapter.ImgSelect
         const val TAG = "ImageSelectorAdapter"
     }
 
-    /**
-     * ViewHolder
-     */
+    /** ViewHolder */
     class ImgSelectorViewHolder(var binding: ItemImageBinding) : RecyclerView.ViewHolder(binding.root)
 }
