@@ -13,5 +13,6 @@
     <color name="selector_finish_text_default_color">#423f41</color>
     <color name="selector_finish_text_selector_color">#ffffff</color>
     <color name="preview_selected_img_label">#3eb952</color>
+    <color name="xhy_place_holder_item">#EAEEF4</color>
 
 </resources>

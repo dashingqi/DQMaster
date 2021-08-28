@@ -1,14 +1,19 @@
 package com.dashingqi.dqimageselector.adapter
 
+import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.databinding.ItemPreviewAllImgBinding
 import com.dashingqi.dqimageselector.diff.DiffCallback
 import com.dashingqi.dqimageselector.diff.DiffEnum
 import com.dashingqi.dqimageselector.model.PhotoItemModel
+import com.dashingqi.dqimageselector.selection.SelectionIns
+import com.dashingqi.dqimageselector.utils.MediaStoreUtil
 import com.dashingqi.dqimageselector.utils.VersionUtil
 
 /**
@@ -16,7 +21,19 @@ import com.dashingqi.dqimageselector.utils.VersionUtil
  * @author zhangqi
  * @since 2021/8/21
  */
-class ImagePreviewAllAdapter : RecyclerView.Adapter<ImagePreviewAllAdapter.PreviewAllViewHolder>() {
+class ImagePreviewAllAdapter(var activity: Activity) :
+    RecyclerView.Adapter<ImagePreviewAllAdapter.PreviewAllViewHolder>() {
+
+    /** PlaceHolder Drawable*/
+    private var mPlaceHolder: Drawable? = null
+
+    init {
+//        val obtain =
+//            activity.theme.obtainStyledAttributes(IntArray(R.attr.item_placeHolder))
+//        mPlaceHolder = obtain.getDrawable(0)
+//        obtain.recycle()
+    }
+
     /**
      * 数据源
      */
@@ -28,10 +45,15 @@ class ImagePreviewAllAdapter : RecyclerView.Adapter<ImagePreviewAllAdapter.Previ
     }
 
     override fun onBindViewHolder(holder: PreviewAllViewHolder, position: Int) {
-
-        Glide.with(holder.itemView)
-            .load(if (VersionUtil.isAndroidQ()) mData[position].uri else mData[position].path)
-            .into(holder.binding.previewAll)
+        mData.takeIf { position < mData.size - 1 }?.apply {
+            this[position].uri?.let {
+                val bitmapSize = MediaStoreUtil.getBitmapSize(it, activity)
+                SelectionIns.mEngine.loadImage(
+                    holder.itemView.context, holder.binding.previewAll, it,
+                    bitmapSize.x, bitmapSize.y, mPlaceHolder
+                )
+            }
+        }
     }
 
     /**

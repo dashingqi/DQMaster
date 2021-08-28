@@ -1,6 +1,7 @@
 package com.dashingqi.dqimageselector.adapter
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +27,8 @@ import kotlin.collections.ArrayList
  * @time : 2021/8/7
  * desc :
  */
-class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter<ImageSelectorAdapter.ImgSelectorViewHolder>() {
+class ImageSelectorAdapter(var recyclerView: RecyclerView,var context: Context) :
+    RecyclerView.Adapter<ImageSelectorAdapter.ImgSelectorViewHolder>() {
 
     /**
      * 数据源
@@ -56,6 +58,9 @@ class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter
     /** 计算后的图片大小*/
     private var mImageResize: Int = 0
 
+    /** PlaceHolder Drawable*/
+    private var mPlaceHolder: Drawable? = null
+
     init {
 
         mOnItemClickListener = View.OnClickListener {
@@ -69,10 +74,14 @@ class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter
             val position = viewHolder.adapterPosition
             mPhotoItemClickListener?.onSelectClick(position, mData[position])
         }
+
+//        val obtain =
+//            context.theme.obtainStyledAttributes(IntArray(R.attr.item_placeHolder))
+//        mPlaceHolder = obtain.getDrawable(0)
+//        obtain.recycle()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImgSelectorViewHolder {
-        Log.d(TAG, "onCreateViewHolder")
         val itemBinding = ItemImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ImgSelectorViewHolder(itemBinding)
         viewHolder.itemView.tag = viewHolder
@@ -87,18 +96,15 @@ class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter
      *
      */
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int) {
-        Log.d(TAG, "onBindViewHolder --> position size =  ${mData.size}")
         mData.takeIf { position < mData.size - 1 }?.apply {
             this[position].let { data ->
-                // 适配Android Q
-//                Glide.with(holder.itemView).load(if (VersionUtil.isAndroidQ()) data.uri else data.path).into(
-//                    holder.binding.image
-//                )
-                SelectionIns.mEngine.loadCropImage(
-                    holder.itemView.context, holder.binding.image, data.uri!!,
-                    getImageResize(holder.itemView.context)
-                )
-
+                data.uri?.let {
+                    SelectionIns.mEngine.loadCropImage(
+                        holder.itemView.context, holder.binding.image, it,
+                        getImageResize(holder.itemView.context),
+                        mPlaceHolder
+                    )
+                }
                 holder.binding.ivSelect.isSelected = data.isSelected
                 holder.binding.countGroup.visibility = if (data.isSelected) View.VISIBLE else View.INVISIBLE
                 holder.binding.tvNumber.text = "${data.selectNumber}"
@@ -109,7 +115,6 @@ class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter
 
     override fun onBindViewHolder(holder: ImgSelectorViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isNullOrEmpty()) {
-            Log.d(TAG, "onBindViewHolder --> isNullOrEmpty ")
             super.onBindViewHolder(holder, position, payloads)
         } else {
             Log.d(TAG, "size is ${payloads.size}")
@@ -193,6 +198,7 @@ class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter
         diffResult.dispatchUpdatesTo(this)
         mData = data
     }
+
     /**
      * 处理选择的业务
      */
@@ -263,11 +269,11 @@ class ImageSelectorAdapter(var recyclerView: RecyclerView): RecyclerView.Adapter
      * 获取图片的大小
      * @return Int
      */
-    private fun getImageResize(context:Context): Int {
+    private fun getImageResize(context: Context): Int {
         if (mImageResize == 0) {
             val gridLayoutManager = recyclerView.layoutManager as GridLayoutManager
             val spanCount = gridLayoutManager.spanCount
-            val screenWidth  = context.resources.displayMetrics.widthPixels
+            val screenWidth = context.resources.displayMetrics.widthPixels
             val availableWidth = screenWidth - (context.resources.getDimensionPixelSize(
                 R.dimen
                     .selector_grid_item_spacing

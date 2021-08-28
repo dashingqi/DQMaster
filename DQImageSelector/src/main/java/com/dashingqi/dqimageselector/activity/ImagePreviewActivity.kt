@@ -34,7 +34,7 @@ class ImagePreviewActivity : AppCompatActivity(), IPreviewSelectedItemListener {
 
     /** 展示所有图片的Adapter */
     private val previewAllAdapter by lazy {
-        ImagePreviewAllAdapter()
+        ImagePreviewAllAdapter(this)
     }
 
     /** 展示选中图片的Adapter */

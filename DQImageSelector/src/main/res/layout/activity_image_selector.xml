@@ -14,7 +14,7 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/editParentLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:spanCount="4" />
+        app:spanCount="3" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editParentLayout"

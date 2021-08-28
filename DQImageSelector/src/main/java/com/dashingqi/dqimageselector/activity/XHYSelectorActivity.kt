@@ -11,7 +11,6 @@ import androidx.loader.app.LoaderManager
 import androidx.loader.content.Loader
 import com.dashingqi.dqimageselector.R
 import com.dashingqi.dqimageselector.adapter.ImageSelectorAdapter
-import com.dashingqi.dqimageselector.adapter.SelectorItemDecoration
 import com.dashingqi.dqimageselector.control.SelectorController
 import com.dashingqi.dqimageselector.databinding.ActivityImageSelectorBinding
 import com.dashingqi.dqimageselector.listeenr.IControllerView
@@ -42,7 +41,7 @@ class XHYSelectorActivity : AppCompatActivity(), IPhotoItemListener, IController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        adapter = ImageSelectorAdapter(binding.recyclerView)
+        adapter = ImageSelectorAdapter(binding.recyclerView,this)
         adapter.setItemListener(this)
         // 设置分割线
         //binding.recyclerView.addItemDecoration(SelectorItemDecoration(LINE_COUNT))

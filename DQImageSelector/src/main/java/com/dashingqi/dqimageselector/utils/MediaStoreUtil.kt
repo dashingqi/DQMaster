@@ -2,12 +2,20 @@ package com.dashingqi.dqimageselector.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.Point
+import android.hardware.display.DisplayManager
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.DisplayMetrics
 import android.util.Log
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.IOException
+import java.io.InputStream
 
 /**
  * 媒体文件的工具类
@@ -23,6 +31,9 @@ object MediaStoreUtil {
 
     /** Uri 拼接符*/
     private const val CONTENT_CONCAT = "=? "
+
+    /** 最大图片的宽度*/
+    private const val MAX_WIDTH = 1600
 
     /**
      * 获取到手机相册中KV数据
@@ -76,6 +87,55 @@ object MediaStoreUtil {
                 context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
             } else {
                 null
+            }
+        }
+    }
+
+    /**
+     * 获取到Bitmap的size
+     * @param uri Uri
+     * @param activity Activity
+     */
+    fun getBitmapSize(uri: Uri, activity: Activity): Point {
+        val contentResolver = activity.contentResolver
+        val imagePoint = getBitmapBounds(contentResolver, uri)
+        val w = imagePoint.x
+        val h = imagePoint.y
+        if (h == 0)return Point(MAX_WIDTH,MAX_WIDTH)
+        val displayMetrics = DisplayMetrics()
+        activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val screenWidth = displayMetrics.widthPixels
+        val screenHeight = displayMetrics.heightPixels
+        val widthScale = screenWidth/w
+        val heightScale = screenHeight/h
+        return Point(w*widthScale,h*heightScale)
+    }
+
+    /**
+     * 通过uri获取到图片的width 和height
+     * @param resolver ContentResolver
+     * @param uri Uri 图片文件的Uri地址
+     * @return Point 包裹宽和高
+     */
+    fun getBitmapBounds(resolver: ContentResolver, uri: Uri): Point {
+        var inputStream: InputStream? = null
+        try {
+            val options = BitmapFactory.Options()
+            options.inJustDecodeBounds = true
+            inputStream = resolver.openInputStream(uri)
+            BitmapFactory.decodeStream(inputStream, null, options)
+            val width = options.outWidth
+            val height = options.outHeight
+            return Point(width, height)
+        } catch (e: FileNotFoundException) {
+            return Point(0, 0)
+        } finally {
+            inputStream?.let {
+                try {
+                    it.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
         }
     }

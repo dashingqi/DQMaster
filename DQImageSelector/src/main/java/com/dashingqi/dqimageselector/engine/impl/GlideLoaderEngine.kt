@@ -23,10 +23,18 @@ class GlideLoaderEngine : ImageLoadEngine {
      * @param resizeX Int 调整的宽度
      * @param resizeY Int 调整的高度
      */
-    override fun loadImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int) {
+    override fun loadImage(
+        context: Context,
+        imageView: ImageView,
+        uri: Uri,
+        resizeX: Int,
+        resizeY: Int,
+        placeHolder: Drawable?
+    ) {
         Glide.with(imageView)
             .load(uri)
             .apply(RequestOptions().override(resizeX, resizeY).fitCenter())
+            .placeholder(placeHolder)
             .into(imageView)
     }
 
@@ -38,11 +46,19 @@ class GlideLoaderEngine : ImageLoadEngine {
      * @param resizeX Int 调整的宽度
      * @param resizeY Int 调整的高度
      */
-    override fun loadGifImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int) {
+    override fun loadGifImage(
+        context: Context,
+        imageView: ImageView,
+        uri: Uri,
+        resizeX: Int,
+        resizeY: Int,
+        placeHolder: Drawable?
+    ) {
         Glide.with(imageView)
             .asBitmap()
             .load(uri)
             .apply(RequestOptions().override(resizeX, resizeY).fitCenter())
+            .placeholder(placeHolder)
             .into(imageView)
     }
 
@@ -54,10 +70,11 @@ class GlideLoaderEngine : ImageLoadEngine {
      * @param placeHolder Drawable 默认的占位图
      * @param resize Int 调整的大小
      */
-    override fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resize: Int) {
+    override fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resize: Int, placeHolder: Drawable?) {
         Glide.with(imageView)
             .load(uri)
             .apply(RequestOptions().override(resize, resize).centerCrop())
+            .placeholder(placeHolder)
             .into(imageView)
     }
 
@@ -73,13 +90,14 @@ class GlideLoaderEngine : ImageLoadEngine {
         context: Context,
         imageView: ImageView,
         uri: Uri,
-        placeHolder: Drawable,
+        placeHolder: Drawable?,
         resize: Int
     ) {
         Glide.with(imageView)
             .asBitmap()
             .load(uri)
             .apply(RequestOptions().override(resize, resize).centerCrop())
+            .placeholder(placeHolder)
             .into(imageView)
     }
 }

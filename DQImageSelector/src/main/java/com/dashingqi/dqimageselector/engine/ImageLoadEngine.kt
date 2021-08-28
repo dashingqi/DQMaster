@@ -20,7 +20,7 @@ interface ImageLoadEngine {
      * @param resizeX Int 宽度
      * @param resizeY Int 高度
      */
-    fun loadImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+    fun loadImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int, placeholder: Drawable?)
 
     /**
      * 加载gif
@@ -30,7 +30,14 @@ interface ImageLoadEngine {
      * @param resizeX Int 宽度
      * @param resizeY Int 高度
      */
-    fun loadGifImage(context: Context, imageView: ImageView, uri: Uri, resizeX: Int, resizeY: Int)
+    fun loadGifImage(
+        context: Context,
+        imageView: ImageView,
+        uri: Uri,
+        resizeX: Int,
+        resizeY: Int,
+        placeholder: Drawable?
+    )
 
     /**
      * 加载裁剪后的图片
@@ -40,7 +47,7 @@ interface ImageLoadEngine {
      * @param placeholder Drawable
      * @param resize Int
      */
-    fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resize: Int)
+    fun loadCropImage(context: Context, imageView: ImageView, uri: Uri, resize: Int, placeholder: Drawable?)
 
     /**
      * 加载裁剪后的Gif动图图片
@@ -50,5 +57,5 @@ interface ImageLoadEngine {
      * @param placeholder Drawable
      * @param resize Int
      */
-    fun loadCropGifImage(context: Context, imageView: ImageView, uri: Uri, placeholder: Drawable, resize: Int)
+    fun loadCropGifImage(context: Context, imageView: ImageView, uri: Uri, placeholder: Drawable?, resize: Int)
 }

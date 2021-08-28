@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="XHY.Dashingqi" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="item.placeHolder">@color/xhy_place_holder_item</item>
+    </style>
+</resources>
