@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.dashingqi.dqimageselector.xhy.XHY
+import com.dashingqi.dqmvvmbase.async.CustomAsyncTask
 import com.dashingqi.master.databinding.ActivityMainBinding
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         openMatisse.setOnClickListener {
             openMatisse()
         }
-
     }
 
     /**

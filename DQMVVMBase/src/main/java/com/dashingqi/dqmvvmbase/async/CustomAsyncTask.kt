@@ -17,10 +17,10 @@ import android.os.AsyncTask
  *
  */
 class CustomAsyncTask<T, P, R>(
-        val onPreExecute: (() -> Unit)? = null,
-        val doInBackground: ((Array<out T>) -> R)? = null,
-        val onProgressUpdate: ((Array<out P>) -> Unit)? = null,
-        val onPostExecute: ((R) -> Unit)? = null
+    private val onPreExecute: (() -> Unit)? = null,
+    private val doInBackground: ((Array<out T>) -> R)? = null,
+    private val onProgressUpdate: ((Array<out P>) -> Unit)? = null,
+    private val onPostExecute: ((R) -> Unit)? = null
 ) : AsyncTask<T, P, R>() {
     override fun onPreExecute() {
         onPreExecute?.invoke()
