@@ -1,14 +1,4 @@
-include ':DQHttp'
-include ':DQCountDown'
-include ':DQLaunchStarter'
-include ':DQDialog'
-include ':DQGradleDemo'
-include ':DQOverScrollLayout'
-include ':DQMVVMBase'
-include ':DQCommonUtils'
 include ':DQCommonToolbar'
-include ':GradleDemo'
 include ':app'
-include ':DQImageSelector'
 rootProject.name = "DQMaster"
 
