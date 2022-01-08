@@ -1,5 +1,0 @@
-<resources>
-    <string name="preview_text">预览</string>
-    <string name="finish_text">完成</string>
-    <string name="finish_number">(%d)</string>
-</resources>
