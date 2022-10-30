@@ -3,6 +3,7 @@ package com.dashingqi.dqcommonutils
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import androidx.annotation.NonNull
 
 /**
  * @author : zhangqi
@@ -17,17 +18,20 @@ object SystemServiceUtil {
      * context:上下文环境
      * return：true 操作成功 false：操作失败
      */
-    fun copy(content: String?): Boolean {
+    fun copy(@NonNull content: String): Boolean {
         //获取剪贴板管理器：
-        AppUtil.application?.let {
-            val cm = it.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-            cm?.takeIf { !content.isNullOrEmpty() }?.apply {
-                val mClipData = ClipData.newPlainText("Label", content)
-                this.setPrimaryClip(mClipData)
-                return true
+        AppUtil.application.let {
+            val cm = it.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+            return when {
+                (content.isEmpty()) || (cm == null) -> {
+                    false
+                }
+                else -> {
+                    val mClipData = ClipData.newPlainText("Label", content)
+                    cm.setPrimaryClip(mClipData)
+                    true
+                }
             }
         }
-
-        return false
     }
 }
