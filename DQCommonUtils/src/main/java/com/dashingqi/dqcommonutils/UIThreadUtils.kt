@@ -34,7 +34,7 @@ object UIThreadUtils {
      */
     fun runOnUiThread(action: Runnable, delayMillis: Long) {
         if (delayMillis > 0) {
-            var mainHandler = getMainHandler()
+            val mainHandler = getMainHandler()
             mainHandler?.postDelayed(action, delayMillis)
         } else {
             runOnUiThread(action)
@@ -46,7 +46,7 @@ object UIThreadUtils {
      */
     fun runOnUiThreadAtFrontOfQueue(action: Runnable) {
         if (Thread.currentThread() != Looper.getMainLooper().thread) {
-            var mainHandler = getMainHandler()
+            val mainHandler = getMainHandler()
             mainHandler?.postAtFrontOfQueue(action)
         } else {
             action.run()

@@ -118,7 +118,7 @@ object DateUtils {
         }
         val gc = GregorianCalendar()
         assert(dt != null)
-        gc.setTime(dt)
+        gc.time = dt
         gc.add(Calendar.MONTH, monthNum)
         return df.format(gc.getTime())
     }

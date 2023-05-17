@@ -28,10 +28,10 @@ object ProcessUtils {
      * 耗时，耗性能
      */
     fun getCurrentProcessName(context: Context):String?{
-        var myPid = Process.myPid()
-        var activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val myPid = Process.myPid()
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
 
-        var runningAppProcesses = activityManager.runningAppProcesses
+        val runningAppProcesses = activityManager?.runningAppProcesses
         if (!runningAppProcesses.isNullOrEmpty()){
             runningAppProcesses.forEach {
                 if (it.pid == myPid){
@@ -60,8 +60,9 @@ object ProcessUtils {
     fun getCurrentProcessNameByAT(): String? {
         var processName: String? = null
         try {
-            val declaredMethod: Method = Class.forName("android.app.ActivityThread", false, Application::class.java.classLoader)
-                    .getDeclaredMethod("currentProcessName")
+            val declaredMethod: Method = Class.forName(
+                "android.app.ActivityThread", false, Application::class.java.classLoader
+            ).getDeclaredMethod("currentProcessName")
             declaredMethod.isAccessible = true
             val invoke: Any = declaredMethod.invoke(null)
             if (invoke is String) {
