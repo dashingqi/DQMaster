@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dashingqi.dqimageselector.xhy.XHY
 import com.dashingqi.dqmvvmbase.async.CustomAsyncTask
 import com.dashingqi.master.databinding.ActivityMainBinding
+import com.dashingqi.master.process.test.OtherProcessService
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -21,14 +22,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var activityMainBinding = DataBindingUtil
-            .setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        var activityMainBinding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         var viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         activityMainBinding.viewModel = viewModel
         activityMainBinding.lifecycleOwner = this
         viewModel.countDownTime.value = "1232938293"
         tvText.setOnClickListener {
-            handlePermission()
+            startService(Intent(this, OtherProcessService::class.java))
         }
         openMatisse.setOnClickListener {
             openMatisse()
@@ -42,22 +42,16 @@ class MainActivity : AppCompatActivity() {
      */
     private fun handlePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, WRITE_PERMISSION)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
+            if (ContextCompat.checkSelfPermission(this, WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
                 // 没有获取到权限在做出判断
-                if (ActivityCompat
-                        .shouldShowRequestPermissionRationale(this, WRITE_PERMISSION)
-                ) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, WRITE_PERMISSION)) {
                     // 弹出对话框让用户去设置页面进行开启
 
                 } else {
                     //做权限的申请
-                    ActivityCompat
-                        .requestPermissions(
-                            this, arrayOf(WRITE_PERMISSION),
-                            REQUEST_PERMISSION_CODE
-                        )
+                    ActivityCompat.requestPermissions(
+                        this, arrayOf(WRITE_PERMISSION), REQUEST_PERMISSION_CODE
+                    )
                 }
             } else {
                 openXHY()
@@ -71,9 +65,7 @@ class MainActivity : AppCompatActivity() {
      * 权限申请结果处理
      */
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -90,21 +82,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMatisse() {
-        Matisse.from(this@MainActivity)
-            .choose(MimeType.ofAll())
-            .countable(true)
-            .maxSelectable(9)
-            .thumbnailScale(0.85f)
-            .imageEngine(GlideEngine())
-            .forResult(1000)
+        Matisse.from(this@MainActivity).choose(MimeType.ofAll()).countable(true).maxSelectable(9).thumbnailScale(0.85f)
+            .imageEngine(GlideEngine()).forResult(1000)
     }
 
     private fun openXHY() {
-        XHY.with(this)
-            .loadMimeType()
-            .capture(true)
-            .setMaxSize(9)
-            .startForResult(1000)
+        XHY.with(this).loadMimeType().capture(true).setMaxSize(9).startForResult(1000)
 
     }
 

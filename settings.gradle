@@ -1,6 +1,6 @@
-include ':DQGradleDemo'
-include ':GradleDemo'
+//include ':DQGradleDemo'
+//include ':GradleDemo'
 include ':app'
-include ':DQImageSelector'
+//include ':DQImageSelector'
 rootProject.name = "DQMaster"
 
