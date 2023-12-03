@@ -4,3 +4,4 @@ include ':app'
 include ':DQImageSelector'
 rootProject.name = "DQMaster"
 
+include ':ProcessIpc'
